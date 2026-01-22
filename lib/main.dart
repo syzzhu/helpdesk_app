@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:helpdesk_app/screens/comment_page.dart';
-import 'screens/login_page.dart'; //import floder screen and login_page file
-import 'screens/forgot_page.dart'; //import folder screen and forgot_page file
-import 'screens/comment_page.dart'; //import folder screen and comment_page file
-import 'screens/operation.dart'; //import folder screen and operation file
+//import floder screen and login_page file
+//import folder screen and forgot_page file
+//import folder screen and comment_page file
+//import folder screen and operation file
 
 void main() {
   runApp(const MyApp());
