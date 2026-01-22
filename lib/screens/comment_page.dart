@@ -113,7 +113,7 @@ class _CommentPageState extends State<CommentPage> {
                       Padding(
                         padding: EdgeInsets.all(15.0),
                         child: Text(
-                          'Please Check the ticket. Saya dah hantar laporan tapi belum ada respon. Mohon pihak teknikal datang ke meja saya secepat mungkin untuk check sistem. Terima kasih!!',
+                          'Please Check the ticket. Saya dah hantar laporan tapi belum ada respon.Terima kasih!!',
                           style: TextStyle(fontSize: 14, height: 1.4),
                         ),
                       ),

@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:helpdesk_app/screens/comment_page.dart';
 import 'screens/login_page.dart'; //import floder screen and login_page file
+<<<<<<< HEAD
+=======
+import 'screens/login_page.dart'; //import folder screen and login_page file
+import 'screens/forgot_page.dart'; //import folder screen and forgot_page file
+>>>>>>> 72d085e8b98d0274d671d9748a543e0a6a7b0607
 
 void main() {
   runApp(const MyApp());
