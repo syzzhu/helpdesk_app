@@ -23,11 +23,11 @@ class ForgotPasswordPage extends StatelessWidget {
                   children: [
                     Image.asset(
                       'assets/images/bernama_logo.webp',
-                      height: 40,
+                      height: 50,
                     ),
                     const SizedBox(width: 8),
                     const Text(
-                      'BERNAMA',
+                      'Bernama',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:helpdesk_app/screens/comment_page.dart';
 import 'screens/login_page.dart'; //import floder screen and login_page file
-import 'screens/login_page.dart'; //import folder screen and login_page file
+//import 'screens/login_page.dart'; //import folder screen and login_page file
 import 'screens/forgot_page.dart'; //import folder screen and forgot_page file
 
 void main() {
@@ -19,12 +19,13 @@ class MyApp extends StatelessWidget {
       title: 'HelpDesk App',
 
       // FIRST PAGE
-      initialRoute: '/login',
+      initialRoute: '/Comment-Page',
 
       // ALL ROUTES
       routes: {
         '/login' : (context) => const LoginPage(),
         '/forgot-password' : (context) => const ForgotPasswordPage(),
+        '/Comment-Page' : (context) => const CommentPage(),
       },
       theme: ThemeData(
         primaryColor: const Color(0xFF00AEEF),

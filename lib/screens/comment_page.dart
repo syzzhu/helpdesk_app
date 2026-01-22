@@ -23,25 +23,33 @@ class _CommentPageState extends State<CommentPage> {
               bottom: 20,
             ),
             decoration: const BoxDecoration(color: Color(0xFF00AEEF)),
-            child: Row(
+            child: Stack(
+              alignment: Alignment.center,
               children: [
-                IconButton(
-                  icon: const Icon(
-                    Icons.arrow_back,
-                    color: Colors.white,
-                    size: 30,
-                  ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
+                Row(
+                  children: [
+                    IconButton(
+                      icon: const Icon(
+                        Icons.arrow_back,
+                        color: Colors.white,
+                        size: 30,
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                    const SizedBox(width: 10),
+                    const Icon(Icons.chat_bubble, size: 30, color: Colors.black),
+                  ],
                 ),
-                const SizedBox(width: 10),
-                const Icon(Icons.chat_bubble, size: 30, color: Colors.white),
+              
+                // TEXT COMMENTS CENTER
                 const SizedBox(width: 10),
                 const Text(
                   'Comments',
+                  textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: Colors.white,
+                    color: Colors.black,
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
                   ),
@@ -148,6 +156,7 @@ class _CommentPageState extends State<CommentPage> {
               ],
             ),
           ),
+
           // --- NAVIGATION BAR BOTTOM ---
           Container(
             padding: const EdgeInsets.symmetric(vertical: 10),
@@ -158,13 +167,13 @@ class _CommentPageState extends State<CommentPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                const Icon(Icons.home, size: 35, color: Colors.grey),
+                const Icon(Icons.home, size: 50, color: Colors.grey),
                 const Icon(
                   Icons.qr_code_scanner,
-                  size: 45,
+                  size: 55,
                   color: Colors.black,
                 ), // Ikon QR
-                const Icon(Icons.list_alt, size: 35, color: Colors.grey),
+                const Icon(Icons.list_alt, size: 50, color: Colors.grey),
               ],
             ),
           ),
