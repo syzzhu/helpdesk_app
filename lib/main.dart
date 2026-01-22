@@ -1,13 +1,15 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:helpdesk_app/screens/comment_page.dart';
 import 'package:helpdesk_app/screens/operation.dart';
+import 'package:device_preview/device_preview.dart';
 //import floder screen and login_page file
 //import folder screen and forgot_page file
 //import folder screen and comment_page file
 //import folder screen and operation file
 
 void main() {
-  runApp(const MyApp());
+  runApp(DevicePreview(builder: (context) => MyApp(), enabled: !kReleaseMode));
 }
 
 class MyApp extends StatelessWidget {
@@ -21,7 +23,7 @@ class MyApp extends StatelessWidget {
       title: 'HelpDesk App',
 
       // FIRST PAGE
-      initialRoute: '/Comment-Page',
+      initialRoute: '/Dashboard-Page',
 
       // ALL ROUTES
       //routes: {
@@ -48,9 +50,8 @@ class MyApp extends StatelessWidget {
         //colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
       //home: const LoginPage(),
-      //home: const OperationPage(),
-      //home: const CommentPage(),
       home: const OperationPage(),
+      //home: const CommentPage(),
     );
   }
 }
