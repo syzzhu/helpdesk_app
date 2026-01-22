@@ -39,10 +39,14 @@ class _CommentPageState extends State<CommentPage> {
                       },
                     ),
                     const SizedBox(width: 10),
-                    const Icon(Icons.chat_bubble, size: 30, color: Colors.black),
+                    const Icon(
+                      Icons.chat_bubble,
+                      size: 30,
+                      color: Colors.black,
+                    ),
                   ],
                 ),
-              
+
                 // TEXT COMMENTS CENTER
                 const SizedBox(width: 10),
                 const Text(
