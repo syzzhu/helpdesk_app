@@ -3,8 +3,45 @@ import 'detail_page.dart';
 import 'dashboard_page.dart'; // Pastikan import dashboard ada
 import 'qr_scanner_page.dart';
 
-class OperationPage extends StatelessWidget {
+class OperationPage extends StatefulWidget {
   const OperationPage({super.key});
+
+  @override
+  State<OperationPage> createState() => _OperationPageState();
+}
+
+class _OperationPageState extends State<OperationPage> {
+  // Letak dalam class _OperationPageState
+  TextEditingController searchController = TextEditingController();
+  List<Map<String, dynamic>> allData = []; // Data asal
+  List<Map<String, dynamic>> filteredData = []; // Data yang akan dipaparkan
+
+  @override
+  void initState() {
+    super.initState();
+    // Masukkan data anda di sini supaya boleh di-filter
+    allData = [
+      {
+        'name': 'SITI SARADATUL HUSNA BINTI ISHAK',
+        'dept': 'BAHAGIAN KEWANGAN & AKAUN',
+        'type': 'DISMANTLE',
+        'status': 'NEW',
+        'desc':
+            'Wakil Aset RADIO KOMUNIKASI...Wakil Aset RADIO KOMUNIKASI...Wakil Aset RADIO KOMUNIKASI...',
+        'color': Colors.redAccent,
+      },
+      {
+        'name': 'MOHD ISKANDAR',
+        'dept': 'BAHAGIAN TEKNOLOGI MAKLUMAT & KOMUNIKASI',
+        'type': 'INSTALLATION',
+        'status': 'PENDING',
+        'desc':
+            'Installation Aurora Protect Software...Installation Aurora Protect Software...',
+        'color': Colors.orange,
+      },
+    ];
+    filteredData = allData;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,16 +101,32 @@ class OperationPage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    child: const TextField(
-                      decoration: InputDecoration(
-                        hintText: 'Search ticket or name...',
-                        hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
+                    child: TextField(
+                      controller: searchController,
+                      onChanged: (value) {
+                        setState(() {
+                          String query = value.toLowerCase();
+                          filteredData = allData.where((item) {
+                            // 1. Check nama
+                            bool matchesName = item['name']
+                                .toLowerCase()
+                                .contains(query);
+                            // 2. Check type
+                            bool matchesType = item['type']
+                                .toLowerCase()
+                                .contains(query);
+                            return matchesName || matchesType;
+                          }).toList();
+                        });
+                      },
+                      decoration: const InputDecoration(
+                        hintText: 'Search name / type',
+                        hintStyle: TextStyle(color: Colors.grey),
                         prefixIcon: Icon(
                           Icons.search,
                           color: Color(0xFF00AEEF),
                         ),
                         border: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(vertical: 12),
                       ),
                     ),
                   ),
@@ -84,31 +137,24 @@ class OperationPage extends StatelessWidget {
 
           // --- LIST OF CARDS ---
           Expanded(
-            child: ListView(
+            child: ListView.builder(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-              children: [
-                _buildOperationCard(
-                  context,
-                  type: 'DISMANTLE',
-                  status: 'NEW',
-                  statusColor: Colors.redAccent,
-                  name: 'SITI SARADATUL HUSNA BINTI ISHAK',
-                  department: 'BAHAGIAN KEWANGAN & AKAUN',
-                  description:
-                      'Wakil Aset RADIO: Encik Shukhairman/Puan Azlina Zakaria mohon mengemaskini No Invois & DO set komputer',
-                ),
-                const SizedBox(height: 18),
-                _buildOperationCard(
-                  context,
-                  type: 'INSTALLATION',
-                  status: 'PENDING',
-                  statusColor: Colors.orange,
-                  name: 'MOHD ISKANDAR',
-                  department: 'BAHAGIAN TEKNOLOGI MAKLUMAT & KOMUNIKASI',
-                  description:
-                      'Installation Aurora Protect/Cylance AV latest version',
-                ),
-              ],
+              itemCount: filteredData.length,
+              itemBuilder: (context, index) {
+                final item = filteredData[index];
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 18),
+                  child: _buildOperationCard(
+                    context,
+                    type: item['type'],
+                    status: item['status'],
+                    statusColor: item['color'],
+                    name: item['name'],
+                    department: item['dept'],
+                    description: item['desc'],
+                  ),
+                );
+              },
             ),
           ),
           // --- BOTTOM NAV BAR  ---
@@ -164,10 +210,16 @@ class OperationPage extends StatelessWidget {
     required String description,
   }) {
     return GestureDetector(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const DetailPage()),
-      ),
+      onTap: () {
+        // Kita hantar data 'status' ke page sebelah
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                DetailPage(status: status), // Hantar status di sini
+          ),
+        );
+      },
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
@@ -324,7 +376,7 @@ class OperationPage extends StatelessWidget {
           MaterialPageRoute(builder: (context) => const QRScannerPage()),
         );
 
-        // Kalau ada data dari QR, buat sesuatu (contoh: keluar alert)
+        // Alert result
         if (qrResult != null) {
           ScaffoldMessenger.of(
             context,
@@ -332,20 +384,20 @@ class OperationPage extends StatelessWidget {
         }
       },
       child: Container(
-        transform: Matrix4.translationValues(0, -5, 0),
+        transform: Matrix4.translationValues(0, -8, 0),
         padding: const EdgeInsets.all(12),
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           color: Colors.black,
           shape: BoxShape.circle,
           boxShadow: [
             BoxShadow(
-              color: Colors.black26,
+              color: Colors.black.withOpacity(0.3),
               blurRadius: 10,
-              offset: Offset(0, 4),
+              offset: Offset(0, 5),
             ),
           ],
         ),
-        child: const Icon(Icons.qr_code_scanner, color: Colors.white, size: 30),
+        child: const Icon(Icons.qr_code_scanner, color: Colors.white, size: 32),
       ),
     );
   }

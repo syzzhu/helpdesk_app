@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'qr_scanner_page.dart';
 import 'dashboard_page.dart';
 
 class DetailPage extends StatelessWidget {
-  const DetailPage({super.key});
+  final String status;
+  const DetailPage({super.key, required this.status});
 
   @override
   Widget build(BuildContext context) {
@@ -231,7 +233,7 @@ class DetailPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 _buildNavItem(Icons.home_outlined, "Home", false),
-                _buildQRItem(),
+                _buildQRItem(context),
                 _buildNavItem(Icons.list_alt_rounded, "Options", false),
               ],
             ),
@@ -398,22 +400,39 @@ class DetailPage extends StatelessWidget {
     );
   }
 
-  Widget _buildQRItem() {
-    return Container(
-      transform: Matrix4.translationValues(0, -8, 0),
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Colors.black,
-        shape: BoxShape.circle,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.3),
-            blurRadius: 10,
-            offset: const Offset(0, 5),
-          ),
-        ],
+  Widget _buildQRItem(BuildContext context) {
+    // Tambah context kat sini
+    return GestureDetector(
+      onTap: () async {
+        // Buka kamera dan tunggu result
+        final String? qrResult = await Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const QRScannerPage()),
+        );
+
+        // Alert result
+        if (qrResult != null) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text('Hasil Scan: $qrResult')));
+        }
+      },
+      child: Container(
+        transform: Matrix4.translationValues(0, -5, 0),
+        padding: const EdgeInsets.all(12),
+        decoration: const BoxDecoration(
+          color: Colors.black,
+          shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black26,
+              blurRadius: 10,
+              offset: Offset(0, 4),
+            ),
+          ],
+        ),
+        child: const Icon(Icons.qr_code_scanner, color: Colors.white, size: 32),
       ),
-      child: const Icon(Icons.qr_code_scanner, color: Colors.white, size: 32),
     );
   }
 }

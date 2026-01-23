@@ -6,6 +6,7 @@ class QRScannerPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool hasScanned = false;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Scan QR Code'),
