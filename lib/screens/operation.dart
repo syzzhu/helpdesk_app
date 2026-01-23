@@ -71,7 +71,7 @@ class _OperationPageState extends State<OperationPage> {
                   children: [
                     Icon(
                       Icons.assignment_rounded,
-                      size: 35,
+                      size: 22,
                       color: Colors.white,
                     ),
                     SizedBox(width: 12),
@@ -211,12 +211,11 @@ class _OperationPageState extends State<OperationPage> {
   }) {
     return GestureDetector(
       onTap: () {
-        // Kita hantar data 'status' ke page sebelah
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) =>
-                DetailPage(status: status), // Hantar status di sini
+                DetailPage(status: status, name: name, department: department),
           ),
         );
       },
