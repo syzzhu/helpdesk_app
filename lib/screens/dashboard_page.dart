@@ -1,248 +1,257 @@
 import 'package:flutter/material.dart';
+import 'qr_scanner_page.dart';
+import 'dashboard_page.dart'; // Kalau nak navigate balik ke dashboard
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Get screen size
     final size = MediaQuery.of(context).size;
-    final avatarRadius = size.width * 0.08; // responsive avatar
-    final shiftRadius = size.width * 0.065; // responsive shift circle
-    final spacing = size.height * 0.02; // responsive spacing
+    final avatarRadius = size.width * 0.08;
+    final shiftRadius = size.width * 0.065;
+    final spacing = size.height * 0.02;
 
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-            minHeight: size.height - MediaQuery.of(context).padding.top,
+      backgroundColor: Colors.grey[100],
+      body: Column(
+        children: [
+          // ---------------- HEADER ----------------
+          Stack(
+            clipBehavior: Clip.none,
+            children: [
+              Container(
+                width: double.infinity,
+                padding: EdgeInsets.all(size.width * 0.05),
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [Color(0xFF00AEEF), Color(0xFF0089BB)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(30),
+                    bottomRight: Radius.circular(30),
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: IconButton(
+                        icon: const Icon(Icons.logout, color: Colors.white),
+                        onPressed: () {},
+                      ),
+                    ),
+                    SizedBox(height: spacing),
+                    Text(
+                      'HelpDesk',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: size.width * 0.07,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    SizedBox(height: spacing),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CircleAvatar(
+                          radius: avatarRadius,
+                          backgroundColor: Colors.white,
+                          child: Icon(Icons.person,
+                              color: Colors.black, size: avatarRadius),
+                        ),
+                        SizedBox(width: size.width * 0.03),
+                        Text(
+                          'Hi Syana, today you check in at \n11:49:25 AM',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: size.width * 0.035,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: spacing * 0.5),
+                    Text(
+                      'Thursday, 15 Jan',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: size.width * 0.05,
+                      ),
+                    ),
+                    SizedBox(height: spacing * 0.05),
+                  ],
+                ),
+              ),
+            ],
           ),
-          child: IntrinsicHeight(
-            child: Column(
-              children: [
-                // ---------------- HEADER ----------------
-                Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.all(size.width * 0.05),
-                  decoration: const BoxDecoration(
-                    color: Color(0xFF00AEEF),
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(30),
-                      bottomRight: Radius.circular(30),
+
+          // ---------------- MAIN CONTENT ----------------
+          Expanded(
+            child: SingleChildScrollView(
+              padding: EdgeInsets.only(top: spacing),
+              child: Column(
+                children: [
+                  // FLOATING CARD (warna sama macam OperationPage)
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+                    child: Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.all(size.width * 0.04),
+                      decoration: BoxDecoration(
+                        color: Colors.white, // Sama macam OperationPage
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.15),
+                            blurRadius: 10,
+                            offset: const Offset(0, 5),
+                          )
+                        ],
+                      ),
+                      child: Text(
+                        'You finished 0 job today. \nWork Harder!!',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: size.width * 0.055,
+                          color: Colors.black,
+                        ),
+                      ),
                     ),
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Align(
-                        alignment: Alignment.topRight,
-                        child: IconButton(
-                          icon: const Icon(Icons.logout, color: Colors.black),
-                          onPressed: () {},
-                        ),
-                      ),
-                      SizedBox(height: spacing * 0.5),
-                      Text(
-                        'HelpDesk',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: size.width * 0.07,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(height: spacing),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          CircleAvatar(
-                            radius: avatarRadius,
-                            backgroundColor: Colors.black,
-                            child: Icon(
-                              Icons.person,
-                              color: Colors.white,
-                              size: avatarRadius,
-                            ),
-                          ),
-                          SizedBox(width: size.width * 0.03),
-                          Text(
-                            'Hi Syana, today you check in at \n11:49:25 AM',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: size.width * 0.035,
-                            ),
+                  SizedBox(height: spacing),
+
+                  // TASK SECTION
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+                    child: Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.all(size.width * 0.05),
+                      decoration: BoxDecoration(
+                        color: Colors.white, // Sama macam OperationPage
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.08),
+                            blurRadius: 10,
+                            offset: const Offset(0, 5),
                           ),
                         ],
                       ),
-                      SizedBox(height: spacing * 0.5),
-                      Text(
-                        'Thursday, 15 Jan',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: size.width * 0.05,
-                        ),
-                      ),
-                      SizedBox(height: spacing * 0.5),
-                      Container(
-                        width: double.infinity,
-                        padding: EdgeInsets.all(size.width * 0.04),
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: Text(
-                          'You finished 0 job today.\nWork Harder!!',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: size.width * 0.055,
+                      child: Column(
+                        children: [
+                          Text(
+                            'TASK',
+                            style: TextStyle(
+                              fontSize: size.width * 0.045,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                SizedBox(height: spacing),
-
-                // ---------------- MAIN CONTENT ----------------
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // TASK SECTION
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: size.width * 0.05,
-                        ),
-                        child: Container(
-                          width: double.infinity,
-                          padding: EdgeInsets.all(size.width * 0.05),
-                          decoration: BoxDecoration(
-                            color: Colors.grey[400],
-                            borderRadius: BorderRadius.circular(20),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.08),
-                                blurRadius: 10,
-                                offset: const Offset(0, 5),
-                              ),
-                            ],
-                          ),
-                          child: Column(
+                          SizedBox(height: spacing * 0.5),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              Text(
-                                'TASK',
-                                style: TextStyle(
-                                  fontSize: size.width * 0.045,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              SizedBox(height: spacing * 0.5),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  _taskItem(Icons.report, 'Complaints', 2,
-                                      Colors.red, avatarRadius),
-                                  _taskItem(Icons.print, 'Operation', 0,
-                                      Colors.blue, avatarRadius),
-                                  _taskItem(Icons.settings, 'PM', 6,
-                                      Colors.green, avatarRadius),
-                                ],
-                              ),
+                              _taskItem(Icons.report, 'Complaints', 2, Colors.red, avatarRadius),
+                              _taskItem(Icons.print, 'Operation', 0, Colors.blue, avatarRadius),
+                              _taskItem(Icons.settings, 'PM', 6, Colors.green, avatarRadius),
                             ],
                           ),
-                        ),
+                        ],
                       ),
+                    ),
+                  ),
+                  SizedBox(height: spacing),
 
-                      SizedBox(height: spacing),
-
-                      // SHIFT SCHEDULE
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: size.width * 0.05,
-                        ),
-                        child: Container(
-                          width: double.infinity,
-                          padding: EdgeInsets.all(size.width * 0.05),
-                          decoration: BoxDecoration(
-                            color: Colors.grey[400],
-                            borderRadius: BorderRadius.circular(20),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.08),
-                                blurRadius: 10,
-                                offset: const Offset(0, 5),
-                              ),
-                            ],
+                  // SHIFT SCHEDULE
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+                    child: Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.all(size.width * 0.05),
+                      decoration: BoxDecoration(
+                        color: Colors.white, // Sama macam OperationPage
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.08),
+                            blurRadius: 10,
+                            offset: const Offset(0, 5),
                           ),
-                          child: Column(
-                            children: [
-                              Text(
-                                'SHIFT SCHEDULE',
-                                style: TextStyle(
-                                  fontSize: size.width * 0.045,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              SizedBox(height: spacing * 0.5),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  _shiftCard('14 Jan', 'Morning', Colors.red,
-                                      shiftRadius, size),
-                                  _shiftCard('15 Jan', 'Morning', Colors.red,
-                                      shiftRadius, size),
-                                  _shiftCard('16 Jan', 'Afternoon', Colors.green,
-                                      shiftRadius, size),
-                                ],
-                              ),
-                            ],
+                        ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center, // center text
+                        children: [
+                          Text(
+                            'SHIFT SCHEDULE',
+                            style: TextStyle(
+                              fontSize: size.width * 0.045,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                          SizedBox(height: spacing * 0.5),
 
-                // ---------------- BOTTOM NAV ----------------
-                Container(
-                  height: 60,
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
-                        blurRadius: 10,
-                        offset: const Offset(0, -2),
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                _shiftCard('14 Jan', 'Morning', Colors.red, shiftRadius, size),
+                                const SizedBox(width: 12),
+                                _shiftCard('15 Jan', 'Morning', Colors.red, shiftRadius, size),
+                                const SizedBox(width: 12),
+                                _shiftCard('16 Jan', 'Afternoon', Colors.green, shiftRadius, size),
+                                const SizedBox(width: 12),
+                                _shiftCard('17 Jan', 'Evening', Colors.orange, shiftRadius, size),
+                                const SizedBox(width: 12),
+                                _shiftCard('18 Jan', 'Night', Colors.purple, shiftRadius, size),
+                              ],
+                            ),
+                          )
+                        ],
                       ),
-                    ],
+                    ),
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      _buildNavItem(context, Icons.home_filled, "Home", true),
-                      _buildQRItem(),
-                      _buildNavItem(context, Icons.list_alt_rounded, "Options", false),
-                    ],
-                  ),
+                  SizedBox(height: spacing * 2),
+                ],
+              ),
+            ),
+          ),
+
+          // ---------------- BOTTOM NAV ----------------
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 12),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.05),
+                  blurRadius: 10,
+                  offset: const Offset(0, -2),
                 ),
               ],
             ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                _buildNavItem(context, Icons.home_outlined, "Home", false),
+                _buildQRItem(context),
+                _buildNavItem(context, Icons.list_alt_rounded, "Options", false),
+              ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
 
   // ---------------- HELPER FUNCTIONS ----------------
-
-  static Widget _taskItem(
-      IconData icon, String title, int badge, Color color, double radius) {
+  Widget _taskItem(IconData icon, String title, int badge, Color color, double radius) {
     return Column(
       children: [
         Stack(
@@ -259,15 +268,8 @@ class DashboardPage extends StatelessWidget {
                 right: -5,
                 child: Container(
                   padding: const EdgeInsets.all(4),
-                  decoration: BoxDecoration(
-                    color: color,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Text(
-                    '$badge',
-                    style:
-                        const TextStyle(color: Colors.white, fontSize: 12),
-                  ),
+                  decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+                  child: Text('$badge', style: const TextStyle(color: Colors.white, fontSize: 12)),
                 ),
               ),
           ],
@@ -278,62 +280,53 @@ class DashboardPage extends StatelessWidget {
     );
   }
 
-  static Widget _shiftCard(String date, String shift, Color color,
-      double radius, Size size) {
+  Widget _shiftCard(String date, String shift, Color color, double radius, Size size) {
     return Container(
-      padding: EdgeInsets.all(size.width * 0.04),
+      width: size.width * 0.28,
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
       decoration: BoxDecoration(
-        color: Colors.grey[300],
+        color: Colors.grey[200], // Sama macam OperationPage
         borderRadius: BorderRadius.circular(15),
       ),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            date,
-            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-          ),
-          SizedBox(height: radius * 0.2),
-          CircleAvatar(
-            radius: radius,
-            backgroundColor: color,
+          Text(date, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
+          const SizedBox(height: 10),
+          
+          Container(
+            constraints: const BoxConstraints(minWidth: 70),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+            decoration: BoxDecoration(
+              color: color,
+              borderRadius: BorderRadius.circular(20),
+            ),
             child: Text(
               shift,
-              style: TextStyle(
+              textAlign: TextAlign.center,
+              style: const TextStyle(
                 color: Colors.white,
-                fontSize: size.width * 0.03,
+                fontSize: 10,
+                fontWeight: FontWeight.bold,
               ),
             ),
-          ),
+          )
         ],
       ),
     );
   }
 
-  // -------- SAME AS OPERATION PAGE --------
-   Widget _buildNavItem(
-    BuildContext context,
-    IconData icon,
-    String label,
-    bool isActive, {
-    Widget? destination,
-  }) {
+  Widget _buildNavItem(BuildContext context, IconData icon, String label, bool isActive, {Widget? destination}) {
     return GestureDetector(
       onTap: () {
         if (destination != null && !isActive) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => destination),
-          );
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => destination));
         }
       },
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(
-            icon,
-            size: 30,
-            color: isActive ? const Color(0xFF00AEEF) : Colors.grey,
-          ),
+          Icon(icon, size: 30, color: isActive ? const Color(0xFF00AEEF) : Colors.grey),
           Text(
             label,
             style: TextStyle(
@@ -347,22 +340,29 @@ class DashboardPage extends StatelessWidget {
     );
   }
 
-  Widget _buildQRItem() {
-    return Container(
-      transform: Matrix4.translationValues(0, 7, 0),
-      padding: const EdgeInsets.all(12),
-      decoration: const BoxDecoration(
-        color: Colors.black,
-        shape: BoxShape.circle,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black26,
-            blurRadius: 10,
-            offset: Offset(0, 4),
-          ),
-        ],
+  Widget _buildQRItem(BuildContext context) {
+    return GestureDetector(
+      onTap: () async {
+        final String? qrResult = await Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const QRScannerPage()),
+        );
+
+        if (qrResult != null) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Hasil Scan: $qrResult')));
+        }
+      },
+      child: Container(
+        transform: Matrix4.translationValues(0, -5, 0),
+        padding: const EdgeInsets.all(12),
+        decoration: const BoxDecoration(
+          color: Colors.black,
+          shape: BoxShape.circle,
+          boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 10, offset: Offset(0, 4))],
+        ),
+        child: const Icon(Icons.qr_code_scanner, color: Colors.white, size: 30),
       ),
-      child: const Icon(Icons.qr_code_scanner, color: Colors.white, size: 30),
     );
   }
 }
+

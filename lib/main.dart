@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:helpdesk_app/screens/comment_page.dart';
+import 'package:helpdesk_app/screens/dashboard_page.dart';
 import 'package:helpdesk_app/screens/operation.dart';
 import 'package:device_preview/device_preview.dart';
 //import floder screen and login_page file
@@ -50,7 +51,7 @@ class MyApp extends StatelessWidget {
         //colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
       //home: const LoginPage(),
-      home: const OperationPage(),
+      home: const DashboardPage(),
       //home: const CommentPage(),
     );
   }
