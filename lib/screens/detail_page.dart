@@ -60,7 +60,7 @@ class DetailPage extends StatelessWidget {
                     const Text(
                       'Detail',
                       style: TextStyle(
-                        fontSize: 26, //
+                        fontSize: 26,
                         fontWeight: FontWeight.w800,
                         color: Colors.white,
                       ),
@@ -71,24 +71,30 @@ class DetailPage extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 20),
+
           // --- CONTENT SECTION ---
-          // Ticket ID Bar
-            Center( // Guna Center supaya box tu duduk tengah selepas dipendekkan
+          Center(
             child: SizedBox(
-              width: 350, 
+              width: 348,
               child: _buildCleanBox(
                 padding: EdgeInsets.zero,
                 child: Row(
                   children: [
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 18,
+                        vertical: 12,
+                      ),
                       decoration: BoxDecoration(
                         color: Colors.redAccent,
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(0),
                       ),
-                      child: Text(status, style: const TextStyle(color: Colors.white)),
+                      child: Text(
+                        status,
+                        style: const TextStyle(color: Colors.white),
+                      ),
                     ),
-                    const Expanded( // Ini akan isi baki ruang dalam 280 tadi
+                    const Expanded(
                       child: Text(
                         'L202601141050510002',
                         textAlign: TextAlign.center,
@@ -100,12 +106,13 @@ class DetailPage extends StatelessWidget {
               ),
             ),
           ),
+
           Expanded(
             child: ListView(
               padding: const EdgeInsets.all(20),
               children: [
-                // CONTACT PERSON
                 _buildHeaderLabel("CONTACT PERSON"),
+
                 _buildCleanBox(
                   child: Row(
                     children: [
@@ -147,12 +154,11 @@ class DetailPage extends StatelessWidget {
                                   color: Colors.green,
                                 ),
                                 const SizedBox(width: 6),
-                                Text(
+                                const Text(
                                   "019-777 7777",
                                   style: TextStyle(
                                     fontWeight: FontWeight.w600,
                                     fontSize: 13,
-                                    color: Colors.black87,
                                   ),
                                 ),
                               ],
@@ -164,9 +170,8 @@ class DetailPage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 20),
-
-                // TICKET INFORMATION
                 _buildHeaderLabel("TICKET INFORMATION"),
+
                 _buildCleanBox(
                   padding: EdgeInsets.zero,
                   child: Column(
@@ -188,17 +193,11 @@ class DetailPage extends StatelessWidget {
                             const SizedBox(height: 4),
                             const Text(
                               "START DATE : 15 JAN 2026",
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                              ),
+                              style: TextStyle(fontSize: 12),
                             ),
                             const Text(
                               "END DATE : 15 JAN 2026",
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                              ),
+                              style: TextStyle(fontSize: 12),
                             ),
                           ],
                         ),
@@ -209,7 +208,7 @@ class DetailPage extends StatelessWidget {
                           "Wakil Aset RADIO: Encik Shukhaiman/Puan Azlina Zakaria mohon mengemaskini No.Invois & DO set komputer baharu pada Modul Perolehan (SPB) seterusnya melengkapkan rekod pengguna dan penempatan dan membuat janaan no. aset di Model Aset(SPB).",
                           textAlign: TextAlign.justify,
                           style: TextStyle(
-                            fontSize: 13, // Besarkan dari 11 ke 13
+                            fontSize: 13,
                             height: 1.5,
                             color: Colors.black87,
                           ),
@@ -249,24 +248,20 @@ class DetailPage extends StatelessWidget {
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 13,
-                            color: Colors.black87,
                           ),
                         ),
                       ),
                     ],
                   ),
                 ),
-
                 const SizedBox(height: 35),
 
-                // BUTTON ACKNOWLEDGE
                 ElevatedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF00AEEF),
                     foregroundColor: Colors.white,
                     minimumSize: const Size(double.infinity, 55),
-                    elevation: 2,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15),
                     ),
@@ -280,25 +275,32 @@ class DetailPage extends StatelessWidget {
               ],
             ),
           ),
-
-          // --- BOTTOM NAV BAR ---
           _buildBottomNavigationBar(context),
         ],
       ),
     );
   }
 
-  // --- REFINED HELPERS ---
   Widget _buildHeaderLabel(String text) {
     return Padding(
-      padding: const EdgeInsets.only(left: 5, bottom: 8),
-      child: Text(
-        text,
-        style: TextStyle(
-          fontSize: 12,
-          fontWeight: FontWeight.w900,
-          color: Colors.blueGrey.shade700,
-          letterSpacing: 0.8,
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+          decoration: BoxDecoration(
+            color: const Color.fromARGB(255, 109, 106, 106),
+            borderRadius: BorderRadius.circular(0),
+          ),
+          child: Text(
+            text,
+            style: const TextStyle(
+              fontSize: 10.5,
+              fontWeight: FontWeight.bold,
+              color: Colors.white, // Teks putih
+              letterSpacing: 0.5,
+            ),
+          ),
         ),
       ),
     );
