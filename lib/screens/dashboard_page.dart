@@ -12,6 +12,10 @@ class DashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final Width = size.width;
+    final Height = size.height;
+
+    //Scalling factors
     final avatarRadius = size.width * 0.08;
     final shiftRadius = size.width * 0.065;
     final spacing = size.height * 0.02;
@@ -21,9 +25,6 @@ class DashboardPage extends StatelessWidget {
       body: Column(
         children: [
           // ---------------- HEADER ----------------
-          Stack(
-            clipBehavior: Clip.none,
-            children: [
               Container(
                 width: double.infinity,
                 padding: EdgeInsets.all(size.width * 0.05),
@@ -93,8 +94,6 @@ class DashboardPage extends StatelessWidget {
                   ],
                 ),
               ),
-            ],
-          ),
 
           // ---------------- MAIN CONTENT ----------------
           Expanded(

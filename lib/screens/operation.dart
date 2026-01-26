@@ -45,6 +45,7 @@ class _OperationPageState extends State<OperationPage> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size; // dapatkan saiz skrin
     return Scaffold(
       backgroundColor: Colors.grey[100],
       body: Column(

@@ -13,6 +13,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size; // dapatkan saiz skrin
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
