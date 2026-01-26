@@ -70,8 +70,8 @@ class _ComplaintsState extends State<ComplaintsPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(
-                      Icons.assignment_rounded,
-                      size: 22,
+                      Icons.report,
+                      size: 42,
                       color: Colors.white,
                     ),
                     SizedBox(width: 12),
