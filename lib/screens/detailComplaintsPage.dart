@@ -18,6 +18,8 @@ class DetailComplaintsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size; // dapatkan saiz skrin
+    final spacing = size.height * 0.015; // responsive spacing
+
     return Scaffold(
       backgroundColor: const Color(0xFFF5F7F9),
       body: Column(
@@ -25,7 +27,10 @@ class DetailComplaintsPage extends StatelessWidget {
           // --- HEADER SECTION ---
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.only(top: 50, bottom: 25),
+            padding: EdgeInsets.only(
+              top: size.height * 0.06,
+              bottom: size.height * 0.03,
+            ),
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 colors: [Color(0xFF00AEEF), Color(0xFF0089BB)],
@@ -42,12 +47,12 @@ class DetailComplaintsPage extends StatelessWidget {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: IconButton(
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.arrow_back_ios_new,
                       color: Colors.white,
-                      size: 25,
+                      size: size.width * 0.06,
                     ),
-                    onPressed: () => Navigator.pushReplacement(
+                    onPressed: () => Navigator.pop(
                       context,
                       MaterialPageRoute(builder: (context) => ComplaintsPage()),
                     ),
@@ -56,16 +61,16 @@ class DetailComplaintsPage extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.article_rounded,
                       color: Colors.white,
-                      size: 32,
+                      size: size.width * 0.08,
                     ),
-                    const SizedBox(width: 12),
-                    const Text(
+                    SizedBox(width: size.width * 0.03),
+                    Text(
                       'Detail',
                       style: TextStyle(
-                        fontSize: 26, //
+                        fontSize: size.width * 0.07,
                         fontWeight: FontWeight.w800,
                         color: Colors.white,
                       ),
@@ -75,29 +80,42 @@ class DetailComplaintsPage extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 20),
+          SizedBox(height: spacing),
+
           // --- CONTENT SECTION ---
           // Ticket ID Bar
-            Center( // Guna Center supaya box tu duduk tengah selepas dipendekkan
+          Center(
             child: SizedBox(
-              width: 350, 
+              width: size.width * 0.9,
               child: _buildCleanBox(
                 padding: EdgeInsets.zero,
                 child: Row(
                   children: [
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: size.width * 0.04,
+                        vertical: size.height * 0.015,
+                      ),
                       decoration: BoxDecoration(
                         color: Colors.redAccent,
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: Text(status, style: const TextStyle(color: Colors.white)),
+                      child: Text(
+                        status,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: size.width * 0.035,
+                        ),
+                      ),
                     ),
-                    const Expanded( // Ini akan isi baki ruang dalam 280 tadi
+                    Expanded(
                       child: Text(
                         'H202601141050510002',
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontWeight: FontWeight.w700),
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: size.width * 0.04,
+                        ),
                       ),
                     ),
                   ],
@@ -105,58 +123,59 @@ class DetailComplaintsPage extends StatelessWidget {
               ),
             ),
           ),
+
           Expanded(
             child: ListView(
-              padding: const EdgeInsets.all(20),
+              padding: EdgeInsets.all(size.width * 0.05),
               children: [
                 // CONTACT PERSON
-                _buildHeaderLabel("CONTACT PERSON"),
+                _buildHeaderLabel("CONTACT PERSON", size),
                 _buildCleanBox(
                   child: Row(
                     children: [
                       CircleAvatar(
-                        radius: 26,
+                        radius: size.width * 0.07,
                         backgroundColor: Colors.blue.shade50,
                         child: Icon(
                           Icons.person,
                           color: Colors.blue.shade700,
-                          size: 30,
+                          size: size.width * 0.07,
                         ),
                       ),
-                      const SizedBox(width: 15),
+                      SizedBox(width: size.width * 0.035),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               name,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 13,
+                                fontSize: size.width * 0.035,
                               ),
                             ),
-                            const SizedBox(height: 4),
+                            SizedBox(height: spacing * 0.25),
                             Text(
                               department,
                               style: TextStyle(
                                 color: Colors.grey[700],
-                                fontSize: 12,
+                                fontSize: size.width * 0.033,
                               ),
                             ),
-                            const SizedBox(height: 8),
+                            SizedBox(height: spacing * 0.5),
                             Row(
                               children: [
-                                const Icon(
+                                Icon(
                                   Icons.phone_rounded,
-                                  size: 16,
+                                  size: size.width * 0.04,
                                   color: Colors.green,
                                 ),
-                                const SizedBox(width: 6),
+                                SizedBox(width: size.width * 0.015),
                                 Text(
                                   "019-777 7777",
                                   style: TextStyle(
                                     fontWeight: FontWeight.w600,
-                                    fontSize: 13,
+                                    fontSize: size.width * 0.035,
                                     color: Colors.black87,
                                   ),
                                 ),
@@ -168,17 +187,17 @@ class DetailComplaintsPage extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: spacing),
 
                 // TICKET INFORMATION
-                _buildHeaderLabel("TICKET INFORMATION"),
+                _buildHeaderLabel("TICKET INFORMATION", size),
                 _buildCleanBox(
                   padding: EdgeInsets.zero,
                   child: Column(
                     children: [
                       Container(
                         width: double.infinity,
-                        padding: const EdgeInsets.all(15),
+                        padding: EdgeInsets.all(size.width * 0.035),
                         color: Colors.grey[200],
                         child: Column(
                           children: [
@@ -186,35 +205,35 @@ class DetailComplaintsPage extends StatelessWidget {
                               "INTERNET / WIRELESS",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 13,
+                                fontSize: size.width * 0.035,
                                 color: Colors.blueGrey.shade900,
                               ),
                             ),
-                            const SizedBox(height: 4),
-                            const Text(
+                            SizedBox(height: spacing * 0.25),
+                            Text(
                               "START DATE : 15 JAN 2026",
                               style: TextStyle(
-                                fontSize: 12,
+                                fontSize: size.width * 0.032,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
-                            const Text(
+                            Text(
                               "END DATE : 15 JAN 2026",
                               style: TextStyle(
-                                fontSize: 12,
+                                fontSize: size.width * 0.032,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
                           ],
                         ),
                       ),
-                      const Padding(
-                        padding: EdgeInsets.all(18),
+                      Padding(
+                        padding: EdgeInsets.all(size.width * 0.045),
                         child: Text(
                           "Wakil Aset RADIO: Encik Shukhaiman/Puan Azlina Zakaria mohon mengemaskini No.Invois & DO set komputer baharu pada Modul Perolehan (SPB) seterusnya melengkapkan rekod pengguna dan penempatan dan membuat janaan no. aset di Model Aset(SPB).",
                           textAlign: TextAlign.justify,
                           style: TextStyle(
-                            fontSize: 13, // Besarkan dari 11 ke 13
+                            fontSize: size.width * 0.035,
                             height: 1.5,
                             color: Colors.black87,
                           ),
@@ -223,37 +242,37 @@ class DetailComplaintsPage extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: 18),
+                SizedBox(height: spacing * 1.2),
 
                 // LAPTOP SECTION
                 _buildCleanBox(
                   child: Row(
                     children: [
                       Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 14,
-                          vertical: 8,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: size.width * 0.035,
+                          vertical: size.height * 0.012,
                         ),
                         decoration: BoxDecoration(
                           color: const Color(0xFF00AEEF),
                           borderRadius: BorderRadius.circular(6),
                         ),
-                        child: const Text(
+                        child: Text(
                           "LAPTOP",
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
-                            fontSize: 11,
+                            fontSize: size.width * 0.03,
                           ),
                         ),
                       ),
-                      const SizedBox(width: 12),
-                      const Expanded(
+                      SizedBox(width: size.width * 0.03),
+                      Expanded(
                         child: Text(
                           "KKMM/BERNAMA/H/15/241",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 13,
+                            fontSize: size.width * 0.035,
                             color: Colors.black87,
                           ),
                         ),
@@ -262,7 +281,7 @@ class DetailComplaintsPage extends StatelessWidget {
                   ),
                 ),
 
-                const SizedBox(height: 35),
+                SizedBox(height: size.height * 0.045),
 
                 // BUTTON ACKNOWLEDGE
                 ElevatedButton(
@@ -270,18 +289,21 @@ class DetailComplaintsPage extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF00AEEF),
                     foregroundColor: Colors.white,
-                    minimumSize: const Size(double.infinity, 55),
+                    minimumSize: Size(double.infinity, size.height * 0.07),
                     elevation: 2,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15),
                     ),
                   ),
-                  child: const Text(
+                  child: Text(
                     "ACKNOWLEDGE",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: size.width * 0.045,
+                    ),
                   ),
                 ),
-                const SizedBox(height: 25),
+                SizedBox(height: size.height * 0.03),
               ],
             ),
           ),
@@ -294,13 +316,13 @@ class DetailComplaintsPage extends StatelessWidget {
   }
 
   // --- REFINED HELPERS ---
-  Widget _buildHeaderLabel(String text) {
+  Widget _buildHeaderLabel(String text, Size size) {
     return Padding(
-      padding: const EdgeInsets.only(left: 5, bottom: 8),
+      padding: EdgeInsets.only(left: size.width * 0.012, bottom: size.height * 0.01),
       child: Text(
         text,
         style: TextStyle(
-          fontSize: 12,
+          fontSize: size.width * 0.033,
           fontWeight: FontWeight.w900,
           color: Colors.blueGrey.shade700,
           letterSpacing: 0.8,
@@ -329,8 +351,9 @@ class DetailComplaintsPage extends StatelessWidget {
   }
 
   Widget _buildBottomNavigationBar(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 12),
+      padding: EdgeInsets.symmetric(vertical: size.height * 0.015),
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border(top: BorderSide(color: Colors.grey.shade200)),
@@ -342,6 +365,8 @@ class DetailComplaintsPage extends StatelessWidget {
             context,
             Icons.home_outlined,
             "Home",
+            false,
+            size,
             destination: const DashboardPage(),
           ),
           _buildQRItem(context),
@@ -349,6 +374,8 @@ class DetailComplaintsPage extends StatelessWidget {
             context,
             Icons.list_alt_rounded,
             "Options",
+            false,
+            size,
             destination: null,
           ),
         ],
@@ -359,48 +386,73 @@ class DetailComplaintsPage extends StatelessWidget {
   Widget _buildNavItem(
     BuildContext context,
     IconData icon,
-    String label, {
+    String label,
+    bool isActive, 
+    Size size,{
     Widget? destination,
   }) {
-    return InkWell(
+    return GestureDetector(
       onTap: () {
-        if (destination != null) {
+        if (destination != null && !isActive) {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(
-              builder: (context) => DetailComplaintsPage(
-                status: status,
-                name: name,
-                department: department,
-              ),
-            ),
+            MaterialPageRoute(builder: (_) => destination),
           );
         }
       },
-
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 28, color: Colors.grey),
-          Text(label, style: const TextStyle(fontSize: 11, color: Colors.grey)),
+          Icon(
+            icon,
+            size: size.width * 0.07,
+            color: isActive ? const Color(0xFF00AEEF) : Colors.grey,
+          ),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: size.width * 0.035,
+              color: isActive ? const Color(0xFF00AEEF) : Colors.grey,
+              fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
+            ),
+          ),
         ],
       ),
     );
   }
 
   Widget _buildQRItem(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final double radius = size.width * 0.07;
+    final double translationY = -radius * 0.2;
+
     return GestureDetector(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const QRScannerPage()),
-      ),
+      onTap: () async {
+        final String? qrResult = await Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const QRScannerPage()),
+        );
+        if (qrResult != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Hasil Scan: $qrResult')),
+          );
+        }
+      },
       child: Container(
-        padding: const EdgeInsets.all(12),
-        decoration: const BoxDecoration(
+        transform: Matrix4.translationValues(0, translationY, 0),
+        padding: EdgeInsets.all(radius * 0.35),
+        decoration: BoxDecoration(
           color: Colors.black,
           shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.3),
+              blurRadius: radius * 0.3,
+              offset: Offset(0, radius * 0.2),
+            ),
+          ],
         ),
-        child: const Icon(Icons.qr_code_scanner, color: Colors.white, size: 30),
+        child: Icon(Icons.qr_code_scanner, color: Colors.white, size: radius * 0.75),
       ),
     );
   }

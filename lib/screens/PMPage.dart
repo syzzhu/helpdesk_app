@@ -178,6 +178,7 @@ class _PMState extends State<PMPage> {
                   Icons.home_outlined,
                   "Home",
                   false,
+                  size,
                   destination: const DashboardPage(),
                 ),
 
@@ -188,6 +189,7 @@ class _PMState extends State<PMPage> {
                   Icons.list_alt_rounded,
                   "Options",
                   false,
+                  size,
                   destination: null,
                 ),
               ],
@@ -376,15 +378,19 @@ class _PMState extends State<PMPage> {
     BuildContext context,
     IconData icon,
     String label,
-    bool isActive, {
+    bool isActive, 
+    Size size,{
     Widget? destination,
   }) {
+    //final double iconSize = size.width * 0.07; //responsive icon size
+    //final double fontSize = size.width * 0.03; //responsive font size
+
     return GestureDetector(
       onTap: () {
         if (destination != null && !isActive) {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => destination),
+            MaterialPageRoute(builder: (_) => destination),
           );
         }
       },
@@ -393,13 +399,13 @@ class _PMState extends State<PMPage> {
         children: [
           Icon(
             icon,
-            size: 30,
+            size: size.width * 0.07, // responsive ikut screen
             color: isActive ? const Color(0xFF00AEEF) : Colors.grey,
           ),
           Text(
             label,
             style: TextStyle(
-              fontSize: 10,
+              fontSize: size.width * 0.035, // responsive
               color: isActive ? const Color(0xFF00AEEF) : Colors.grey,
               fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
             ),
@@ -410,16 +416,22 @@ class _PMState extends State<PMPage> {
   }
 
   Widget _buildQRItem(BuildContext context) {
-    // Tambah context kat sini
+    // get the size of the screen
+    final size = MediaQuery.of(context).size;
+
+    // Base size for circle and icon
+    final double radius = size.width * 0.07; //responsive size
+    //final double iconSize = radius * 0.8; 
+    //final double padding = radius * 0.5;
+    final double translationY = -radius * 0.2; //transform radius
+
     return GestureDetector(
       onTap: () async {
-        // Buka kamera dan tunggu result
         final String? qrResult = await Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const QRScannerPage()),
+          MaterialPageRoute(builder: (_) => const QRScannerPage()),
         );
 
-        // Alert result
         if (qrResult != null) {
           ScaffoldMessenger.of(
             context,
@@ -427,20 +439,20 @@ class _PMState extends State<PMPage> {
         }
       },
       child: Container(
-        transform: Matrix4.translationValues(0, -8, 0),
-        padding: const EdgeInsets.all(12),
+        transform: Matrix4.translationValues(0, translationY, 0),
+        padding: EdgeInsets.all(radius * 0.35),
         decoration: BoxDecoration(
           color: Colors.black,
           shape: BoxShape.circle,
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.3),
-              blurRadius: 10,
-              offset: Offset(0, 5),
+              blurRadius: radius * 0.3,
+              offset: Offset(0, radius * 0.2),
             ),
           ],
         ),
-        child: const Icon(Icons.qr_code_scanner, color: Colors.white, size: 32),
+        child: Icon(Icons.qr_code_scanner, color: Colors.white, size: radius * 0.75),
       ),
     );
   }
