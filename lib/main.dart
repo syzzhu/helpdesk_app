@@ -1,7 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:helpdesk_app/screens/PMPage.dart';
 import 'package:helpdesk_app/screens/comment_page.dart';
+import 'package:helpdesk_app/screens/complaints.dart';
 import 'package:helpdesk_app/screens/dashboard_page.dart';
+import 'package:helpdesk_app/screens/detailComplaintsPage.dart';
 import 'package:helpdesk_app/screens/operation.dart';
 import 'package:device_preview/device_preview.dart';
 import 'dart:ui';
@@ -63,8 +66,9 @@ class MyApp extends StatelessWidget {
         //colorScheme: .fromSeed(seedColor: Colors.deepPurple),
         
       ),
-      home: const OperationPage(),
+      //home: const DetailComplaintsPage(status: '', name: '', department: '',), //initial route
       //home: const DashboardPage(),
+      home: const PMPage(),
     );
   }
 }
