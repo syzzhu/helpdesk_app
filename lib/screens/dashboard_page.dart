@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:helpdesk_app/screens/PMPage.dart';
 import 'package:helpdesk_app/screens/complaints.dart';
 import 'qr_scanner_page.dart';
-import 'dashboard_page.dart'; // Kalau nak navigate balik ke dashboard
+import 'dashboard_page.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'operation.dart';
 
@@ -65,8 +65,11 @@ class DashboardPage extends StatelessWidget {
                         CircleAvatar(
                           radius: avatarRadius,
                           backgroundColor: Colors.white,
-                          child: Icon(Icons.person,
-                              color: Colors.black, size: avatarRadius),
+                          child: Icon(
+                            Icons.person,
+                            color: Colors.black,
+                            size: avatarRadius,
+                          ),
                         ),
                         SizedBox(width: size.width * 0.03),
                         Text(
@@ -100,7 +103,9 @@ class DashboardPage extends StatelessWidget {
                 children: [
                   // FLOATING CARD (warna sama macam OperationPage)
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: size.width * 0.05,
+                    ),
                     child: Container(
                       width: double.infinity,
                       padding: EdgeInsets.all(size.width * 0.04),
@@ -112,7 +117,7 @@ class DashboardPage extends StatelessWidget {
                             color: Colors.black.withOpacity(0.15),
                             blurRadius: 10,
                             offset: const Offset(0, 5),
-                          )
+                          ),
                         ],
                       ),
                       child: Text(
@@ -129,7 +134,9 @@ class DashboardPage extends StatelessWidget {
 
                   // TASK SECTION
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: size.width * 0.05,
+                    ),
                     child: Container(
                       width: double.infinity,
                       padding: EdgeInsets.all(size.width * 0.05),
@@ -157,16 +164,43 @@ class DashboardPage extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              _taskItem(Icons.report, 'Complaints', 2, Colors.red, avatarRadius, () {
+                              _taskItem(
+                                Icons.report,
+                                'Complaints',
+                                2,
+                                Colors.red,
+                                avatarRadius,
+                                () {
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => ComplaintsPage()));
-                                }),
-                              _taskItem(Icons.print, 'Operation', 0, Colors.blue, avatarRadius, () {
+                                },
+                              ),
+                              _taskItem(
+                                Icons.print,
+                                'Operation',
+                                0,
+                                Colors.blue,
+                                avatarRadius,
+                                () {
                                   // Navigate ke OperationPage
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => const OperationPage()));
-                                }),
-                              _taskItem(Icons.settings, 'PM', 6, Colors.green, avatarRadius, () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const OperationPage(),
+                                    ),
+                                  );
+                                },
+                              ),
+                              _taskItem(
+                                Icons.settings,
+                                'PM',
+                                6,
+                                Colors.green,
+                                avatarRadius,
+                                () {
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => PMPage()));
-                                }),
+                                },
+                              ),
                             ],
                           ),
                         ],
@@ -177,7 +211,9 @@ class DashboardPage extends StatelessWidget {
 
                   // SHIFT SCHEDULE
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: size.width * 0.05,
+                    ),
                     child: Container(
                       width: double.infinity,
                       padding: EdgeInsets.all(size.width * 0.05),
@@ -193,7 +229,8 @@ class DashboardPage extends StatelessWidget {
                         ],
                       ),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center, // center text
+                        crossAxisAlignment:
+                            CrossAxisAlignment.center, // center text
                         children: [
                           Text(
                             'SHIFT SCHEDULE',
@@ -211,18 +248,48 @@ class DashboardPage extends StatelessWidget {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                _shiftCard('14 Jan', 'Morning', Colors.red, shiftRadius, size),
+                                _shiftCard(
+                                  '14 Jan',
+                                  'Morning',
+                                  Colors.red,
+                                  shiftRadius,
+                                  size,
+                                ),
                                 const SizedBox(width: 12),
-                                _shiftCard('15 Jan', 'Morning', Colors.red, shiftRadius, size),
+                                _shiftCard(
+                                  '15 Jan',
+                                  'Morning',
+                                  Colors.red,
+                                  shiftRadius,
+                                  size,
+                                ),
                                 const SizedBox(width: 12),
-                                _shiftCard('16 Jan', 'Afternoon', Colors.green, shiftRadius, size),
+                                _shiftCard(
+                                  '16 Jan',
+                                  'Afternoon',
+                                  Colors.green,
+                                  shiftRadius,
+                                  size,
+                                ),
                                 const SizedBox(width: 12),
-                                _shiftCard('17 Jan', 'Evening', Colors.orange, shiftRadius, size),
+                                _shiftCard(
+                                  '17 Jan',
+                                  'Evening',
+                                  Colors.orange,
+                                  shiftRadius,
+                                  size,
+                                ),
                                 const SizedBox(width: 12),
-                                _shiftCard('18 Jan', 'Night', Colors.purple, shiftRadius, size),
+                                _shiftCard(
+                                  '18 Jan',
+                                  'Night',
+                                  Colors.purple,
+                                  shiftRadius,
+                                  size,
+                                ),
                               ],
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),
@@ -251,7 +318,12 @@ class DashboardPage extends StatelessWidget {
               children: [
                 _buildNavItem(context, Icons.home_outlined, "Home", false),
                 _buildQRItem(context),
-                _buildNavItem(context, Icons.list_alt_rounded, "Options", false),
+                _buildNavItem(
+                  context,
+                  Icons.list_alt_rounded,
+                  "Options",
+                  false,
+                ),
               ],
             ),
           ),
@@ -261,43 +333,69 @@ class DashboardPage extends StatelessWidget {
   }
 
   // ---------------- HELPER FUNCTIONS ----------------
-  Widget _taskItem(IconData icon, String title, int badge, Color color, double radius, VoidCallback onTap) {
-  return InkWell(
-    onTap: onTap, // Fungsi ni akan dipanggil bila user tekan
-    borderRadius: BorderRadius.circular(10), // Supaya kesan tekan tu tak petak sangat
-    child: Padding(
-      padding: const EdgeInsets.all(8.0), // Tambah sikit padding supaya senang nak tekan
-      child: Column(
-        children: [
-          Stack(
-            clipBehavior: Clip.none,
-            children: [
-              CircleAvatar(
-                radius: radius,
-                backgroundColor: color,
-                child: Icon(icon, color: Colors.white, size: radius),
-              ),
-              if (badge > 0)
-                Positioned(
-                  top: -5,
-                  right: -5,
-                  child: Container(
-                    padding: const EdgeInsets.all(4),
-                    decoration: BoxDecoration(color: color, shape: BoxShape.circle),
-                    child: Text('$badge', style: const TextStyle(color: Colors.white, fontSize: 12)),
-                  ),
+  Widget _taskItem(
+    IconData icon,
+    String title,
+    int badge,
+    Color color,
+    double radius,
+    VoidCallback onTap,
+  ) {
+    return InkWell(
+      onTap: onTap, // Fungsi ni akan dipanggil bila user tekan
+      borderRadius: BorderRadius.circular(
+        10,
+      ), // Supaya kesan tekan tu tak petak sangat
+      child: Padding(
+        padding: const EdgeInsets.all(
+          8.0,
+        ), // Tambah sikit padding supaya senang nak tekan
+        child: Column(
+          children: [
+            Stack(
+              clipBehavior: Clip.none,
+              children: [
+                CircleAvatar(
+                  radius: radius,
+                  backgroundColor: color,
+                  child: Icon(icon, color: Colors.white, size: radius),
                 ),
-            ],
-          ),
-          SizedBox(height: radius * 0.3),
-          Text(title),
-        ],
+                if (badge > 0)
+                  Positioned(
+                    top: -5,
+                    right: -5,
+                    child: Container(
+                      padding: const EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        color: color,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Text(
+                        '$badge',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+            SizedBox(height: radius * 0.3),
+            Text(title),
+          ],
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
 
-  Widget _shiftCard(String date, String shift, Color color, double radius, Size size) {
+  Widget _shiftCard(
+    String date,
+    String shift,
+    Color color,
+    double radius,
+    Size size,
+  ) {
     return Container(
       width: size.width * 0.28,
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
@@ -308,9 +406,12 @@ class DashboardPage extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(date, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
+          Text(
+            date,
+            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+          ),
           const SizedBox(height: 10),
-          
+
           Container(
             constraints: const BoxConstraints(minWidth: 70),
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -327,23 +428,36 @@ class DashboardPage extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-          )
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildNavItem(BuildContext context, IconData icon, String label, bool isActive, {Widget? destination}) {
+  Widget _buildNavItem(
+    BuildContext context,
+    IconData icon,
+    String label,
+    bool isActive, {
+    Widget? destination,
+  }) {
     return GestureDetector(
       onTap: () {
         if (destination != null && !isActive) {
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => destination));
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (_) => destination),
+          );
         }
       },
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 30, color: isActive ? const Color(0xFF00AEEF) : Colors.grey),
+          Icon(
+            icon,
+            size: 30,
+            color: isActive ? const Color(0xFF00AEEF) : Colors.grey,
+          ),
           Text(
             label,
             style: TextStyle(
@@ -366,7 +480,9 @@ class DashboardPage extends StatelessWidget {
         );
 
         if (qrResult != null) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Hasil Scan: $qrResult')));
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text('Hasil Scan: $qrResult')));
         }
       },
       child: Container(
@@ -375,11 +491,16 @@ class DashboardPage extends StatelessWidget {
         decoration: const BoxDecoration(
           color: Colors.black,
           shape: BoxShape.circle,
-          boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 10, offset: Offset(0, 4))],
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black26,
+              blurRadius: 10,
+              offset: Offset(0, 4),
+            ),
+          ],
         ),
         child: const Icon(Icons.qr_code_scanner, color: Colors.white, size: 30),
       ),
     );
   }
 }
-

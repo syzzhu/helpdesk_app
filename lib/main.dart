@@ -4,14 +4,8 @@ import 'package:helpdesk_app/screens/PMPage.dart';
 import 'package:helpdesk_app/screens/comment_page.dart';
 import 'package:helpdesk_app/screens/complaints.dart';
 import 'package:helpdesk_app/screens/dashboard_page.dart';
-import 'package:helpdesk_app/screens/detailComplaintsPage.dart';
-import 'package:helpdesk_app/screens/operation.dart';
 import 'package:device_preview/device_preview.dart';
 import 'dart:ui';
-//import floder screen and login_page file
-//import folder screen and forgot_page file
-//import folder screen and comment_page file
-//import folder screen and operation file
 
 void main() {
   runApp(DevicePreview(builder: (context) => MyApp(), enabled: !kReleaseMode));
@@ -25,7 +19,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       useInheritedMediaQuery: true, // DevicePreview yang lebih stabil
-      locale: DevicePreview.locale(context), 
+      locale: DevicePreview.locale(context),
       builder: DevicePreview.appBuilder,
       debugShowCheckedModeBanner: false,
       title: 'HelpDesk App',
@@ -48,6 +42,7 @@ class MyApp extends StatelessWidget {
       // },
       theme: ThemeData(
         primaryColor: const Color(0xFF00AEEF),
+
         // This is the theme of your application.
         //
         // TRY THIS: Try running your application with "flutter run". You'll see
@@ -64,7 +59,6 @@ class MyApp extends StatelessWidget {
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
         //colorScheme: .fromSeed(seedColor: Colors.deepPurple),
-        
       ),
       //home: const DetailComplaintsPage(status: '', name: '', department: '',), //initial route
       home: const DashboardPage(),

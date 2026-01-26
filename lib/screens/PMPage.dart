@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'detail_page.dart';
+import 'detailComplaintsPage.dart';
 import 'dashboard_page.dart'; // Pastikan import dashboard ada
 import 'qr_scanner_page.dart';
 
@@ -27,7 +27,8 @@ class _PMState extends State<PMPage> {
         'type': 'INTERNET / WIRELESS',
         'status': 'NEW',
         'desc': 'Can’t access internet',
-        'desc1': 'Preventive Maintenance (COMPUTER SET)- FATINLYANA \nYASMIN BINTI FADZLI YUSOF',
+        'desc1':
+            'Preventive Maintenance (COMPUTER SET)- FATINLYANA \nYASMIN BINTI FADZLI YUSOF',
         'color': Colors.redAccent,
       },
       {
@@ -70,11 +71,7 @@ class _PMState extends State<PMPage> {
                 const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(
-                      Icons.settings_rounded,
-                      size: 42,
-                      color: Colors.white,
-                    ),
+                    Icon(Icons.settings_rounded, size: 42, color: Colors.white),
                     SizedBox(width: 12),
                     Text(
                       'Preventive \nMaintenance',
@@ -218,8 +215,11 @@ class _PMState extends State<PMPage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) =>
-                DetailPage(status: status, name: name, department: department),
+            builder: (context) => DetailComplaintsPage(
+              status: status,
+              name: name,
+              department: department,
+            ),
           ),
         );
       },
@@ -298,7 +298,10 @@ class _PMState extends State<PMPage> {
                   // Container pertama untuk description
                   Container(
                     width: double.infinity,
-                    padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 14,
+                      horizontal: 12,
+                    ),
                     decoration: BoxDecoration(
                       color: Colors.grey[100], // warna container pertama
                       borderRadius: BorderRadius.circular(12),
@@ -318,11 +321,13 @@ class _PMState extends State<PMPage> {
                   ),
 
                   const SizedBox(height: 8), // jarak antara container
-
                   // Container kedua untuk desc1
                   Container(
                     width: double.infinity,
-                    padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 14,
+                      horizontal: 12,
+                    ),
                     decoration: BoxDecoration(
                       color: Colors.grey[100], // warna container kedua
                       borderRadius: BorderRadius.circular(12),
@@ -343,7 +348,6 @@ class _PMState extends State<PMPage> {
                 ],
               ),
             ),
-
           ],
         ),
       ),

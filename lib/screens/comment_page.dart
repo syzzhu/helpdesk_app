@@ -1,188 +1,308 @@
 import 'package:flutter/material.dart';
+import 'qr_scanner_page.dart';
+import 'dashboard_page.dart';
 
-class CommentPage extends StatefulWidget {
-  const CommentPage({super.key});
+class CommentPage extends StatelessWidget {
+  final String status;
 
-  @override
-  State<CommentPage> createState() => _CommentPageState();
-}
+  const CommentPage({super.key, required this.status});
 
-class _CommentPageState extends State<CommentPage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size; // dapatkan saiz skrin
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(0xFFF5F7F9),
       body: Column(
         children: [
-          // --- HEADER ---
+          // --- HEADER SECTION ---
           Container(
-            padding: const EdgeInsets.only(
-              top: 60,
-              left: 20,
-              right: 20,
-              bottom: 20,
+            width: double.infinity,
+            padding: const EdgeInsets.only(top: 50, bottom: 25),
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Color(0xFF00AEEF), Color(0xFF0089BB)],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(30),
+                bottomRight: Radius.circular(30),
+              ),
             ),
-            decoration: const BoxDecoration(color: Color(0xFF00AEEF)),
-            child: Stack(
-              alignment: Alignment.center,
+            child: Column(
               children: [
-                Row(
-                  children: [
-                    IconButton(
-                      icon: const Icon(
-                        Icons.arrow_back,
-                        color: Colors.white,
-                        size: 30,
-                      ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: IconButton(
+                    icon: const Icon(
+                      Icons.arrow_back_ios_new,
+                      color: Colors.white,
+                      size: 25,
                     ),
-                    const SizedBox(width: 10),
-                    const Icon(
-                      Icons.chat_bubble,
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ),
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.chat_bubble_rounded,
+                      color: Colors.white,
                       size: 30,
-                      color: Colors.black,
+                    ),
+                    SizedBox(width: 12),
+                    Text(
+                      'Comments',
+                      style: TextStyle(
+                        fontSize: 26,
+                        fontWeight: FontWeight.w800,
+                        color: Colors.white,
+                      ),
                     ),
                   ],
                 ),
-
-                // TEXT COMMENTS CENTER
-                const SizedBox(width: 10),
-                const Text(
-                  'Comments',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
               ],
             ),
           ),
 
-          // --- TICKET ID SECTION ---
-          Container(
-            color: Colors.grey[300],
-            margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-            child: Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 8,
+          const SizedBox(height: 20),
+
+          // --- TICKET ID BAR ---
+          Center(
+            child: Container(
+              width: 350,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
                   ),
-                  color: Colors.red,
-                  child: const Text(
-                    'New',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 18,
+                        vertical: 12,
+                      ),
+                      decoration: BoxDecoration(
+                        color: status.toUpperCase() == 'NEW'
+                            ? Colors.redAccent
+                            : (status.toUpperCase() == 'PENDING'
+                                  ? const Color.fromARGB(255, 243, 195, 72)
+                                  : Colors.grey),
+                      ),
+                      child: Text(
+                        status.toUpperCase(),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
-                  ),
-                ), // Status Box
-                const Expanded(
-                  child: Text(
-                    'H202601141050510002',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontWeight: FontWeight.w500),
-                  ),
+                    const Expanded(
+                      child: Text(
+                        'L202601141050510002',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          color: Colors.black87,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
-
-          // --- LIST OF COMMENTS (EXPANDABLE) ---
+          // --- LIST OF COMMENTS ---
           Expanded(
             child: ListView(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
+              padding: const EdgeInsets.all(20),
               children: [
-                Card(
-                  elevation: 3,
-                  margin: const EdgeInsets.only(bottom: 10),
-                  child: ExpansionTile(
-                    // Bahagian yang sentiasa nampak
-                    leading: const CircleAvatar(
-                      backgroundColor: Colors.black,
-                      child: Icon(Icons.person, color: Colors.white),
-                    ),
-                    title: const Text(
-                      'NORIZAN BINTI MOHD YUSOF',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 13,
-                      ),
-                    ),
-                    subtitle: const Text(
-                      'Tap to read more...', // Hint untuk user
-                      style: TextStyle(fontSize: 11),
-                    ),
-                    trailing: const Text('14 Jan'),
-
-                    // Bahagian yang akan keluar bila ditekan (Besar ke bawah)
-                    children: const [
-                      Padding(
-                        padding: EdgeInsets.all(15.0),
-                        child: Text(
-                          'Please Check the ticket. Saya dah hantar laporan tapi belum ada respon.Terima kasih!!',
-                          style: TextStyle(fontSize: 14, height: 1.4),
-                        ),
-                      ),
-                    ],
-                  ),
+                _buildCommentBubble(
+                  name: "NORIZAN BINTI MOHD YUSOF",
+                  date: "14 Jan",
+                  time: "10:52 AM",
+                  comment:
+                      "Please Check the ticket. Saya dah hantar laporan tapi belum ada respon. Terima kasih!!",
+                  isMe: false,
                 ),
-
-                // Contoh Card 2
-                Card(
-                  elevation: 3,
-                  margin: const EdgeInsets.only(bottom: 10),
-                  child: ExpansionTile(
-                    leading: const CircleAvatar(
-                      backgroundColor: Colors.blueGrey,
-                      child: Icon(Icons.person, color: Colors.white),
-                    ),
-                    title: const Text('System Admin'),
-                    subtitle: const Text(
-                      'Tap to view update',
-                      style: TextStyle(fontSize: 11),
-                    ),
-                    children: const [
-                      Padding(
-                        padding: EdgeInsets.all(15.0),
-                        child: Text(
-                          'Ticket has been assigned to technician. Status: In Progress.',
-                        ),
-                      ),
-                    ],
-                  ),
+                _buildCommentBubble(
+                  name: "System Admin",
+                  date: "14 Jan",
+                  time: "12:52 PM",
+                  comment:
+                      "Ticket has been assigned to technician. Status: In Progress.",
+                  isMe: true,
                 ),
               ],
             ),
           ),
 
-          // --- NAVIGATION BAR BOTTOM ---
+          // --- BOTTOM NAV BAR ---
+          _buildBottomNavigationBar(context),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCommentBubble({
+    required String name,
+    required String date,
+    required String time,
+    required String comment,
+    required bool isMe,
+  }) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(15),
+        border: Border.all(color: Colors.grey.withOpacity(0.1)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.02),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Bahagian Atas (Header Komen)
           Container(
-            padding: const EdgeInsets.symmetric(vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
             decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border(top: BorderSide(color: Colors.grey[300]!)),
+              color: isMe ? Colors.blueGrey.shade50 : Colors.blue.shade50,
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(15),
+                topRight: Radius.circular(15),
+              ),
             ),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                const Icon(Icons.home, size: 50, color: Colors.grey),
-                const Icon(
-                  Icons.qr_code_scanner,
-                  size: 55,
-                  color: Colors.black,
-                ), // Ikon QR
-                const Icon(Icons.list_alt, size: 50, color: Colors.grey),
+                CircleAvatar(
+                  radius: 14,
+                  backgroundColor: isMe
+                      ? Colors.blueGrey
+                      : const Color(0xFF00AEEF),
+                  child: Icon(
+                    isMe ? Icons.admin_panel_settings : Icons.person,
+                    size: 16,
+                    color: Colors.white,
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Text(
+                    name,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                      color: isMe
+                          ? Colors.blueGrey.shade900
+                          : Colors.blue.shade900,
+                    ),
+                  ),
+                ),
+                Text(
+                  date,
+                  style: TextStyle(fontSize: 11, color: Colors.grey.shade600),
+                ),
               ],
+            ),
+          ),
+
+          // Bahagian Isi Komen
+          Padding(
+            padding: const EdgeInsets.all(15),
+            child: Text(
+              comment,
+              style: const TextStyle(
+                fontSize: 13,
+                height: 1.5,
+                color: Colors.black87,
+              ),
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildBottomNavigationBar(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(top: BorderSide(color: Colors.grey.shade200)),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          _buildNavItem(
+            context,
+            Icons.home_outlined,
+            "Home",
+            destination: const DashboardPage(),
+          ),
+          _buildQRItem(context),
+          _buildNavItem(
+            context,
+            Icons.list_alt_rounded,
+            "Options",
+            destination: null,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNavItem(
+    BuildContext context,
+    IconData icon,
+    String label, {
+    Widget? destination,
+  }) {
+    return InkWell(
+      onTap: () {
+        if (destination != null)
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => destination),
+          );
+      },
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 28, color: Colors.grey),
+          Text(label, style: const TextStyle(fontSize: 11, color: Colors.grey)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildQRItem(BuildContext context) {
+    return GestureDetector(
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const QRScannerPage()),
+      ),
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: const BoxDecoration(
+          color: Colors.black,
+          shape: BoxShape.circle,
+        ),
+        child: const Icon(Icons.qr_code_scanner, color: Colors.white, size: 30),
       ),
     );
   }

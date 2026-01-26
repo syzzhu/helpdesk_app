@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'detail_page.dart';
+import 'detailComplaintsPage.dart';
 import 'dashboard_page.dart'; // Pastikan import dashboard ada
 import 'qr_scanner_page.dart';
 
@@ -26,8 +26,7 @@ class _ComplaintsState extends State<ComplaintsPage> {
         'dept': '15th Floor - BERNAMA RADIO',
         'type': 'INTERNET / WIRELESS',
         'status': 'NEW',
-        'desc':
-            'Can’t access internet',
+        'desc': 'Can’t access internet',
         'color': Colors.redAccent,
       },
       {
@@ -35,8 +34,7 @@ class _ComplaintsState extends State<ComplaintsPage> {
         'dept': '15th Floor - BERNAMA RADIO',
         'type': 'NOTEBOOK/LAPTOP/IPAD/MACBOOK',
         'status': 'PENDING',
-        'desc':
-            'PC Hang',
+        'desc': 'PC Hang',
         'color': Colors.orange,
       },
     ];
@@ -70,11 +68,7 @@ class _ComplaintsState extends State<ComplaintsPage> {
                 const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(
-                      Icons.report,
-                      size: 42,
-                      color: Colors.white,
-                    ),
+                    Icon(Icons.report, size: 42, color: Colors.white),
                     SizedBox(width: 12),
                     Text(
                       'Complaints',
@@ -215,8 +209,11 @@ class _ComplaintsState extends State<ComplaintsPage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) =>
-                DetailPage(status: status, name: name, department: department),
+            builder: (context) => DetailComplaintsPage(
+              status: status,
+              name: name,
+              department: department,
+            ),
           ),
         );
       },

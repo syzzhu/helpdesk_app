@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'detail_page.dart';
+import 'detail_operation.dart';
 import 'dashboard_page.dart'; // Pastikan import dashboard ada
 import 'qr_scanner_page.dart';
 
