@@ -46,6 +46,7 @@ class _PMState extends State<PMPage> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.grey[100],
       body: Column(
