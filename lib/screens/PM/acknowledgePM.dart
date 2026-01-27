@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'qr_scanner_page.dart';
+import '../qr_scanner_page.dart';
 import 'PMPage.dart';
-import 'dashboard_page.dart';
-import 'comment_page.dart';
+import '../dashboard_page.dart';
+import '../comment_page.dart';
 
 class AcknowledgePMPage extends StatefulWidget {
   final String status;

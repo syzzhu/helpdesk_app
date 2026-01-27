@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'detailComplaintsPage.dart';
-import 'dashboard_page.dart'; // Pastikan import dashboard ada
-import 'qr_scanner_page.dart';
+import '../dashboard_page.dart'; // Pastikan import dashboard ada
+import '../qr_scanner_page.dart';
 
 class ComplaintsPage extends StatefulWidget {
   const ComplaintsPage({super.key});
@@ -337,8 +337,8 @@ class _ComplaintsState extends State<ComplaintsPage> {
     BuildContext context,
     IconData icon,
     String label,
-    bool isActive, 
-    Size size,{
+    bool isActive,
+    Size size, {
     Widget? destination,
   }) {
     //final double iconSize = size.width * 0.07; //responsive icon size
@@ -380,7 +380,7 @@ class _ComplaintsState extends State<ComplaintsPage> {
 
     // Base size for circle and icon
     final double radius = size.width * 0.07; //responsive size
-    //final double iconSize = radius * 0.8; 
+    //final double iconSize = radius * 0.8;
     //final double padding = radius * 0.5;
     final double translationY = -radius * 0.2; //transform radius
 
@@ -411,7 +411,11 @@ class _ComplaintsState extends State<ComplaintsPage> {
             ),
           ],
         ),
-        child: Icon(Icons.qr_code_scanner, color: Colors.white, size: radius * 0.75),
+        child: Icon(
+          Icons.qr_code_scanner,
+          color: Colors.white,
+          size: radius * 0.75,
+        ),
       ),
     );
   }
