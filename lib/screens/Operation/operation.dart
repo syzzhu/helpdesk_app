@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:helpdesk_app/screens/acknowlegeComplaints.dart';
+import 'package:helpdesk_app/screens/Complaint/acknowlegeComplaints.dart';
 //import 'detail_operation.dart';
-import 'dashboard_page.dart';
-import 'qr_scanner_page.dart';
+import '../dashboard_page.dart';
+import '../qr_scanner_page.dart';
 
 class OperationPage extends StatefulWidget {
   const OperationPage({super.key});
@@ -219,8 +219,11 @@ class _OperationPageState extends State<OperationPage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) =>
-                Acknowlegecomplaints(status: status, name: name, department: department),
+            builder: (context) => Acknowlegecomplaints(
+              status: status,
+              name: name,
+              department: department,
+            ),
           ),
         );
       },
@@ -316,7 +319,7 @@ class _OperationPageState extends State<OperationPage> {
 
   Widget _buildChip(String label, Color bg, Color text) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 19, vertical: 13),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
         color: bg,
         borderRadius: BorderRadius.circular(10),

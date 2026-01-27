@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'qr_scanner_page.dart';
 import 'dashboard_page.dart';
-import 'operation.dart';
-import 'comment_page.dart';
+import 'acknowledgeOperation.dart';
 
-class AcknowledgeoperationPage extends StatelessWidget {
+class DetailComplaintsPage extends StatelessWidget {
   final String status;
   final String name;
   final String department;
 
-  const AcknowledgeoperationPage({
+  const DetailComplaintsPage({
     super.key,
     required this.status,
     required this.name,
@@ -18,6 +17,7 @@ class AcknowledgeoperationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size; // dapatkan saiz skrin
     return Scaffold(
       backgroundColor: const Color(0xFFF8FAFC),
       body: Column(
@@ -50,13 +50,17 @@ class AcknowledgeoperationPage extends StatelessWidget {
                     onPressed: () => Navigator.pop(context),
                   ),
                 ),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.article_rounded, color: Colors.white, size: 32),
-                    SizedBox(width: 12),
-                    Text(
-                      'Acknowledge',
+                    const Icon(
+                      Icons.article_rounded,
+                      color: Colors.white,
+                      size: 32,
+                    ),
+                    const SizedBox(width: 12),
+                    const Text(
+                      'Detail',
                       style: TextStyle(
                         fontSize: 26,
                         fontWeight: FontWeight.w800,
@@ -70,7 +74,7 @@ class AcknowledgeoperationPage extends StatelessWidget {
           ),
           const SizedBox(height: 20),
 
-          // --- TICKET ID BAR ---
+          // --- TICKET ID BAR (Logik Warna Ikut Status) ---
           Center(
             child: Container(
               width: 350,
@@ -95,6 +99,7 @@ class AcknowledgeoperationPage extends StatelessWidget {
                         vertical: 12,
                       ),
                       decoration: BoxDecoration(
+                        // Logik warna: NEW = Merah, PENDING = Kuning, Lain-lain = Kelabu
                         color: status.toUpperCase() == 'NEW'
                             ? Colors.redAccent
                             : (status.toUpperCase() == 'PENDING'
@@ -109,11 +114,11 @@ class AcknowledgeoperationPage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const Expanded(
+                    Expanded(
                       child: Text(
                         'L202601141050510002',
                         textAlign: TextAlign.center,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontWeight: FontWeight.w700,
                           color: Colors.black87,
                         ),
@@ -124,12 +129,12 @@ class AcknowledgeoperationPage extends StatelessWidget {
               ),
             ),
           ),
-
           Expanded(
             child: ListView(
               padding: const EdgeInsets.all(20),
               children: [
                 _buildModernLabel("CONTACT PERSON"),
+
                 _buildCleanBox(
                   child: Row(
                     children: [
@@ -163,15 +168,15 @@ class AcknowledgeoperationPage extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(height: 8),
-                            const Row(
+                            Row(
                               children: [
-                                Icon(
+                                const Icon(
                                   Icons.phone_rounded,
                                   size: 16,
                                   color: Colors.green,
                                 ),
-                                SizedBox(width: 6),
-                                Text(
+                                const SizedBox(width: 6),
+                                const Text(
                                   "019-777 7777",
                                   style: TextStyle(
                                     fontWeight: FontWeight.w600,
@@ -187,8 +192,8 @@ class AcknowledgeoperationPage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 20),
-
                 _buildModernLabel("TICKET INFORMATION"),
+
                 _buildCleanBox(
                   padding: EdgeInsets.zero,
                   child: Column(
@@ -222,7 +227,7 @@ class AcknowledgeoperationPage extends StatelessWidget {
                       const Padding(
                         padding: EdgeInsets.all(18),
                         child: Text(
-                          "Wakil Aset RADIO: Encik Shukhaiman/Puan Azlina Zakaria mohon mengemaskini No.Invois & DO set komputer baharu...",
+                          "Wakil Aset RADIO: Encik Shukhaiman/Puan Azlina Zakaria mohon mengemaskini No.Invois & DO set komputer baharu pada Modul Perolehan (SPB) seterusnya melengkapkan rekod pengguna dan penempatan dan membuat janaan no. aset di Model Aset(SPB).",
                           textAlign: TextAlign.justify,
                           style: TextStyle(
                             fontSize: 13,
@@ -236,6 +241,7 @@ class AcknowledgeoperationPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 18),
 
+                // LAPTOP SECTION
                 _buildCleanBox(
                   child: Row(
                     children: [
@@ -270,41 +276,6 @@ class AcknowledgeoperationPage extends StatelessWidget {
                     ],
                   ),
                 ),
-
-                const SizedBox(height: 20),
-                _buildModernLabel("TECHNICAL PERSON"),
-                _buildCleanBox(
-                  color: Colors.white,
-                  padding: const EdgeInsets.all(12),
-                  child: Column(
-                    children: [
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    CommentPage(status: status),
-                              ),
-                            );
-                          },
-                          child: const Icon(
-                            Icons.chat_bubble_outline_rounded,
-                            color: Colors.black,
-                            size: 26,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      _buildTechnicalRow("NEW", "SHARIFFUDDIN BIN ALI BASHA"),
-                      const SizedBox(height: 10),
-                      _buildTechnicalRow("NEW", "MOHD NAZRIN BIN ABU HASSAN"),
-                    ],
-                  ),
-                ),
-
                 const SizedBox(height: 35),
 
                 ElevatedButton(
@@ -312,7 +283,11 @@ class AcknowledgeoperationPage extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const OperationPage(),
+                        builder: (context) => AcknowledgeoperationPage(
+                          status: status,
+                          name: name,
+                          department: department,
+                        ),
                       ),
                     );
                   },
@@ -325,7 +300,7 @@ class AcknowledgeoperationPage extends StatelessWidget {
                     ),
                   ),
                   child: const Text(
-                    "SAVE ACKNOWLEDGE",
+                    "ACKNOWLEDGE",
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                 ),
@@ -336,51 +311,6 @@ class AcknowledgeoperationPage extends StatelessWidget {
           _buildBottomNavigationBar(context),
         ],
       ),
-    );
-  }
-
-  // --- HELPER WIDGETS ---
-
-  Widget _buildTechnicalRow(String tag, String name) {
-    return Row(
-      children: [
-        Container(
-          width: 80,
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          decoration: BoxDecoration(
-            color: Colors.redAccent,
-            borderRadius: BorderRadius.circular(4),
-          ),
-          alignment: Alignment.center,
-          child: Text(
-            tag,
-            style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 12,
-            ),
-          ),
-        ),
-        const SizedBox(width: 10),
-        Expanded(
-          child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-            decoration: BoxDecoration(
-              color: Colors.grey[200],
-              borderRadius: BorderRadius.circular(4),
-            ),
-            child: Text(
-              name,
-              style: const TextStyle(
-                color: Colors.black87,
-                fontWeight: FontWeight.w600,
-                fontSize: 11,
-              ),
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-        ),
-      ],
     );
   }
 
@@ -408,15 +338,11 @@ class AcknowledgeoperationPage extends StatelessWidget {
     );
   }
 
-  Widget _buildCleanBox({
-    required Widget child,
-    EdgeInsets? padding,
-    Color? color,
-  }) {
+  Widget _buildCleanBox({required Widget child, EdgeInsets? padding}) {
     return Container(
       padding: padding ?? const EdgeInsets.all(15),
       decoration: BoxDecoration(
-        color: color ?? Colors.white,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
@@ -467,18 +393,20 @@ class AcknowledgeoperationPage extends StatelessWidget {
   }) {
     return InkWell(
       onTap: () {
-        if (destination != null) {
+        if (destination != null)
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => destination),
           );
-        }
       },
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(icon, size: 28, color: Colors.grey),
-          Text(label, style: const TextStyle(fontSize: 11, color: Colors.grey)),
+          Text(
+            label,
+            style: const TextStyle(fontSize: 0.0070, color: Colors.grey),
+          ),
         ],
       ),
     );
