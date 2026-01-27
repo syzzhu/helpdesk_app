@@ -31,6 +31,7 @@ class _PMState extends State<PMPage> {
             'Preventive Maintenance (COMPUTER SET)- FATINLYANA \nYASMIN BINTI FADZLI YUSOF',
         'color': Colors.redAccent,
       },
+      /*
       {
         'name': 'KAMAL AZUDIN BIN MD.YUSOF\nPENYIARAN (TV & RADIO)',
         'dept': '15th Floor - BERNAMA RADIO',
@@ -39,7 +40,7 @@ class _PMState extends State<PMPage> {
         'desc': 'PC Hang',
         'desc1': 'Preventive Maintenance (LAPTOP)- FARAH BINTI MOHD',
         'color': Colors.orange,
-      },
+      },*/
     ];
     filteredData = allData;
   }
@@ -217,11 +218,8 @@ class _PMState extends State<PMPage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => DetailPMPage(
-              status: status,
-              name: name,
-              department: department,
-            ),
+            builder: (context) =>
+                DetailPM(status: status, name: name, department: department),
           ),
         );
       },
@@ -379,8 +377,8 @@ class _PMState extends State<PMPage> {
     BuildContext context,
     IconData icon,
     String label,
-    bool isActive, 
-    Size size,{
+    bool isActive,
+    Size size, {
     Widget? destination,
   }) {
     //final double iconSize = size.width * 0.07; //responsive icon size
@@ -422,7 +420,7 @@ class _PMState extends State<PMPage> {
 
     // Base size for circle and icon
     final double radius = size.width * 0.07; //responsive size
-    //final double iconSize = radius * 0.8; 
+    //final double iconSize = radius * 0.8;
     //final double padding = radius * 0.5;
     final double translationY = -radius * 0.2; //transform radius
 
@@ -453,7 +451,11 @@ class _PMState extends State<PMPage> {
             ),
           ],
         ),
-        child: Icon(Icons.qr_code_scanner, color: Colors.white, size: radius * 0.75),
+        child: Icon(
+          Icons.qr_code_scanner,
+          color: Colors.white,
+          size: radius * 0.75,
+        ),
       ),
     );
   }

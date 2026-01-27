@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'qr_scanner_page.dart';
+import 'PMPage.dart';
 import 'dashboard_page.dart';
-import 'acknowledgePM.dart';
+import 'comment_page.dart';
 
-class DetailPM extends StatelessWidget {
+class AcknowledgePMPage extends StatefulWidget {
   final String status;
   final String name;
   final String department;
 
-  const DetailPM({
+  const AcknowledgePMPage({
     super.key,
     required this.status,
     required this.name,
@@ -16,8 +17,18 @@ class DetailPM extends StatelessWidget {
   });
 
   @override
+  State<AcknowledgePMPage> createState() => _AcknowledgePMPageState();
+}
+
+class _AcknowledgePMPageState extends State<AcknowledgePMPage> {
+  // --- LOGIK CHECKLIST ---
+  List<Map<String, dynamic>> checklistItems = [
+    {"title": "CLEAN CPU, Monitor, Keyboard & Mouse", "isDone": false},
+    {"title": "UPDATE Antivirus", "isDone": false},
+  ];
+
+  @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size; // dapatkan saiz skrin
     return Scaffold(
       backgroundColor: const Color(0xFFF8FAFC),
       body: Column(
@@ -50,17 +61,13 @@ class DetailPM extends StatelessWidget {
                     onPressed: () => Navigator.pop(context),
                   ),
                 ),
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(
-                      Icons.article_rounded,
-                      color: Colors.white,
-                      size: 32,
-                    ),
-                    const SizedBox(width: 12),
-                    const Text(
-                      'Detail',
+                    Icon(Icons.article_rounded, color: Colors.white, size: 32),
+                    SizedBox(width: 12),
+                    Text(
+                      'Acknowledge',
                       style: TextStyle(
                         fontSize: 26,
                         fontWeight: FontWeight.w800,
@@ -74,7 +81,7 @@ class DetailPM extends StatelessWidget {
           ),
           const SizedBox(height: 20),
 
-          // --- TICKET ID BAR (Logik Warna Ikut Status) ---
+          // --- TICKET ID BAR ---
           Center(
             child: Container(
               width: 350,
@@ -99,26 +106,25 @@ class DetailPM extends StatelessWidget {
                         vertical: 12,
                       ),
                       decoration: BoxDecoration(
-                        // Logik warna: NEW = Merah, PENDING = Kuning, Lain-lain = Kelabu
-                        color: status.toUpperCase() == 'NEW'
+                        color: widget.status.toUpperCase() == 'NEW'
                             ? Colors.redAccent
-                            : (status.toUpperCase() == 'PENDING'
+                            : (widget.status.toUpperCase() == 'PENDING'
                                   ? const Color.fromARGB(255, 243, 195, 72)
                                   : Colors.grey),
                       ),
                       child: Text(
-                        status.toUpperCase(),
+                        widget.status.toUpperCase(),
                         style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
-                    Expanded(
+                    const Expanded(
                       child: Text(
                         'L202601141050510002',
                         textAlign: TextAlign.center,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontWeight: FontWeight.w700,
                           color: Colors.black87,
                         ),
@@ -129,22 +135,23 @@ class DetailPM extends StatelessWidget {
               ),
             ),
           ),
+
           Expanded(
             child: ListView(
               padding: const EdgeInsets.all(20),
               children: [
+                // --- CONTACT PERSON ---
                 _buildModernLabel("CONTACT PERSON"),
-
-                _buildCleanBox(
+                _buildWhiteCard(
                   child: Row(
                     children: [
-                      CircleAvatar(
-                        radius: 26,
-                        backgroundColor: Colors.blue.shade50,
+                      const CircleAvatar(
+                        radius: 30,
+                        backgroundColor: Color(0xFFE0F2FE),
                         child: Icon(
                           Icons.person,
-                          color: Colors.blue.shade700,
-                          size: 30,
+                          color: Color(0xFF00AEEF),
+                          size: 35,
                         ),
                       ),
                       const SizedBox(width: 15),
@@ -153,7 +160,7 @@ class DetailPM extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              name,
+                              widget.name,
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 13,
@@ -161,26 +168,26 @@ class DetailPM extends StatelessWidget {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              department,
+                              widget.department,
                               style: TextStyle(
-                                color: Colors.grey[700],
-                                fontSize: 12,
+                                color: Colors.grey[600],
+                                fontSize: 11,
                               ),
                             ),
                             const SizedBox(height: 8),
-                            Row(
+                            const Row(
                               children: [
-                                const Icon(
-                                  Icons.phone_rounded,
+                                Icon(
+                                  Icons.phone,
                                   size: 16,
                                   color: Colors.green,
                                 ),
-                                const SizedBox(width: 6),
-                                const Text(
+                                SizedBox(width: 8),
+                                Text(
                                   "019-777 7777",
                                   style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 13,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 12,
                                   ),
                                 ),
                               ],
@@ -191,10 +198,11 @@ class DetailPM extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: 20),
-                _buildModernLabel("TICKET INFORMATION"),
 
-                _buildCleanBox(
+                const SizedBox(height: 25),
+
+                _buildModernLabel("TICKET INFORMATION"),
+                _buildWhiteCard(
                   padding: EdgeInsets.zero,
                   child: Column(
                     children: [
@@ -202,32 +210,33 @@ class DetailPM extends StatelessWidget {
                         width: double.infinity,
                         padding: const EdgeInsets.all(15),
                         color: Colors.grey[200],
-                        child: Column(
+                        child: const Column(
                           children: [
                             Text(
                               "PM TYPE : COMPUTER SET",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 13,
-                                color: Colors.blueGrey.shade900,
+                                fontSize: 14,
                               ),
                             ),
-                            const SizedBox(height: 4),
-
-                            const Text(
+                            SizedBox(height: 5),
+                            Text(
                               "END DATE : 28 JAN 2026",
-                              style: TextStyle(fontSize: 12),
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                           ],
                         ),
                       ),
                       const Padding(
-                        padding: EdgeInsets.all(18),
+                        padding: EdgeInsets.all(20),
                         child: Text(
                           "Preventive Maintenance (COMPUTER SET) - MUHAMMAD MUJAHID BIN ISHAK (1255) computer yang rosak mengikut petugas berikut:",
-                          textAlign: TextAlign.justify,
+                          textAlign: TextAlign.center,
                           style: TextStyle(
-                            fontSize: 13,
+                            fontSize: 12,
                             height: 1.5,
                             color: Colors.black87,
                           ),
@@ -236,20 +245,20 @@ class DetailPM extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: 18),
 
-                // LAPTOP SECTION
-                _buildCleanBox(
+                const SizedBox(height: 25),
+
+                _buildWhiteCard(
                   child: Row(
                     children: [
                       Container(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 14,
+                          horizontal: 15,
                           vertical: 8,
                         ),
                         decoration: BoxDecoration(
                           color: const Color(0xFF00AEEF),
-                          borderRadius: BorderRadius.circular(6),
+                          borderRadius: BorderRadius.circular(8),
                         ),
                         child: const Text(
                           "LAPTOP",
@@ -260,7 +269,7 @@ class DetailPM extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const SizedBox(width: 12),
+                      const SizedBox(width: 15),
                       const Expanded(
                         child: Text(
                           "KKMM/BERNAMA/H/15/241",
@@ -273,19 +282,76 @@ class DetailPM extends StatelessWidget {
                     ],
                   ),
                 ),
+                const SizedBox(height: 25),
+
+                // --- TECHNICAL PERSON ---
+                _buildModernLabel("TECHNICAL PERSON"),
+                _buildWhiteCard(
+                  padding: const EdgeInsets.all(12),
+                  child: Column(
+                    children: [
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    CommentPage(status: widget.status),
+                              ),
+                            );
+                          },
+                          child: const Icon(
+                            Icons.chat_bubble_outline_rounded,
+                            color: Colors.black,
+                            size: 26,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      _buildTechnicalRow("NEW", "SHARIFFUDDIN BIN ALI BASHA"),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 25),
+
+                _buildModernLabel("COMPUTER SET CHECKLIST"),
+                _buildWhiteCard(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Column(
+                    children: checklistItems.map((item) {
+                      return CheckboxListTile(
+                        title: Text(
+                          item['title'],
+                          style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        value: item['isDone'],
+                        activeColor: const Color(0xFF00AEEF),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                        ),
+                        controlAffinity: ListTileControlAffinity.leading,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            item['isDone'] = value;
+                          });
+                        },
+                      );
+                    }).toList(),
+                  ),
+                ),
+
                 const SizedBox(height: 35),
 
                 ElevatedButton(
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => AcknowledgePMPage(
-                          status: status,
-                          name: name,
-                          department: department,
-                        ),
-                      ),
+                      MaterialPageRoute(builder: (context) => const PMPage()),
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -297,7 +363,7 @@ class DetailPM extends StatelessWidget {
                     ),
                   ),
                   child: const Text(
-                    "ACKNOWLEDGE",
+                    "SAVE ACKNOWLEDGE",
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                 ),
@@ -307,6 +373,94 @@ class DetailPM extends StatelessWidget {
           ),
           _buildBottomNavigationBar(context),
         ],
+      ),
+    );
+  }
+
+  // --- UI HELPERS ---
+
+  Widget _buildTechnicalRow(String tag, String name) {
+    return Row(
+      children: [
+        Container(
+          width: 80,
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          decoration: BoxDecoration(
+            color: Colors.redAccent,
+            borderRadius: BorderRadius.circular(4),
+          ),
+          alignment: Alignment.center,
+          child: Text(
+            tag,
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 12,
+            ),
+          ),
+        ),
+        const SizedBox(width: 10),
+        Expanded(
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+            decoration: BoxDecoration(
+              color: Colors.grey[200],
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: Text(
+              name,
+              style: const TextStyle(
+                color: Colors.black87,
+                fontWeight: FontWeight.w600,
+                fontSize: 11,
+              ),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildTicketIdBar() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.04),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+              color: widget.status.toUpperCase() == 'NEW'
+                  ? Colors.redAccent
+                  : Colors.amber,
+              child: Text(
+                widget.status.toUpperCase(),
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            const Expanded(
+              child: Text(
+                '202601141050510002',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -335,21 +489,22 @@ class DetailPM extends StatelessWidget {
     );
   }
 
-  Widget _buildCleanBox({required Widget child, EdgeInsets? padding}) {
+  Widget _buildWhiteCard({required Widget child, EdgeInsets? padding}) {
     return Container(
-      padding: padding ?? const EdgeInsets.all(15),
+      width: double.infinity,
+      padding: padding ?? const EdgeInsets.all(18),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 12,
+            color: Colors.black.withOpacity(0.04),
+            blurRadius: 15,
             offset: const Offset(0, 4),
           ),
         ],
       ),
-      clipBehavior: Clip.hardEdge,
+      clipBehavior: Clip.antiAlias,
       child: child,
     );
   }
@@ -357,10 +512,7 @@ class DetailPM extends StatelessWidget {
   Widget _buildBottomNavigationBar(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(top: BorderSide(color: Colors.grey.shade200)),
-      ),
+      color: Colors.white,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
@@ -368,15 +520,10 @@ class DetailPM extends StatelessWidget {
             context,
             Icons.home_outlined,
             "Home",
-            destination: const DashboardPage(),
+            const DashboardPage(),
           ),
           _buildQRItem(context),
-          _buildNavItem(
-            context,
-            Icons.list_alt_rounded,
-            "Options",
-            destination: null,
-          ),
+          _buildNavItem(context, Icons.list_alt_rounded, "Options", null),
         ],
       ),
     );
@@ -385,22 +532,23 @@ class DetailPM extends StatelessWidget {
   Widget _buildNavItem(
     BuildContext context,
     IconData icon,
-    String label, {
-    Widget? destination,
-  }) {
+    String label,
+    Widget? dest,
+  ) {
     return InkWell(
       onTap: () {
-        if (destination != null)
+        if (dest != null) {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => destination),
+            MaterialPageRoute(builder: (context) => dest),
           );
+        }
       },
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 28, color: Colors.grey),
-          Text(label, style: const TextStyle(fontSize: 11, color: Colors.grey)),
+          Icon(icon, color: Colors.grey[400]),
+          Text(label, style: TextStyle(color: Colors.grey[500], fontSize: 10)),
         ],
       ),
     );
@@ -418,7 +566,7 @@ class DetailPM extends StatelessWidget {
           color: Colors.black,
           shape: BoxShape.circle,
         ),
-        child: const Icon(Icons.qr_code_scanner, color: Colors.white, size: 30),
+        child: const Icon(Icons.qr_code_scanner, color: Colors.white),
       ),
     );
   }
