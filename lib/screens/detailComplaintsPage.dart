@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:helpdesk_app/screens/acknowlegeComplaints.dart';
+import 'package:helpdesk_app/screens/comment_page.dart';
 import 'qr_scanner_page.dart';
 import 'dashboard_page.dart';
 
@@ -217,23 +219,69 @@ class DetailComplaintsPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 30),
 
+                /*_buildModernLabel("TECHNICAL PERSON"),
+                _buildCleanBox(
+                  color: Colors.white,
+                  padding: const EdgeInsets.all(12),
+                  child: Column(
+                    children: [
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    CommentPage(status: status),
+                              ),
+                            );
+                          },
+                          child: const Icon(
+                            Icons.chat_bubble_outline_rounded,
+                            color: Colors.black,
+                            size: 26,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      _buildTechnicalRow("NEW", "SHARIFFUDDIN BIN ALI BASHA"),
+                      const SizedBox(height: 10),
+                      _buildTechnicalRow("NEW", "MOHD NAZRIN BIN ABU HASSAN"),
+                    ],
+                  ),
+                ),*/
+
                 // BUTTON ACKNOWLEDGE
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Acknowlegecomplaints(
+                          status: status,
+                          name: name,
+                          department: department,
+                        ),
+                      ),
+                    );
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF00AEEF),
                     foregroundColor: Colors.white,
                     minimumSize: const Size(double.infinity, 55),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
-                  child: const Text("ACKNOWLEDGE",
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                  child: const Text(
+                    "ACKNOWLEDGE",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
                 ),
-                const SizedBox(height: 25),
               ],
             ),
-          ),
-
+          ),    
           // --- BOTTOM NAVIGATION ---
           _buildBottomNavigationBar(context),
         ],
@@ -277,6 +325,28 @@ class DetailComplaintsPage extends StatelessWidget {
       child: child,
     );
   }
+
+  /*Widget _buildTechnicalRow(String status, String name) {
+    return Row(
+      children: [
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+          decoration: BoxDecoration(
+              color: Colors.redAccent,
+              borderRadius: BorderRadius.circular(6)),
+          child: Text(status,
+              style:
+                  const TextStyle(color: Colors.white, fontSize: 10)),
+        ),
+        const SizedBox(width: 10),
+        Expanded(
+          child: Text(name,
+              style:
+                  const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
+        ),
+      ],
+    );
+  }*/
 
   Widget _buildDropdownRow(String label) {
     return Row(
