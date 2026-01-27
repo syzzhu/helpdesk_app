@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:helpdesk_app/screens/Complaint/acknowlegeComplaints.dart';
+import 'package:helpdesk_app/screens/Operation/detailOperation.dart';
 //import 'detail_operation.dart';
 import '../dashboard_page.dart';
 import '../qr_scanner_page.dart';
@@ -219,7 +220,7 @@ class _OperationPageState extends State<OperationPage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => Acknowlegecomplaints(
+            builder: (context) => DetailOperationPage(
               status: status,
               name: name,
               department: department,

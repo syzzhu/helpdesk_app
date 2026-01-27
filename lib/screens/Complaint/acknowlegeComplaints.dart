@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:helpdesk_app/screens/Complaint/complaints.dart';
 import 'package:helpdesk_app/screens/comment_page.dart';
 import 'package:helpdesk_app/screens/Complaint/complaints.dart';
 import 'package:helpdesk_app/screens/Complaint/detailComplaintsPage.dart';
@@ -223,7 +224,7 @@ class Acknowlegecomplaints extends StatelessWidget {
 
                 _buildModernLabel("TECHNICAL PERSON"),
                 _buildCleanBox(
-                  color: Colors.white, // FIX (supported now)
+                  //color: Colors.white,
                   padding: const EdgeInsets.all(12),
                   child: Column(
                     children: [
@@ -306,15 +307,11 @@ class Acknowlegecomplaints extends StatelessWidget {
     );
   }
 
-  Widget _buildCleanBox({
-    required Widget child,
-    EdgeInsets? padding,
-    Color? color, // FIX
-  }) {
+  Widget _buildCleanBox({required Widget child, EdgeInsets? padding}) {
     return Container(
       padding: padding ?? const EdgeInsets.all(15),
       decoration: BoxDecoration(
-        color: color ?? Colors.white,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
@@ -324,6 +321,7 @@ class Acknowlegecomplaints extends StatelessWidget {
           ),
         ],
       ),
+      clipBehavior: Clip.hardEdge,
       child: child,
     );
   }
