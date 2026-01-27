@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:helpdesk_app/screens/acknowledgeOperation.dart';
 import 'package:helpdesk_app/screens/acknowlegeComplaints.dart';
-//import 'detail_operation.dart';
+import 'detailOperation.dart';
 import 'dashboard_page.dart';
 import 'qr_scanner_page.dart';
 
@@ -220,7 +221,7 @@ class _OperationPageState extends State<OperationPage> {
           context,
           MaterialPageRoute(
             builder: (context) =>
-                Acknowlegecomplaints(status: status, name: name, department: department),
+                DetailOperationPage(status: status, name: name, department: department),
           ),
         );
       },

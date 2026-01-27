@@ -223,6 +223,8 @@ class Acknowlegecomplaints extends StatelessWidget {
                   ),
                 ),
 
+                const SizedBox(height: 35),
+
                 // FIX: button tak push page yang sama
                 ElevatedButton(
                   onPressed: () {
