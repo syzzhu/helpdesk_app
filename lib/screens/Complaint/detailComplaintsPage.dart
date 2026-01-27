@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:helpdesk_app/screens/acknowlegeComplaints.dart';
+import 'package:helpdesk_app/screens/Complaint/acknowlegeComplaints.dart';
 import 'package:helpdesk_app/screens/comment_page.dart';
-import 'qr_scanner_page.dart';
-import 'dashboard_page.dart';
+import '../qr_scanner_page.dart';
+import '../dashboard_page.dart';
 
 class DetailComplaintsPage extends StatelessWidget {
   final String status;
@@ -92,7 +92,10 @@ class DetailComplaintsPage extends StatelessWidget {
                 child: Row(
                   children: [
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 18,
+                        vertical: 12,
+                      ),
                       decoration: BoxDecoration(
                         color: status.toUpperCase() == 'NEW'
                             ? Colors.redAccent
@@ -102,14 +105,20 @@ class DetailComplaintsPage extends StatelessWidget {
                       ),
                       child: Text(
                         status.toUpperCase(),
-                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                     Expanded(
                       child: Text(
                         'H202601141050510002',
                         textAlign: TextAlign.center,
-                        style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black87),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                        ),
                       ),
                     ),
                   ],
@@ -131,24 +140,47 @@ class DetailComplaintsPage extends StatelessWidget {
                       CircleAvatar(
                         radius: 26,
                         backgroundColor: Colors.blue.shade50,
-                        child: const Icon(Icons.account_circle, color: Colors.blue, size: 30),
+                        child: const Icon(
+                          Icons.account_circle,
+                          color: Colors.blue,
+                          size: 30,
+                        ),
                       ),
                       const SizedBox(width: 15),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(name.toUpperCase(),
-                                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
-                            Text(department.toUpperCase(),
-                                style: TextStyle(color: Colors.grey[700], fontSize: 12)),
+                            Text(
+                              name.toUpperCase(),
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 13,
+                              ),
+                            ),
+                            Text(
+                              department.toUpperCase(),
+                              style: TextStyle(
+                                color: Colors.grey[700],
+                                fontSize: 12,
+                              ),
+                            ),
                             const SizedBox(height: 8),
                             Row(
                               children: const [
-                                Icon(Icons.phone_in_talk, color: Colors.green, size: 16),
+                                Icon(
+                                  Icons.phone_in_talk,
+                                  color: Colors.green,
+                                  size: 16,
+                                ),
                                 SizedBox(width: 6),
-                                Text("0197777777",
-                                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13)),
+                                Text(
+                                  "0197777777",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 13,
+                                  ),
+                                ),
                               ],
                             ),
                           ],
@@ -169,24 +201,47 @@ class DetailComplaintsPage extends StatelessWidget {
                           CircleAvatar(
                             radius: 26,
                             backgroundColor: Colors.blue.shade50,
-                            child: const Icon(Icons.account_circle, color: Colors.blue, size: 30),
+                            child: const Icon(
+                              Icons.account_circle,
+                              color: Colors.blue,
+                              size: 30,
+                            ),
                           ),
                           const SizedBox(width: 15),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(name.toUpperCase(),
-                                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
-                                Text(department.toUpperCase(),
-                                    style: TextStyle(color: Colors.grey[700], fontSize: 12)),
+                                Text(
+                                  name.toUpperCase(),
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 13,
+                                  ),
+                                ),
+                                Text(
+                                  department.toUpperCase(),
+                                  style: TextStyle(
+                                    color: Colors.grey[700],
+                                    fontSize: 12,
+                                  ),
+                                ),
                                 const SizedBox(height: 8),
                                 Row(
                                   children: const [
-                                    Icon(Icons.phone_in_talk, color: Colors.green, size: 16),
+                                    Icon(
+                                      Icons.phone_in_talk,
+                                      color: Colors.green,
+                                      size: 16,
+                                    ),
                                     SizedBox(width: 6),
-                                    Text("0197777777",
-                                        style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13)),
+                                    Text(
+                                      "0197777777",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 13,
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ],
@@ -202,14 +257,22 @@ class DetailComplaintsPage extends StatelessWidget {
                         color: Colors.grey[200],
                         child: Column(
                           children: const [
-                            Text("INTERNET / WIRELESS",
-                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
+                            Text(
+                              "INTERNET / WIRELESS",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12,
+                              ),
+                            ),
                           ],
                         ),
                       ),
                       const Padding(
                         padding: EdgeInsets.symmetric(vertical: 10),
-                        child: Text("Can't access internet", style: TextStyle(fontSize: 13)),
+                        child: Text(
+                          "Can't access internet",
+                          style: TextStyle(fontSize: 13),
+                        ),
                       ),
                       _buildDropdownRow("TERMINAL :"),
                       const SizedBox(height: 5),
@@ -281,7 +344,7 @@ class DetailComplaintsPage extends StatelessWidget {
                 ),
               ],
             ),
-          ),    
+          ),
           // --- BOTTOM NAVIGATION ---
           _buildBottomNavigationBar(context),
         ],
@@ -300,8 +363,14 @@ class DetailComplaintsPage extends StatelessWidget {
             color: const Color(0xFF64748B),
             borderRadius: BorderRadius.circular(4),
           ),
-          child: Text(text,
-              style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold)),
+          child: Text(
+            text,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 10,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ),
       ),
     );
@@ -354,15 +423,27 @@ class DetailComplaintsPage extends StatelessWidget {
         Container(
           width: 80,
           padding: const EdgeInsets.all(5),
-          decoration: BoxDecoration(color: Colors.grey[400], border: Border.all(color: Colors.grey)),
-          child: Text(label, style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
+          decoration: BoxDecoration(
+            color: Colors.grey[400],
+            border: Border.all(color: Colors.grey),
+          ),
+          child: Text(
+            label,
+            style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+          ),
         ),
         const SizedBox(width: 10),
         Expanded(
           child: Container(
             padding: const EdgeInsets.all(5),
-            decoration: BoxDecoration(color: Colors.grey[400], border: Border.all(color: Colors.grey)),
-            child: const Text("- PLEASE SELECT -", style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
+            decoration: BoxDecoration(
+              color: Colors.grey[400],
+              border: Border.all(color: Colors.grey),
+            ),
+            child: const Text(
+              "- PLEASE SELECT -",
+              style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+            ),
           ),
         ),
       ],
@@ -372,11 +453,18 @@ class DetailComplaintsPage extends StatelessWidget {
   Widget _buildBottomNavigationBar(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 12),
-      decoration: BoxDecoration(border: Border(top: BorderSide(color: Colors.grey.shade200))),
+      decoration: BoxDecoration(
+        border: Border(top: BorderSide(color: Colors.grey.shade200)),
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _buildNavItem(context, Icons.home_outlined, "Home", destination: const DashboardPage()),
+          _buildNavItem(
+            context,
+            Icons.home_outlined,
+            "Home",
+            destination: const DashboardPage(),
+          ),
           _buildQRItem(context),
           _buildNavItem(context, Icons.list_alt_rounded, "Options"),
         ],
@@ -384,11 +472,19 @@ class DetailComplaintsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildNavItem(BuildContext context, IconData icon, String label, {Widget? destination}) {
+  Widget _buildNavItem(
+    BuildContext context,
+    IconData icon,
+    String label, {
+    Widget? destination,
+  }) {
     return InkWell(
       onTap: () {
         if (destination != null) {
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => destination));
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => destination),
+          );
         }
       },
       child: Column(
@@ -403,10 +499,16 @@ class DetailComplaintsPage extends StatelessWidget {
 
   Widget _buildQRItem(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const QRScannerPage())),
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const QRScannerPage()),
+      ),
       child: Container(
         padding: const EdgeInsets.all(12),
-        decoration: const BoxDecoration(color: Colors.black, shape: BoxShape.circle),
+        decoration: const BoxDecoration(
+          color: Colors.black,
+          shape: BoxShape.circle,
+        ),
         child: const Icon(Icons.qr_code_scanner, color: Colors.white, size: 30),
       ),
     );

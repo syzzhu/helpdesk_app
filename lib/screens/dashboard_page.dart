@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:helpdesk_app/screens/PMPage.dart';
-import 'package:helpdesk_app/screens/complaints.dart';
+import 'package:helpdesk_app/screens/PM/PMPage.dart';
+import 'package:helpdesk_app/screens/Complaint/complaints.dart';
 import 'qr_scanner_page.dart';
 import 'dashboard_page.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'operation.dart';
+import 'Operation/operation.dart';
 
 class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});

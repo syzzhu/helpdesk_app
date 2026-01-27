@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'detailPM.dart';
+import 'PM/detailPM.dart';
 import 'dashboard_page.dart';
 import 'qr_scanner_page.dart';
 

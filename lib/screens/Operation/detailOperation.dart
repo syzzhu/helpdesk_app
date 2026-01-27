@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:helpdesk_app/screens/dashboard_page.dart';
-import 'package:helpdesk_app/screens/qr_scanner_page.dart';
-//import 'qr_scanner_page.dart';
-//import 'dashboard_page.dart';
+import '../qr_scanner_page.dart';
+import '../dashboard_page.dart';
 import 'acknowledgeOperation.dart';
 
-class DetailOperationPage extends StatelessWidget {
+class DetailComplaintsPage extends StatelessWidget {
   final String status;
   final String name;
   final String department;
 
-  const DetailOperationPage({
+  const DetailComplaintsPage({
     super.key,
     required this.status,
     required this.name,

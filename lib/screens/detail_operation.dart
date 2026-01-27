@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import '../qr_scanner_page.dart';
-import '../dashboard_page.dart';
-import 'acknowledgePM.dart';
+import 'qr_scanner_page.dart';
+import 'dashboard_page.dart';
+import 'Operation/acknowledgeOperation.dart';
 
-class DetailPM extends StatelessWidget {
+class DetailPage extends StatelessWidget {
   final String status;
   final String name;
   final String department;
 
-  const DetailPM({
+  const DetailPage({
     super.key,
     required this.status,
     required this.name,
@@ -205,7 +205,7 @@ class DetailPM extends StatelessWidget {
                         child: Column(
                           children: [
                             Text(
-                              "PM TYPE : COMPUTER SET",
+                              "WORK ORDER : DISMANTLE",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 13,
@@ -213,9 +213,12 @@ class DetailPM extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(height: 4),
-
                             const Text(
-                              "END DATE : 28 JAN 2026",
+                              "START DATE : 15 JAN 2026",
+                              style: TextStyle(fontSize: 12),
+                            ),
+                            const Text(
+                              "END DATE : 15 JAN 2026",
                               style: TextStyle(fontSize: 12),
                             ),
                           ],
@@ -224,7 +227,7 @@ class DetailPM extends StatelessWidget {
                       const Padding(
                         padding: EdgeInsets.all(18),
                         child: Text(
-                          "Preventive Maintenance (COMPUTER SET) - MUHAMMAD MUJAHID BIN ISHAK (1255) computer yang rosak mengikut petugas berikut:",
+                          "Wakil Aset RADIO: Encik Shukhaiman/Puan Azlina Zakaria mohon mengemaskini No.Invois & DO set komputer baharu pada Modul Perolehan (SPB) seterusnya melengkapkan rekod pengguna dan penempatan dan membuat janaan no. aset di Model Aset(SPB).",
                           textAlign: TextAlign.justify,
                           style: TextStyle(
                             fontSize: 13,
@@ -280,7 +283,7 @@ class DetailPM extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => AcknowledgePMPage(
+                        builder: (context) => AcknowledgeoperationPage(
                           status: status,
                           name: name,
                           department: department,
