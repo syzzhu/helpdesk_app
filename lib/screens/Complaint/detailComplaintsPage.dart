@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:helpdesk_app/screens/acknowlegeComplaints.dart';
+import 'package:helpdesk_app/screens/Complaint/acknowlegeComplaints.dart';
+//import 'package:helpdesk_app/screens/acknowlegeComplaints.dart';
 import 'package:helpdesk_app/screens/comment_page.dart';
-import 'qr_scanner_page.dart';
-import 'dashboard_page.dart';
+import 'package:helpdesk_app/screens/dashboard_page.dart';
+import 'package:helpdesk_app/screens/qr_scanner_page.dart';
+//import 'qr_scanner_page.dart';
+//import 'dashboard_page.dart';
 
 class DetailComplaintsPage extends StatelessWidget {
   final String status;
@@ -131,7 +134,7 @@ class DetailComplaintsPage extends StatelessWidget {
                       CircleAvatar(
                         radius: 26,
                         backgroundColor: Colors.blue.shade50,
-                        child: const Icon(Icons.account_circle, color: Colors.blue, size: 30),
+                        child: const Icon(Icons.person, color: Colors.blue, size: 30),
                       ),
                       const SizedBox(width: 15),
                       Expanded(
@@ -145,7 +148,7 @@ class DetailComplaintsPage extends StatelessWidget {
                             const SizedBox(height: 8),
                             Row(
                               children: const [
-                                Icon(Icons.phone_in_talk, color: Colors.green, size: 16),
+                                Icon(Icons.phone_rounded, color: Colors.green, size: 16),
                                 SizedBox(width: 6),
                                 Text("0197777777",
                                     style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13)),
@@ -169,7 +172,7 @@ class DetailComplaintsPage extends StatelessWidget {
                           CircleAvatar(
                             radius: 26,
                             backgroundColor: Colors.blue.shade50,
-                            child: const Icon(Icons.account_circle, color: Colors.blue, size: 30),
+                            child: const Icon(Icons.person, color: Colors.blue, size: 30),
                           ),
                           const SizedBox(width: 15),
                           Expanded(
@@ -183,7 +186,7 @@ class DetailComplaintsPage extends StatelessWidget {
                                 const SizedBox(height: 8),
                                 Row(
                                   children: const [
-                                    Icon(Icons.phone_in_talk, color: Colors.green, size: 16),
+                                    Icon(Icons.phone_rounded, color: Colors.green, size: 16),
                                     SizedBox(width: 6),
                                     Text("0197777777",
                                         style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13)),
@@ -300,8 +303,14 @@ class DetailComplaintsPage extends StatelessWidget {
             color: const Color(0xFF64748B),
             borderRadius: BorderRadius.circular(4),
           ),
-          child: Text(text,
-              style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold)),
+          child: Text(
+            text,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 10,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ),
       ),
     );

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'qr_scanner_page.dart';
-import 'dashboard_page.dart';
+import 'package:helpdesk_app/screens/dashboard_page.dart';
+import 'package:helpdesk_app/screens/qr_scanner_page.dart';
+//import 'qr_scanner_page.dart';
+//import 'dashboard_page.dart';
 import 'acknowledgePM.dart';
 
 class DetailPM extends StatelessWidget {

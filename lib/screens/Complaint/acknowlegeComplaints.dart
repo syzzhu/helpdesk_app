@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:helpdesk_app/screens/Complaint/complaints.dart';
 import 'package:helpdesk_app/screens/comment_page.dart';
-import 'package:helpdesk_app/screens/complaints.dart';
-import 'package:helpdesk_app/screens/detailComplaintsPage.dart';
-import 'qr_scanner_page.dart';
-import 'dashboard_page.dart';
+//import 'package:helpdesk_app/screens/complaints.dart';
+import 'package:helpdesk_app/screens/dashboard_page.dart';
+//import 'package:helpdesk_app/screens/detailComplaintsPage.dart';
+import 'package:helpdesk_app/screens/qr_scanner_page.dart';
+//import 'qr_scanner_page.dart';
+//import 'dashboard_page.dart';
 
 class Acknowlegecomplaints extends StatelessWidget {
   final String status;
@@ -127,7 +130,7 @@ class Acknowlegecomplaints extends StatelessWidget {
                       CircleAvatar(
                         radius: 26,
                         backgroundColor: Colors.blue.shade50,
-                        child: const Icon(Icons.account_circle,
+                        child: const Icon(Icons.person,
                             color: Colors.blue, size: 30),
                       ),
                       const SizedBox(width: 15),
@@ -145,7 +148,7 @@ class Acknowlegecomplaints extends StatelessWidget {
                             const SizedBox(height: 8),
                             Row(
                               children: const [
-                                Icon(Icons.phone_in_talk,
+                                Icon(Icons.phone_rounded,
                                     color: Colors.green, size: 16),
                                 SizedBox(width: 6),
                                 Text("0197777777",
@@ -192,7 +195,7 @@ class Acknowlegecomplaints extends StatelessWidget {
 
                 _buildModernLabel("TECHNICAL PERSON"),
                 _buildCleanBox(
-                  color: Colors.white, // FIX (supported now)
+                  //color: Colors.white,
                   padding: const EdgeInsets.all(12),
                   child: Column(
                     children: [
@@ -256,37 +259,42 @@ class Acknowlegecomplaints extends StatelessWidget {
   Widget _buildModernLabel(String text) {
     return Padding(
       padding: const EdgeInsets.only(left: 5, bottom: 10),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-        decoration: BoxDecoration(
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          decoration: BoxDecoration(
             color: const Color(0xFF64748B),
-            borderRadius: BorderRadius.circular(4)),
-        child: Text(text,
+            borderRadius: BorderRadius.circular(4),
+          ),
+          child: Text(
+            text,
             style: const TextStyle(
-                color: Colors.white,
-                fontSize: 10,
-                fontWeight: FontWeight.bold)),
+              color: Colors.white,
+              fontSize: 10,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
       ),
     );
   }
 
-  Widget _buildCleanBox({
-    required Widget child,
-    EdgeInsets? padding,
-    Color? color, // FIX
-  }) {
+  Widget _buildCleanBox({required Widget child, EdgeInsets? padding}) {
     return Container(
       padding: padding ?? const EdgeInsets.all(15),
       decoration: BoxDecoration(
-        color: color ?? Colors.white,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              blurRadius: 12,
-              offset: const Offset(0, 4)),
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
         ],
       ),
+      clipBehavior: Clip.hardEdge,
       child: child,
     );
   }
@@ -297,16 +305,16 @@ class Acknowlegecomplaints extends StatelessWidget {
         Container(
           width: 80,
           padding: const EdgeInsets.all(5),
-          color: Colors.grey[400],
-          child: Text(label,
-              style:
-                  const TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
+          decoration: BoxDecoration(color: Colors.grey[400], border: Border.all(color: Colors.grey)),
+          child: Text(label, style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
         ),
         const SizedBox(width: 10),
-        const Expanded(
-          child: Text("- PLEASE SELECT -",
-              style:
-                  TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
+        Expanded(
+          child: Container(
+            padding: const EdgeInsets.all(5),
+            decoration: BoxDecoration(color: Colors.grey[400], border: Border.all(color: Colors.grey)),
+            child: const Text("- PLEASE SELECT -", style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
+          ),
         ),
       ],
     );
