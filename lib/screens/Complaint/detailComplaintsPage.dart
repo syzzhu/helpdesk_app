@@ -353,6 +353,15 @@ class _DetailComplaintsPageState extends State<DetailComplaintsPage> {
                 // BUTTON ACKNOWLEDGE
                 ElevatedButton(
                   onPressed: () {
+                    if (selectedTerminal == null || selectedLocation == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                              'Please select both Terminal and Location.'),
+                        ),
+                      );
+                      return;
+                    }
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -360,10 +369,8 @@ class _DetailComplaintsPageState extends State<DetailComplaintsPage> {
                           status: widget.status,
                           name: widget.name,
                           department: widget.department,
-                          terminal:
-                              selectedTerminal, // Pass the selected terminal
-                          location:
-                              selectedLocation, // Pass the selected terminal and location
+                          terminal: selectedTerminal, // Pass the selected terminal
+                          location: selectedLocation, // Pass the selected terminal and location
                         ),
                       ),
                     );

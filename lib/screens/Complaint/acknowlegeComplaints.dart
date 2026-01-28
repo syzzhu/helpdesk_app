@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:helpdesk_app/screens/Complaint/complaints.dart';
 import 'package:helpdesk_app/screens/comment_page.dart';
-import 'package:helpdesk_app/screens/Complaint/complaints.dart';
-import 'package:helpdesk_app/screens/Complaint/detailComplaintsPage.dart';
-import '../qr_scanner_page.dart';
-import '../dashboard_page.dart';
+import 'package:helpdesk_app/screens/dashboard_page.dart';
+import 'package:helpdesk_app/screens/qr_scanner_page.dart';
 
 class Acknowlegecomplaints extends StatefulWidget {
   final String status;
@@ -36,12 +34,23 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
     'Terminal C',
   ];
 
-  final List<String> locationOptions = ['Level 1', 'Level 2', 'Level 3'];
+  final List<String> locationOptions = [
+    'Level 1',
+    'Level 2',
+    'Level 3',
+  ];
 
+  @override
   void initState() {
     super.initState();
-    selectedTerminal = widget.terminal;
-    selectedLocation = widget.location;
+    // Jika value dihantar dari page sebelumnya dan wujud dalam list, gunakan
+    selectedTerminal = terminalOptions.contains(widget.terminal)
+        ? widget.terminal
+        : terminalOptions.first;
+
+    selectedLocation = locationOptions.contains(widget.location)
+        ? widget.location
+        : locationOptions.first;
   }
 
   @override
@@ -52,6 +61,7 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
       backgroundColor: const Color(0xFFF8FAFC),
       body: Column(
         children: [
+          // HEADER
           Container(
             width: double.infinity,
             padding: EdgeInsets.only(top: size.height * 0.05, bottom: 25),
@@ -71,11 +81,8 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: IconButton(
-                    icon: const Icon(
-                      Icons.arrow_back_ios_new,
-                      color: Colors.white,
-                      size: 35,
-                    ),
+                    icon: const Icon(Icons.arrow_back_ios_new,
+                        color: Colors.white, size: 35),
                     onPressed: () => Navigator.pop(context),
                   ),
                 ),
@@ -87,10 +94,9 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
                     Text(
                       'Detail',
                       style: TextStyle(
-                        fontSize: 26,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
+                          fontSize: 26,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
                     ),
                   ],
                 ),
@@ -99,6 +105,7 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
           ),
           const SizedBox(height: 20),
 
+          // STATUS BOX
           Center(
             child: Container(
               width: 350,
@@ -107,10 +114,9 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
-                  ),
+                      color: Colors.black.withOpacity(0.05),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4)),
                 ],
               ),
               child: ClipRRect(
@@ -119,32 +125,26 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
                   children: [
                     Container(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 18,
-                        vertical: 12,
-                      ),
+                          horizontal: 18, vertical: 12),
                       decoration: BoxDecoration(
                         color: widget.status.toUpperCase() == 'NEW'
                             ? Colors.redAccent
                             : (widget.status.toUpperCase() == 'PENDING'
-                                  ? const Color.fromARGB(255, 243, 195, 72)
-                                  : Colors.grey),
+                                ? const Color.fromARGB(255, 243, 195, 72)
+                                : Colors.grey),
                       ),
-                      child: Text(
-                        widget.status.toUpperCase(),
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                      child: Text(widget.status.toUpperCase(),
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold)),
                     ),
                     const Expanded(
                       child: Text(
                         'H202601141050510002',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black87,
-                        ),
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black87),
                       ),
                     ),
                   ],
@@ -154,6 +154,7 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
           ),
           const SizedBox(height: 20),
 
+          // MAIN CONTENT
           Expanded(
             child: ListView(
               padding: const EdgeInsets.all(20),
@@ -165,47 +166,31 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
                       CircleAvatar(
                         radius: 26,
                         backgroundColor: Colors.blue.shade50,
-                        child: const Icon(
-                          Icons.account_circle,
-                          color: Colors.blue,
-                          size: 30,
-                        ),
+                        child: const Icon(Icons.person,
+                            color: Colors.blue, size: 30),
                       ),
                       const SizedBox(width: 15),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              widget.name.toUpperCase(),
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 13,
-                              ),
-                            ),
-                            Text(
-                              widget.department.toUpperCase(),
-                              style: TextStyle(
-                                color: Colors.grey[700],
-                                fontSize: 12,
-                              ),
-                            ),
+                            Text(widget.name.toUpperCase(),
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 13)),
+                            Text(widget.department.toUpperCase(),
+                                style: TextStyle(
+                                    color: Colors.grey[700], fontSize: 12)),
                             const SizedBox(height: 8),
                             Row(
                               children: const [
-                                Icon(
-                                  Icons.phone_in_talk,
-                                  color: Colors.green,
-                                  size: 16,
-                                ),
+                                Icon(Icons.phone_rounded,
+                                    color: Colors.green, size: 16),
                                 SizedBox(width: 6),
-                                Text(
-                                  "0197777777",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 13,
-                                  ),
-                                ),
+                                Text("0197777777",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 13)),
                               ],
                             ),
                           ],
@@ -228,17 +213,13 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
                           "INTERNET / WIRELESS",
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12,
-                          ),
+                              fontWeight: FontWeight.bold, fontSize: 12),
                         ),
                       ),
                       const Padding(
                         padding: EdgeInsets.symmetric(vertical: 10),
-                        child: Text(
-                          "Can't access internet",
-                          style: TextStyle(fontSize: 13),
-                        ),
+                        child: Text("Can't access internet",
+                            style: TextStyle(fontSize: 13)),
                       ),
                       _buildDropdownRow(
                         label: "TERMINAL :",
@@ -251,7 +232,6 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
                         },
                       ),
                       const SizedBox(height: 5),
-
                       _buildDropdownRow(
                         label: "LOCATION :",
                         selectedValue: selectedLocation,
@@ -269,7 +249,6 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
 
                 _buildModernLabel("TECHNICAL PERSON"),
                 _buildCleanBox(
-                  //color: Colors.white,
                   padding: const EdgeInsets.all(12),
                   child: Column(
                     children: [
@@ -286,27 +265,27 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
                             );
                           },
                           child: const Icon(
-                            Icons.chat_bubble_outline_rounded,
-                            size: 26,
-                          ),
+                              Icons.chat_bubble_outline_rounded,
+                              size: 26),
                         ),
                       ),
                       const SizedBox(height: 8),
-                      _buildTechnicalRow("NEW", "SHARIFFUDDIN BIN ALI BASHA"),
+                      _buildTechnicalRow(
+                          "NEW", "SHARIFFUDDIN BIN ALI BASHA"),
                       const SizedBox(height: 10),
-                      _buildTechnicalRow("NEW", "MOHD NAZRIN BIN ABU HASSAN"),
+                      _buildTechnicalRow(
+                          "NEW", "MOHD NAZRIN BIN ABU HASSAN"),
                     ],
                   ),
                 ),
 
-                // FIX: button tak push page yang sama
+                const SizedBox(height: 35),
+
                 ElevatedButton(
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => const ComplaintsPage(),
-                      ),
+                      MaterialPageRoute(builder: (context) => const ComplaintsPage()),
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -314,13 +293,11 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
                     foregroundColor: Colors.white,
                     minimumSize: const Size(double.infinity, 55),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
+                        borderRadius: BorderRadius.circular(12)),
                   ),
-                  child: const Text(
-                    "SAVE ACKNOWLEDGE",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                  ),
+                  child: const Text("SAVE ACKNOWLEDGE",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 16)),
                 ),
               ],
             ),
@@ -331,20 +308,18 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
     );
   }
 
+  // =================== WIDGET HELPERS ===================
+
   Widget _buildModernLabel(String text) {
     return Padding(
       padding: const EdgeInsets.only(left: 5, bottom: 10),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-        decoration: BoxDecoration(
-          color: const Color(0xFF64748B),
-          borderRadius: BorderRadius.circular(4),
-        ),
+      child: Align(
+        alignment: Alignment.centerLeft,
         child: Text(
           text,
           style: const TextStyle(
-            color: Colors.white,
-            fontSize: 10,
+            color: Colors.black,
+            fontSize: 12,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -382,17 +357,29 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
         Container(
           width: 80,
           padding: const EdgeInsets.all(5),
-          color: Colors.grey[400],
-          child: Text(
-            label,
-            style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
-          ),
+          child: Text(label,
+              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
         ),
         const SizedBox(width: 10),
-        const Expanded(
-          child: Text(
-            "- PLEASE SELECT -",
-            style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+        Expanded(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 0),
+            decoration: BoxDecoration(
+                color: Colors.grey[350], border: Border.all(color: Colors.grey)),
+            child: DropdownButton<String>(
+              value: selectedValue,
+              isExpanded: true,
+              underline: const SizedBox(),
+              items: options
+                  .map((option) => DropdownMenuItem<String>(
+                        value: option,
+                        child: Text(option,
+                            style: const TextStyle(
+                                fontSize: 13, fontWeight: FontWeight.w600)),
+                      ))
+                  .toList(),
+              onChanged: onChanged,
+            ),
           ),
         ),
       ],
@@ -405,20 +392,15 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
           decoration: BoxDecoration(
-            color: Colors.redAccent,
-            borderRadius: BorderRadius.circular(6),
-          ),
-          child: Text(
-            status,
-            style: const TextStyle(color: Colors.white, fontSize: 10),
-          ),
+              color: Colors.redAccent,
+              borderRadius: BorderRadius.circular(6)),
+          child: Text(status,
+              style: const TextStyle(color: Colors.white, fontSize: 10)),
         ),
         const SizedBox(width: 10),
         Expanded(
-          child: Text(
-            name,
-            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
-          ),
+          child: Text(name,
+              style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
         ),
       ],
     );
@@ -430,12 +412,8 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _buildNavItem(
-            context,
-            Icons.home_outlined,
-            "Home",
-            destination: const DashboardPage(),
-          ),
+          _buildNavItem(context, Icons.home_outlined, "Home",
+              destination: const DashboardPage()),
           _buildQRItem(context),
           _buildNavItem(context, Icons.list_alt_rounded, "Options"),
         ],
@@ -443,19 +421,13 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
     );
   }
 
-  Widget _buildNavItem(
-    BuildContext context,
-    IconData icon,
-    String label, {
-    Widget? destination,
-  }) {
+  Widget _buildNavItem(BuildContext context, IconData icon, String label,
+      {Widget? destination}) {
     return InkWell(
       onTap: () {
         if (destination != null) {
           Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => destination),
-          );
+              context, MaterialPageRoute(builder: (context) => destination));
         }
       },
       child: Column(
@@ -470,17 +442,14 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
 
   Widget _buildQRItem(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const QRScannerPage()),
-      ),
+      onTap: () => Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const QRScannerPage())),
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: const BoxDecoration(
-          color: Colors.black,
-          shape: BoxShape.circle,
-        ),
-        child: const Icon(Icons.qr_code_scanner, color: Colors.white, size: 30),
+            color: Colors.black, shape: BoxShape.circle),
+        child:
+            const Icon(Icons.qr_code_scanner, color: Colors.white, size: 30),
       ),
     );
   }
