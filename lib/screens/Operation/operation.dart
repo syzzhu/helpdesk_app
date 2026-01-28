@@ -4,6 +4,7 @@ import 'package:helpdesk_app/screens/Operation/detailOperation.dart';
 //import 'detail_operation.dart';
 import '../dashboard_page.dart';
 import '../qr_scanner_page.dart';
+import 'detailOperation.dart';
 
 class OperationPage extends StatefulWidget {
   const OperationPage({super.key});
@@ -320,7 +321,7 @@ class _OperationPageState extends State<OperationPage> {
 
   Widget _buildChip(String label, Color bg, Color text) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 19, vertical: 13),
       decoration: BoxDecoration(
         color: bg,
         borderRadius: BorderRadius.circular(10),

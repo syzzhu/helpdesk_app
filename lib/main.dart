@@ -6,7 +6,7 @@ import 'package:helpdesk_app/screens/Complaint/complaints.dart';
 import 'package:helpdesk_app/screens/dashboard_page.dart';
 import 'package:device_preview/device_preview.dart';
 import 'dart:ui';
-import 'package:helpdesk_app/screens/last_page.dart';
+import 'package:helpdesk_app/screens/inventory.dart';
 
 void main() {
   runApp(DevicePreview(builder: (context) => MyApp(), enabled: !kReleaseMode));
@@ -61,8 +61,7 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         //colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
-      //home: const DashboardPage(),
-      home: const LastPage(),
+      home: const DashboardPage(),
     );
   }
 }

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:helpdesk_app/screens/inventory.dart';
 import '../qr_scanner_page.dart';
 import '../dashboard_page.dart';
 import 'operation.dart';
 import '../comment_page.dart';
+import '../inventory.dart';
 
 class AcknowledgeoperationPage extends StatelessWidget {
   final String status;
@@ -188,41 +190,83 @@ class AcknowledgeoperationPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
 
+                // --- TICKET INFORMATION SECTION ---
                 _buildModernLabel("TICKET INFORMATION"),
                 _buildCleanBox(
                   padding: EdgeInsets.zero,
                   child: Column(
                     children: [
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(15),
-                        color: Colors.grey[200],
-                        child: Column(
-                          children: [
-                            Text(
-                              "WORK ORDER : DISMANTLE",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 13,
-                                color: Colors.blueGrey.shade900,
+                      Stack(
+                        children: [
+                          Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.all(15),
+                            color: Colors.grey[200],
+                            child: Column(
+                              children: [
+                                Text(
+                                  "WORK ORDER : DISMANTLE",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 13,
+                                    color: Colors.blueGrey.shade900,
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                const Text(
+                                  "START DATE : 15 JAN 2026",
+                                  style: TextStyle(fontSize: 12),
+                                ),
+                                const Text(
+                                  "END DATE : 15 JAN 2026",
+                                  style: TextStyle(fontSize: 12),
+                                ),
+                              ],
+                            ),
+                          ),
+                          // --- ICON INVENTORY ---
+                          Positioned(
+                            right: 10,
+                            top: 10,
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => InventoryPage(
+                                      name: name,
+                                      department: department,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withOpacity(0.9),
+                                  shape: BoxShape.circle,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.1),
+                                      blurRadius: 4,
+                                      offset: const Offset(0, 2),
+                                    ),
+                                  ],
+                                ),
+                                child: const Icon(
+                                  Icons.inventory_2_rounded,
+                                  color: Color(0xFF0089BB),
+                                  size: 22,
+                                ),
                               ),
                             ),
-                            const SizedBox(height: 4),
-                            const Text(
-                              "START DATE : 15 JAN 2026",
-                              style: TextStyle(fontSize: 12),
-                            ),
-                            const Text(
-                              "END DATE : 15 JAN 2026",
-                              style: TextStyle(fontSize: 12),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                       const Padding(
                         padding: EdgeInsets.all(18),
                         child: Text(
-                          "Wakil Aset RADIO: Encik Shukhaiman/Puan Azlina Zakaria mohon mengemaskini No.Invois & DO set komputer baharu...",
+                          "Wakil Aset RADIO: Encik Shukhaiman/Puan Azlina Zakaria mohon mengemaskini No.Invois & DO set komputer baharu pada Modul Perolehan (SPB) seterusnya melengkapkan rekod pengguna dan penempatan dan membuat janaan no. aset di Model Aset(SPB).",
                           textAlign: TextAlign.justify,
                           style: TextStyle(
                             fontSize: 13,
