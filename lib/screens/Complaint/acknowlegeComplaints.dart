@@ -211,25 +211,57 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
                       Column(
                         children: [
                           Container(
-                            width: double.infinity,
-                            padding: const EdgeInsets.all(12),
-                            color: Colors.grey[200],
-                            child: const Text(
-                              "INTERNET / WIRELESS",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12,
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: Colors.grey[200],
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10),
                               ),
+
+                              child: const Text(
+                                "INTERNET / WIRELESS",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
+                              ),  
                             ),
-                          ),
-                          const Padding(
+
+                            SizedBox(height: 8),
+                            Padding(
+                              padding: const EdgeInsets.all(12),
+                              child: Text(
+                                "Can't access internet",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+
+                      const SizedBox(height: 12),
+
+                          /*const Padding(
                             padding: EdgeInsets.symmetric(vertical: 10),
                             child: Text(
                               "Can't access internet",
                               style: TextStyle(fontSize: 13),
                             ),
-                          ),
+                          ),*/
                           _buildDropdownRow(
                             label: "TERMINAL :",
                             selectedValue: selectedTerminal,
@@ -256,8 +288,8 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
 
                       // ===== ICON ATAS, DALAM PUTIH =====
                       Positioned(
-                            right: 10,
-                            top: 1,
+                            right:12,
+                            top: 13,
                             child: GestureDetector(
                               onTap: () {
                                 Navigator.push(
