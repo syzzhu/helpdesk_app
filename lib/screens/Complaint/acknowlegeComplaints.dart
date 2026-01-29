@@ -445,21 +445,44 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
     );
   }
 
-  Widget _buildTechnicalRow(String status, String name) {
+  Widget _buildTechnicalRow(String tag, String name) {
     return Row(
       children: [
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+          width: 80,
+          padding: const EdgeInsets.symmetric(vertical: 10),
           decoration: BoxDecoration(
-              color: Colors.redAccent,
-              borderRadius: BorderRadius.circular(6)),
-          child: Text(status,
-              style: const TextStyle(color: Colors.white, fontSize: 10)),
+            color: Colors.redAccent,
+            borderRadius: BorderRadius.circular(4),
+          ),
+          alignment: Alignment.center,
+          child: Text(
+            tag,
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 12,
+            ),
+          ),
         ),
         const SizedBox(width: 10),
         Expanded(
-          child: Text(name,
-              style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+            decoration: BoxDecoration(
+              color: Colors.grey[200],
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: Text(
+              name,
+              style: const TextStyle(
+                color: Colors.black87,
+                fontWeight: FontWeight.w600,
+                fontSize: 11,
+              ),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
         ),
       ],
     );
