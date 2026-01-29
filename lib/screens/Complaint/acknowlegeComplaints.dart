@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:helpdesk_app/screens/Complaint/complaints.dart';
+import 'package:helpdesk_app/screens/Complaint/inventoryComplaints.dart';
 import 'package:helpdesk_app/screens/comment_page.dart';
 import 'package:helpdesk_app/screens/dashboard_page.dart';
 import 'package:helpdesk_app/screens/qr_scanner_page.dart';
@@ -92,7 +93,7 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
                     Icon(Icons.description, color: Colors.white, size: 40),
                     SizedBox(width: 10),
                     Text(
-                      'Detail',
+                      'Acknowledge',
                       style: TextStyle(
                           fontSize: 26,
                           fontWeight: FontWeight.bold,
@@ -203,48 +204,97 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
 
                 _buildModernLabel("TICKET INFORMATION"),
                 _buildCleanBox(
-                  child: Column(
+                  child: Stack(
                     children: [
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(12),
-                        color: Colors.grey[200],
-                        child: const Text(
-                          "INTERNET / WIRELESS",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 12),
-                        ),
+                      // ===== CONTENT ASAL =====
+                      Column(
+                        children: [
+                          Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.all(12),
+                            color: Colors.grey[200],
+                            child: const Text(
+                              "INTERNET / WIRELESS",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 10),
+                            child: Text(
+                              "Can't access internet",
+                              style: TextStyle(fontSize: 13),
+                            ),
+                          ),
+                          _buildDropdownRow(
+                            label: "TERMINAL :",
+                            selectedValue: selectedTerminal,
+                            options: terminalOptions,
+                            onChanged: (val) {
+                              setState(() {
+                                selectedTerminal = val;
+                              });
+                            },
+                          ),
+                          const SizedBox(height: 5),
+                          _buildDropdownRow(
+                            label: "LOCATION :",
+                            selectedValue: selectedLocation,
+                            options: locationOptions,
+                            onChanged: (val) {
+                              setState(() {
+                                selectedLocation = val;
+                              });
+                            },
+                          ),
+                        ],
                       ),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 10),
-                        child: Text("Can't access internet",
-                            style: TextStyle(fontSize: 13)),
-                      ),
-                      _buildDropdownRow(
-                        label: "TERMINAL :",
-                        selectedValue: selectedTerminal,
-                        options: terminalOptions,
-                        onChanged: (val) {
-                          setState(() {
-                            selectedTerminal = val;
-                          });
-                        },
-                      ),
-                      const SizedBox(height: 5),
-                      _buildDropdownRow(
-                        label: "LOCATION :",
-                        selectedValue: selectedLocation,
-                        options: locationOptions,
-                        onChanged: (val) {
-                          setState(() {
-                            selectedLocation = val;
-                          });
-                        },
-                      ),
+
+                      // ===== ICON ATAS, DALAM PUTIH =====
+                      Positioned(
+                            right: 10,
+                            top: 1,
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => InventoryComplaintsPage(
+                                      name: widget.name,
+                                      department: widget.department,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withOpacity(0.9),
+                                  shape: BoxShape.circle,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.1),
+                                      blurRadius: 4,
+                                      offset: const Offset(0, 2),
+                                    ),
+                                  ],
+                                ),
+                                child: const Icon(
+                                  Icons.inventory_2_rounded,
+                                  color: Color(0xFF0089BB),
+                                  size: 22,
+                                ),
+                              ),
+                            ),
+                          ),
                     ],
                   ),
                 ),
+
+
                 const SizedBox(height: 30),
 
                 _buildModernLabel("TECHNICAL PERSON"),

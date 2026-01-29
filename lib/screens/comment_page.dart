@@ -255,8 +255,8 @@ class CommentPage extends StatelessWidget {
             context,
             Icons.home_outlined,
             "Home",
-            false,
-            size,
+            //false,
+            //size,
             destination: const DashboardPage(),
           ),
           _buildQRItem(context),
@@ -264,8 +264,8 @@ class CommentPage extends StatelessWidget {
             context,
             Icons.list_alt_rounded,
             "Options",
-            false,
-            size,
+            //false,
+            //size,
             destination: null,
           ),
         ],
@@ -273,76 +273,35 @@ class CommentPage extends StatelessWidget {
     );
   }
 
-  Widget _buildNavItem(
-    BuildContext context,
-    IconData icon,
-    String label,
-    bool isActive, 
-    Size size,{
-    Widget? destination,
-  }) {
-    return GestureDetector(
+  Widget _buildNavItem(BuildContext context, IconData icon, String label,
+      {Widget? destination}) {
+    return InkWell(
       onTap: () {
-        if (destination != null && !isActive) {
+        if (destination != null) {
           Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (_) => destination),
-          );
+              context, MaterialPageRoute(builder: (context) => destination));
         }
       },
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(
-            icon,
-            size: size.width * 0.07,
-            color: isActive ? const Color(0xFF00AEEF) : Colors.grey,
-          ),
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: size.width * 0.035,
-              color: isActive ? const Color(0xFF00AEEF) : Colors.grey,
-              fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
-            ),
-          ),
+          Icon(icon, size: 28, color: Colors.grey),
+          Text(label, style: const TextStyle(fontSize: 11, color: Colors.grey)),
         ],
       ),
     );
   }
 
   Widget _buildQRItem(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final double radius = size.width * 0.07;
-    final double translationY = -radius * 0.2;
-
     return GestureDetector(
-      onTap: () async {
-        final String? qrResult = await Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => const QRScannerPage()),
-        );
-        if (qrResult != null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Hasil Scan: $qrResult')),
-          );
-        }
-      },
+      onTap: () => Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const QRScannerPage())),
       child: Container(
-        transform: Matrix4.translationValues(0, translationY, 0),
-        padding: EdgeInsets.all(radius * 0.35),
-        decoration: BoxDecoration(
-          color: Colors.black,
-          shape: BoxShape.circle,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.3),
-              blurRadius: radius * 0.3,
-              offset: Offset(0, radius * 0.2),
-            ),
-          ],
-        ),
-        child: Icon(Icons.qr_code_scanner, color: Colors.white, size: radius * 0.75),
+        padding: const EdgeInsets.all(12),
+        decoration: const BoxDecoration(
+            color: Colors.black, shape: BoxShape.circle),
+        child:
+            const Icon(Icons.qr_code_scanner, color: Colors.white, size: 30),
       ),
     );
   }

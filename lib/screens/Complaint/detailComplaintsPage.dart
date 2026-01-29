@@ -156,7 +156,7 @@ class _DetailComplaintsPageState extends State<DetailComplaintsPage> {
                         radius: 26,
                         backgroundColor: Colors.blue.shade50,
                         child: const Icon(
-                          Icons.account_circle,
+                          Icons.person,
                           color: Colors.blue,
                           size: 30,
                         ),
@@ -184,7 +184,7 @@ class _DetailComplaintsPageState extends State<DetailComplaintsPage> {
                             Row(
                               children: const [
                                 Icon(
-                                  Icons.phone_in_talk,
+                                  Icons.phone_rounded,
                                   color: Colors.green,
                                   size: 16,
                                 ),
@@ -217,7 +217,7 @@ class _DetailComplaintsPageState extends State<DetailComplaintsPage> {
                             radius: 26,
                             backgroundColor: Colors.blue.shade50,
                             child: const Icon(
-                              Icons.account_circle,
+                              Icons.person,
                               color: Colors.blue,
                               size: 30,
                             ),
@@ -245,7 +245,7 @@ class _DetailComplaintsPageState extends State<DetailComplaintsPage> {
                                 Row(
                                   children: const [
                                     Icon(
-                                      Icons.phone_in_talk,
+                                      Icons.phone_rounded,
                                       color: Colors.green,
                                       size: 16,
                                     ),
@@ -550,18 +550,11 @@ class _DetailComplaintsPageState extends State<DetailComplaintsPage> {
   Widget _buildBottomNavigationBar(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 12),
-      decoration: BoxDecoration(
-        border: Border(top: BorderSide(color: Colors.grey.shade200)),
-      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _buildNavItem(
-            context,
-            Icons.home_outlined,
-            "Home",
-            destination: const DashboardPage(),
-          ),
+          _buildNavItem(context, Icons.home_outlined, "Home",
+              destination: const DashboardPage()),
           _buildQRItem(context),
           _buildNavItem(context, Icons.list_alt_rounded, "Options"),
         ],
@@ -569,19 +562,13 @@ class _DetailComplaintsPageState extends State<DetailComplaintsPage> {
     );
   }
 
-  Widget _buildNavItem(
-    BuildContext context,
-    IconData icon,
-    String label, {
-    Widget? destination,
-  }) {
+  Widget _buildNavItem(BuildContext context, IconData icon, String label,
+      {Widget? destination}) {
     return InkWell(
       onTap: () {
         if (destination != null) {
           Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => destination),
-          );
+              context, MaterialPageRoute(builder: (context) => destination));
         }
       },
       child: Column(
@@ -596,17 +583,14 @@ class _DetailComplaintsPageState extends State<DetailComplaintsPage> {
 
   Widget _buildQRItem(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const QRScannerPage()),
-      ),
+      onTap: () => Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const QRScannerPage())),
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: const BoxDecoration(
-          color: Colors.black,
-          shape: BoxShape.circle,
-        ),
-        child: const Icon(Icons.qr_code_scanner, color: Colors.white, size: 30),
+            color: Colors.black, shape: BoxShape.circle),
+        child:
+            const Icon(Icons.qr_code_scanner, color: Colors.white, size: 30),
       ),
     );
   }
