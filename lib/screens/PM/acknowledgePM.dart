@@ -520,35 +520,29 @@ class _AcknowledgePMPageState extends State<AcknowledgePMPage> {
             context,
             Icons.home_outlined,
             "Home",
-            const DashboardPage(),
+            destination: const DashboardPage(),
           ),
           _buildQRItem(context),
-          _buildNavItem(context, Icons.list_alt_rounded, "Options", null),
+          _buildNavItem(context, Icons.list_alt_rounded, "Options", destination: null),
         ],
       ),
     );
   }
 
-  Widget _buildNavItem(
-    BuildContext context,
-    IconData icon,
-    String label,
-    Widget? dest,
-  ) {
+  Widget _buildNavItem(BuildContext context, IconData icon, String label,
+      {Widget? destination}) {
     return InkWell(
       onTap: () {
-        if (dest != null) {
+        if (destination != null) {
           Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => dest),
-          );
+              context, MaterialPageRoute(builder: (context) => destination));
         }
       },
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, color: Colors.grey[400]),
-          Text(label, style: TextStyle(color: Colors.grey[500], fontSize: 10)),
+          Icon(icon, size: 28, color: Colors.grey),
+          Text(label, style: const TextStyle(fontSize: 11, color: Colors.grey)),
         ],
       ),
     );
@@ -556,17 +550,14 @@ class _AcknowledgePMPageState extends State<AcknowledgePMPage> {
 
   Widget _buildQRItem(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const QRScannerPage()),
-      ),
+      onTap: () => Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const QRScannerPage())),
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: const BoxDecoration(
-          color: Colors.black,
-          shape: BoxShape.circle,
-        ),
-        child: const Icon(Icons.qr_code_scanner, color: Colors.white),
+            color: Colors.black, shape: BoxShape.circle),
+        child:
+            const Icon(Icons.qr_code_scanner, color: Colors.white, size: 30),
       ),
     );
   }
