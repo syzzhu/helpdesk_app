@@ -216,9 +216,27 @@ class CommentPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                Text(
-                  date,
-                  style: TextStyle(fontSize: 11, color: Colors.grey.shade600),
+                // Guna Column untuk susun Date dan Time di hujung kanan
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end, // Rapat ke kanan
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      date,
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.grey.shade700,
+                      ),
+                    ),
+                    Text(
+                      time,
+                      style: TextStyle(
+                        fontSize: 11,
+                        color: Colors.grey.shade500,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -265,20 +283,26 @@ class CommentPage extends StatelessWidget {
             context,
             Icons.list_alt_rounded,
             "Options",
-              destination: const ListOptionsPage()
+            destination: const ListOptionsPage(),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildNavItem(BuildContext context, IconData icon, String label,
-      {Widget? destination}) {
+  Widget _buildNavItem(
+    BuildContext context,
+    IconData icon,
+    String label, {
+    Widget? destination,
+  }) {
     return InkWell(
       onTap: () {
         if (destination != null) {
           Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => destination));
+            context,
+            MaterialPageRoute(builder: (context) => destination),
+          );
         }
       },
       child: Column(
@@ -293,14 +317,17 @@ class CommentPage extends StatelessWidget {
 
   Widget _buildQRItem(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const QRScannerPage())),
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const QRScannerPage()),
+      ),
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: const BoxDecoration(
-            color: Colors.black, shape: BoxShape.circle),
-        child:
-            const Icon(Icons.qr_code_scanner, color: Colors.white, size: 30),
+          color: Colors.black,
+          shape: BoxShape.circle,
+        ),
+        child: const Icon(Icons.qr_code_scanner, color: Colors.white, size: 30),
       ),
     );
   }
