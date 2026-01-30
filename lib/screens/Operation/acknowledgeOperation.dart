@@ -370,7 +370,7 @@ class AcknowledgeoperationPage extends StatelessWidget {
                     ),
                   ),
                   child: const Text(
-                    "SAVE ACKNOWLEDGE",
+                    "FINISH",
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                 ),

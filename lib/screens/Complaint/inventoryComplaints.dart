@@ -83,7 +83,7 @@ class InventoryComplaintsPage extends StatelessWidget {
                 _buildCleanBox(
                   child: Column(
                     children: [
-                      _buildDataRow("TERMINAL NUMBER ", terminal),
+                      _buildDataRow("TERMINAL NUMBER ", "NB0292"),
                       const Divider(height: 20, thickness: 0.5),
                       _buildDataRow("SPB (NEW)", "DEFAULTKKMM338"),
                       const Divider(height: 20, thickness: 0.5),

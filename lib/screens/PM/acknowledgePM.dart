@@ -361,7 +361,7 @@ class _AcknowledgePMPageState extends State<AcknowledgePMPage> {
                 ),
                 const SizedBox(height: 25),
 
-                _buildModernLabel("COMPUTER SET CHECKLIST"),
+                _buildModernLabel("SET CHECKLIST"),
                 _buildWhiteCard(
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: Column(
@@ -408,7 +408,7 @@ class _AcknowledgePMPageState extends State<AcknowledgePMPage> {
                     ),
                   ),
                   child: const Text(
-                    "SAVE ACKNOWLEDGE",
+                    "FINISH",
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                 ),
