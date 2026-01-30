@@ -44,11 +44,13 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
     // Jika value dihantar dari page sebelumnya dan wujud dalam list, gunakan
     selectedTerminal = terminalOptions.contains(widget.terminal)
         ? widget.terminal
-        : terminalOptions.first;
+        //: terminalOptions.first;
+        : null;
 
     selectedLocation = locationOptions.contains(widget.location)
         ? widget.location
-        : locationOptions.first;
+        : null;
+        //: locationOptions.first;
   }
 
   @override
@@ -285,34 +287,17 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
                               style: TextStyle(fontSize: 13),
                             ),
                           ),*/
-                          _buildDropdownRow(
-                            label: "TERMINAL :",
-                            selectedValue: selectedTerminal,
-                            options: terminalOptions,
-                            onChanged: (val) {
-                              setState(() {
-                                selectedTerminal = val;
-                              });
-                            },
-                          ),
+                          _buildInfoRow(label: "TERMINAL :", value: selectedTerminal),
                           const SizedBox(height: 5),
-                          _buildDropdownRow(
-                            label: "LOCATION :",
-                            selectedValue: selectedLocation,
-                            options: locationOptions,
-                            onChanged: (val) {
-                              setState(() {
-                                selectedLocation = val;
-                              });
-                            },
-                          ),
+                          _buildInfoRow(label: "LOCATION :", value: selectedLocation),
+
                         ],
                       ),
 
                       // ===== ICON ATAS, DALAM PUTIH =====
                       Positioned(
-                        right: 10,
-                        top: 1,
+                        right: 14,
+                        top: 13,
                         child: GestureDetector(
                           onTap: () {
                             Navigator.push(
@@ -462,55 +447,37 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
     );
   }
 
-  Widget _buildDropdownRow({
-    required String label,
-    required String? selectedValue,
-    required List<String> options,
-    required Function(String?) onChanged,
-  }) {
-    return Row(
-      children: [
-        Container(
-          width: 80,
-          padding: const EdgeInsets.all(5),
+  // Gantikan _buildDropdownRow dengan _buildInfoRow
+Widget _buildInfoRow({required String label, String? value}) {
+  return Row(
+    children: [
+      Container(
+        width: 80,
+        padding: const EdgeInsets.all(5),
+        child: Text(
+          label,
+          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+        ),
+      ),
+      const SizedBox(width: 10),
+      Expanded(
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+          decoration: BoxDecoration(
+            color: Colors.grey[350],
+            border: Border.all(color: Colors.grey),
+            borderRadius: BorderRadius.circular(4),
+          ),
           child: Text(
-            label,
-            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+            value ?? "-",
+            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
           ),
         ),
-        const SizedBox(width: 10),
-        Expanded(
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 0),
-            decoration: BoxDecoration(
-              color: Colors.grey[350],
-              border: Border.all(color: Colors.grey),
-            ),
-            child: DropdownButton<String>(
-              value: selectedValue,
-              isExpanded: true,
-              underline: const SizedBox(),
-              items: options
-                  .map(
-                    (option) => DropdownMenuItem<String>(
-                      value: option,
-                      child: Text(
-                        option,
-                        style: const TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  )
-                  .toList(),
-              onChanged: onChanged,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+      ),
+    ],
+  );
+}
+
 
   Widget _buildTechnicalRow(String tag, String name) {
     return Row(

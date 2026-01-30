@@ -447,10 +447,13 @@ class DashboardPage extends StatelessWidget {
             "Options",
             destination: null,
           ),
-        ],
-      ),
-    );
-  }
+      ], // <-- tutup list children
+    ),
+  );
+}
+
+
+
 
   Widget _buildNavItem(
     BuildContext context,
