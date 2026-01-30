@@ -36,11 +36,7 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
     'Terminal C',
   ];
 
-  final List<String> locationOptions = [
-    'Level 1',
-    'Level 2',
-    'Level 3',
-  ];
+  final List<String> locationOptions = ['Level 1', 'Level 2', 'Level 3'];
 
   @override
   void initState() {
@@ -83,8 +79,11 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: IconButton(
-                    icon: const Icon(Icons.arrow_back_ios_new,
-                        color: Colors.white, size: 35),
+                    icon: const Icon(
+                      Icons.arrow_back_ios_new,
+                      color: Colors.white,
+                      size: 35,
+                    ),
                     onPressed: () => Navigator.pop(context),
                   ),
                 ),
@@ -96,9 +95,10 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
                     Text(
                       'Acknowledge',
                       style: TextStyle(
-                          fontSize: 26,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
+                        fontSize: 26,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
                   ],
                 ),
@@ -116,9 +116,10 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: [
                   BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
-                      blurRadius: 10,
-                      offset: const Offset(0, 4)),
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
+                  ),
                 ],
               ),
               child: ClipRRect(
@@ -127,26 +128,32 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
                   children: [
                     Container(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 18, vertical: 12),
+                        horizontal: 18,
+                        vertical: 12,
+                      ),
                       decoration: BoxDecoration(
                         color: widget.status.toUpperCase() == 'NEW'
                             ? Colors.redAccent
                             : (widget.status.toUpperCase() == 'PENDING'
-                                ? const Color.fromARGB(255, 243, 195, 72)
-                                : Colors.grey),
+                                  ? const Color.fromARGB(255, 243, 195, 72)
+                                  : Colors.grey),
                       ),
-                      child: Text(widget.status.toUpperCase(),
-                          style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold)),
+                      child: Text(
+                        widget.status.toUpperCase(),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                     const Expanded(
                       child: Text(
                         'H202601141050510002',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black87),
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                        ),
                       ),
                     ),
                   ],
@@ -168,31 +175,47 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
                       CircleAvatar(
                         radius: 26,
                         backgroundColor: Colors.blue.shade50,
-                        child: const Icon(Icons.person,
-                            color: Colors.blue, size: 30),
+                        child: const Icon(
+                          Icons.person,
+                          color: Colors.blue,
+                          size: 30,
+                        ),
                       ),
                       const SizedBox(width: 15),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(widget.name.toUpperCase(),
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 13)),
-                            Text(widget.department.toUpperCase(),
-                                style: TextStyle(
-                                    color: Colors.grey[700], fontSize: 12)),
+                            Text(
+                              widget.name.toUpperCase(),
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 13,
+                              ),
+                            ),
+                            Text(
+                              widget.department.toUpperCase(),
+                              style: TextStyle(
+                                color: Colors.grey[700],
+                                fontSize: 12,
+                              ),
+                            ),
                             const SizedBox(height: 8),
                             Row(
                               children: const [
-                                Icon(Icons.phone_rounded,
-                                    color: Colors.green, size: 16),
+                                Icon(
+                                  Icons.phone_rounded,
+                                  color: Colors.green,
+                                  size: 16,
+                                ),
                                 SizedBox(width: 6),
-                                Text("0197777777",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 13)),
+                                Text(
+                                  "0197777777",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 13,
+                                  ),
+                                ),
                               ],
                             ),
                           ],
@@ -211,49 +234,49 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
                       Column(
                         children: [
                           Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: Colors.grey[200],
-                          borderRadius: BorderRadius.circular(14),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(12),
-                              decoration: BoxDecoration(
-                                color: Colors.grey[350],
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-
-                              child: const Text(
-                                "INTERNET / WIRELESS",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 12,
-                                ),
-                              ),  
+                            width: double.infinity,
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: Colors.grey[200],
+                              borderRadius: BorderRadius.circular(14),
                             ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.all(12),
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[350],
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
 
-                            SizedBox(height: 8),
-                            Padding(
-                              padding: const EdgeInsets.all(12),
-                              child: Text(
-                                "Can't access internet",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
+                                  child: const Text(
+                                    "INTERNET / WIRELESS",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
 
-                      const SizedBox(height: 12),
+                                SizedBox(height: 8),
+                                Padding(
+                                  padding: const EdgeInsets.all(12),
+                                  child: Text(
+                                    "Can't access internet",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+
+                          const SizedBox(height: 12),
 
                           /*const Padding(
                             padding: EdgeInsets.symmetric(vertical: 10),
@@ -288,46 +311,45 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
 
                       // ===== ICON ATAS, DALAM PUTIH =====
                       Positioned(
-                            right:12,
-                            top: 13,
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => InventoryComplaintsPage(
-                                      name: widget.name,
-                                      department: widget.department, 
-                                      terminal: selectedTerminal ?? "-",
-                                    ),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.9),
-                                  shape: BoxShape.circle,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.1),
-                                      blurRadius: 4,
-                                      offset: const Offset(0, 2),
-                                    ),
-                                  ],
-                                ),
-                                child: const Icon(
-                                  Icons.inventory_2_rounded,
-                                  color: Color(0xFF0089BB),
-                                  size: 22,
+                        right: 10,
+                        top: 1,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => InventoryComplaintsPage(
+                                  name: widget.name,
+                                  department: widget.department,
+                                  terminal: selectedTerminal ?? "-",
                                 ),
                               ),
+                            );
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.9),
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.1),
+                                  blurRadius: 4,
+                                  offset: const Offset(0, 2),
+                                ),
+                              ],
+                            ),
+                            child: const Icon(
+                              Icons.inventory_2_rounded,
+                              color: Color(0xFF0089BB),
+                              size: 22,
                             ),
                           ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
-
 
                 const SizedBox(height: 30),
 
@@ -349,16 +371,15 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
                             );
                           },
                           child: const Icon(
-                              Icons.chat_bubble_outline_rounded,
-                              size: 26),
+                            Icons.chat_bubble_outline_rounded,
+                            size: 26,
+                          ),
                         ),
                       ),
                       const SizedBox(height: 8),
-                      _buildTechnicalRow(
-                          "NEW", "SHARIFFUDDIN BIN ALI BASHA"),
+                      _buildTechnicalRow("NEW", "SHARIFFUDDIN BIN ALI BASHA"),
                       const SizedBox(height: 10),
-                      _buildTechnicalRow(
-                          "NEW", "MOHD NAZRIN BIN ABU HASSAN"),
+                      _buildTechnicalRow("NEW", "MOHD NAZRIN BIN ABU HASSAN"),
                     ],
                   ),
                 ),
@@ -369,7 +390,9 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const ComplaintsPage()),
+                      MaterialPageRoute(
+                        builder: (context) => const ComplaintsPage(),
+                      ),
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -377,11 +400,13 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
                     foregroundColor: Colors.white,
                     minimumSize: const Size(double.infinity, 55),
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12)),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
-                  child: const Text("SAVE ACKNOWLEDGE",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 16)),
+                  child: const Text(
+                    "FINISH",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
                 ),
               ],
             ),
@@ -448,26 +473,36 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
         Container(
           width: 80,
           padding: const EdgeInsets.all(5),
-          child: Text(label,
-              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+          child: Text(
+            label,
+            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+          ),
         ),
         const SizedBox(width: 10),
         Expanded(
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 0),
             decoration: BoxDecoration(
-                color: Colors.grey[350], border: Border.all(color: Colors.grey)),
+              color: Colors.grey[350],
+              border: Border.all(color: Colors.grey),
+            ),
             child: DropdownButton<String>(
               value: selectedValue,
               isExpanded: true,
               underline: const SizedBox(),
               items: options
-                  .map((option) => DropdownMenuItem<String>(
-                        value: option,
-                        child: Text(option,
-                            style: const TextStyle(
-                                fontSize: 13, fontWeight: FontWeight.w600)),
-                      ))
+                  .map(
+                    (option) => DropdownMenuItem<String>(
+                      value: option,
+                      child: Text(
+                        option,
+                        style: const TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  )
                   .toList(),
               onChanged: onChanged,
             ),
@@ -526,23 +561,37 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _buildNavItem(context, Icons.home_outlined, "Home",
-              destination: const DashboardPage()),
+          _buildNavItem(
+            context,
+            Icons.home_outlined,
+            "Home",
+            destination: const DashboardPage(),
+          ),
           _buildQRItem(context),
-          _buildNavItem(context, Icons.list_alt_rounded, "Options",
-              destination: const ListOptionsPage()),
+          _buildNavItem(
+            context,
+            Icons.list_alt_rounded,
+            "Options",
+            destination: const ListOptionsPage(),
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildNavItem(BuildContext context, IconData icon, String label,
-      {Widget? destination}) {
+  Widget _buildNavItem(
+    BuildContext context,
+    IconData icon,
+    String label, {
+    Widget? destination,
+  }) {
     return InkWell(
       onTap: () {
         if (destination != null) {
           Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => destination));
+            context,
+            MaterialPageRoute(builder: (context) => destination),
+          );
         }
       },
       child: Column(
@@ -557,14 +606,17 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
 
   Widget _buildQRItem(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const QRScannerPage())),
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const QRScannerPage()),
+      ),
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: const BoxDecoration(
-            color: Colors.black, shape: BoxShape.circle),
-        child:
-            const Icon(Icons.qr_code_scanner, color: Colors.white, size: 30),
+          color: Colors.black,
+          shape: BoxShape.circle,
+        ),
+        child: const Icon(Icons.qr_code_scanner, color: Colors.white, size: 30),
       ),
     );
   }

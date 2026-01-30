@@ -69,7 +69,6 @@ class _ListOptionsState extends State<ListOptionsPage> {
                     ),
                   ),
 
-
                   _buildSectionContainer(
                     context: context,
                     title: "PM",
@@ -176,10 +175,12 @@ class _ListOptionsState extends State<ListOptionsPage> {
                   setState(() {
                     String query = value.toLowerCase();
                     filteredData = allData.where((item) {
-                      bool matchesName =
-                          item['name'].toLowerCase().contains(query);
-                      bool matchesType =
-                          item['type'].toLowerCase().contains(query);
+                      bool matchesName = item['name'].toLowerCase().contains(
+                        query,
+                      );
+                      bool matchesType = item['type'].toLowerCase().contains(
+                        query,
+                      );
                       return matchesName || matchesType;
                     }).toList();
                   });
@@ -187,10 +188,7 @@ class _ListOptionsState extends State<ListOptionsPage> {
                 decoration: const InputDecoration(
                   hintText: 'Search name / type',
                   hintStyle: TextStyle(color: Colors.grey),
-                  prefixIcon: Icon(
-                    Icons.search,
-                    color: Color(0xFF00AEEF),
-                  ),
+                  prefixIcon: Icon(Icons.search, color: Color(0xFF00AEEF)),
                   border: InputBorder.none,
                 ),
               ),
@@ -224,10 +222,7 @@ class _ListOptionsState extends State<ListOptionsPage> {
             padding: const EdgeInsets.only(left: 8, bottom: 15),
             child: Text(
               title,
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ),
 
@@ -398,13 +393,19 @@ class _ListOptionsState extends State<ListOptionsPage> {
   }
 
   // ================= BOTTOM BAR =================
-  Widget _buildNavItem(BuildContext context, IconData icon, String label,
-      {Widget? destination}) {
+  Widget _buildNavItem(
+    BuildContext context,
+    IconData icon,
+    String label, {
+    Widget? destination,
+  }) {
     return InkWell(
       onTap: () {
         if (destination != null) {
           Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => destination));
+            context,
+            MaterialPageRoute(builder: (context) => destination),
+          );
         }
       },
       child: Column(
@@ -419,14 +420,17 @@ class _ListOptionsState extends State<ListOptionsPage> {
 
   Widget _buildQRItem(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const QRScannerPage())),
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const QRScannerPage()),
+      ),
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: const BoxDecoration(
-            color: Colors.black, shape: BoxShape.circle),
-        child:
-            const Icon(Icons.qr_code_scanner, color: Colors.white, size: 30),
+          color: Colors.black,
+          shape: BoxShape.circle,
+        ),
+        child: const Icon(Icons.qr_code_scanner, color: Colors.white, size: 30),
       ),
     );
   }
