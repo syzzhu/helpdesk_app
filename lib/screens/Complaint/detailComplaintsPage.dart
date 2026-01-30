@@ -376,7 +376,7 @@ class _DetailComplaintsPageState extends State<DetailComplaintsPage> {
                 // BUTTON ACKNOWLEDGE
                 ElevatedButton(
                   onPressed: () {
-                    if (selectedTerminal == null || selectedLocation == null) {
+                    /*if (selectedTerminal == null || selectedLocation == null) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text(
@@ -384,7 +384,7 @@ class _DetailComplaintsPageState extends State<DetailComplaintsPage> {
                         ),
                       );
                       return;
-                    }
+                    }*/
                     Navigator.push(
                       context,
                       MaterialPageRoute(

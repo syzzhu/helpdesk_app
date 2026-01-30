@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:helpdesk_app/screens/Complaint/acknowlegeComplaints.dart';
 import 'package:helpdesk_app/screens/ListOption.dart';
+import 'package:helpdesk_app/screens/Login/login_page.dart';
 import 'package:helpdesk_app/screens/PM/PMPage.dart';
 import 'package:helpdesk_app/screens/comment_page.dart';
 import 'package:helpdesk_app/screens/Complaint/complaints.dart';
@@ -63,7 +64,7 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         //colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const DashboardPage(),
+      home: const LoginPage(),
     );
   }
 }
