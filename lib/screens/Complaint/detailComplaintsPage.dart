@@ -280,7 +280,7 @@ class _DetailComplaintsPageState extends State<DetailComplaintsPage> {
                             Container(
                               padding: const EdgeInsets.all(12),
                               decoration: BoxDecoration(
-                                color: Colors.white,
+                                color: Colors.grey[350],
                                 borderRadius: BorderRadius.circular(10),
                               ),
 

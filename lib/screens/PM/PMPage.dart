@@ -302,7 +302,7 @@ class _PMState extends State<PMPage> {
                       horizontal: 12,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.grey[100], // warna container pertama
+                      color: Colors.grey[200], // warna container pertama
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Text(
@@ -312,7 +312,7 @@ class _PMState extends State<PMPage> {
                         fontSize: 12,
                         color: Colors.grey[700],
                         height: 1.4,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.bold,
                       ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
@@ -328,7 +328,7 @@ class _PMState extends State<PMPage> {
                       horizontal: 12,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.grey[100], // warna container kedua
+                      color: Colors.grey[200], // warna container kedua
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Text(
@@ -338,7 +338,7 @@ class _PMState extends State<PMPage> {
                         fontSize: 12,
                         color: Colors.grey[700],
                         height: 1.4,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.bold,
                       ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,

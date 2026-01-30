@@ -296,12 +296,14 @@ class _OperationPageState extends State<OperationPage> {
               padding: const EdgeInsets.all(12),
               width: double.infinity,
               decoration: BoxDecoration(
-                color: Colors.grey[50],
+                color: Colors.grey[200],
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Text(
+                textAlign: TextAlign.center,
                 description,
                 style: TextStyle(
+                  fontWeight: FontWeight.bold,
                   fontSize: 11,
                   color: Colors.grey[700],
                   height: 1.4,

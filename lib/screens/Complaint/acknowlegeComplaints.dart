@@ -236,23 +236,55 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
                           Container(
                             width: double.infinity,
                             padding: const EdgeInsets.all(12),
-                            color: Colors.grey[200],
-                            child: const Text(
-                              "INTERNET / WIRELESS",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12,
-                              ),
+                            decoration: BoxDecoration(
+                              color: Colors.grey[200],
+                              borderRadius: BorderRadius.circular(14),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.all(12),
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[350],
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+
+                                  child: const Text(
+                                    "INTERNET / WIRELESS",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ),
+
+                                SizedBox(height: 8),
+                                Padding(
+                                  padding: const EdgeInsets.all(12),
+                                  child: Text(
+                                    "Can't access internet",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                          const Padding(
+
+                          const SizedBox(height: 12),
+
+                          /*const Padding(
                             padding: EdgeInsets.symmetric(vertical: 10),
                             child: Text(
                               "Can't access internet",
                               style: TextStyle(fontSize: 13),
                             ),
-                          ),
+                          ),*/
                           _buildDropdownRow(
                             label: "TERMINAL :",
                             selectedValue: selectedTerminal,

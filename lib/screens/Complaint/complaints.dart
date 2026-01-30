@@ -291,7 +291,7 @@ class _ComplaintsState extends State<ComplaintsPage> {
               padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
               width: double.infinity,
               decoration: BoxDecoration(
-                color: Colors.grey[100],
+                color: Colors.grey[200],
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Center(
@@ -299,10 +299,10 @@ class _ComplaintsState extends State<ComplaintsPage> {
                   description,
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 11,
+                    fontSize: 13,
                     color: Colors.grey[700],
                     height: 1.4,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.bold,
                   ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
