@@ -525,6 +525,10 @@ Widget _buildInfoRow({required String label, String? value}) {
   Widget _buildBottomNavigationBar(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 12),
+      decoration: BoxDecoration(
+        border: Border(top: BorderSide(color: Colors.grey.shade200)),
+        color: Colors.white,
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [

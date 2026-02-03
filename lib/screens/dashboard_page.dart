@@ -428,10 +428,7 @@ class DashboardPage extends StatelessWidget {
   Widget _buildBottomNavigationBar(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(top: BorderSide(color: Colors.grey.shade200)),
-      ),
+      decoration: const BoxDecoration(color: Colors.white),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
@@ -446,7 +443,7 @@ class DashboardPage extends StatelessWidget {
             context,
             Icons.list_alt_rounded,
             "Options",
-            destination: const ListOptionsPage() ,
+            destination: const ListOptionsPage(),
           ),
         ], // <-- tutup list children
       ),

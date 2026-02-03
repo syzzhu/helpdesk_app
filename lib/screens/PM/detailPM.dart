@@ -360,6 +360,7 @@ class DetailPM extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 12),
       decoration: BoxDecoration(
         border: Border(top: BorderSide(color: Colors.grey.shade200)),
+        color: Colors.white,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -390,11 +391,12 @@ class DetailPM extends StatelessWidget {
   }) {
     return InkWell(
       onTap: () {
-        if (destination != null)
+        if (destination != null) {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => destination),
           );
+        }
       },
       child: Column(
         mainAxisSize: MainAxisSize.min,

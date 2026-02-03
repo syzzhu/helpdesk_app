@@ -154,7 +154,7 @@ class _ComplaintsState extends State<ComplaintsPage> {
             ),
           ),
           // --- BOTTOM NAV BAR  ---
-          Container(
+          /*Container(
             padding: const EdgeInsets.symmetric(vertical: 12),
             decoration: BoxDecoration(
               color: Colors.white,
@@ -191,7 +191,8 @@ class _ComplaintsState extends State<ComplaintsPage> {
                 ),
               ],
             ),
-          ),
+          ),*/
+          _buildBottomNavigationBar(context),
         ],
       ),
     );
@@ -351,7 +352,7 @@ class _ComplaintsState extends State<ComplaintsPage> {
     );
   }*/
 
-  Widget _buildNavItem(
+  /*Widget _buildNavItem(
   BuildContext context,
   IconData icon,
   String label, {
@@ -373,6 +374,45 @@ class _ComplaintsState extends State<ComplaintsPage> {
           Icon(icon, size: 28, color: Colors.grey),
           Text(label,
               style: const TextStyle(fontSize: 11, color: Colors.grey)),
+        ],
+      ),
+    );
+  }*/
+
+   Widget _buildNavItem(BuildContext context, IconData icon, String label,
+      {Widget? destination}) {
+    return InkWell(
+      onTap: () {
+        if (destination != null) {
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => destination));
+        }
+      },
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 28, color: Colors.grey),
+          Text(label, style: const TextStyle(fontSize: 11, color: Colors.grey)),
+        ],
+      ),
+    );
+  }
+
+ Widget _buildBottomNavigationBar(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(top: BorderSide(color: Colors.grey.shade200)),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          _buildNavItem(context, Icons.home_outlined, "Home",
+              destination: const DashboardPage()),
+          _buildQRItem(context),
+          _buildNavItem(context, Icons.list_alt_rounded, "Options",
+              destination: const ListOptionsPage()),
         ],
       ),
     );
