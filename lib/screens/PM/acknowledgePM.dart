@@ -31,6 +31,8 @@ class _AcknowledgePMPageState extends State<AcknowledgePMPage> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    
     return Scaffold(
       backgroundColor: const Color(0xFFF8FAFC),
       body: Column(
@@ -86,7 +88,7 @@ class _AcknowledgePMPageState extends State<AcknowledgePMPage> {
           // --- TICKET ID BAR ---
           Center(
             child: Container(
-              width: 350,
+              width: size.width * 0.9,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(12),

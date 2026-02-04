@@ -9,6 +9,7 @@ import 'qr_scanner_page.dart';
 import 'Operation/operation.dart';
 import 'package:helpdesk_app/utils/shift_config.dart'; // Pastikan ShiftHelper ada dalam fail ini
 import 'dart:async';
+import 'ListOption.dart';
 
 class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});
@@ -435,11 +436,19 @@ class DashboardPage extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _buildNavItem(context, Icons.home_outlined, "Home",
-              destination: const DashboardPage()),
+          _buildNavItem(
+            context,
+            Icons.home_outlined,
+            "Home",
+            destination: const DashboardPage(),
+          ),
           _buildQRItem(context),
-          _buildNavItem(context, Icons.list_alt_rounded, "Options",
-              destination: const ListOptionsPage()),
+          _buildNavItem(
+            context,
+            Icons.list_alt_rounded,
+            "Options",
+            destination: const ListOptionsPage(),
+          ),
         ],
       ),
     );

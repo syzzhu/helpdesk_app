@@ -78,7 +78,7 @@ class DetailOperationPage extends StatelessWidget {
           // --- TICKET ID BAR (Logik Warna Ikut Status) ---
           Center(
             child: Container(
-              width: 350,
+              width: size.width * 0.9,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(12),

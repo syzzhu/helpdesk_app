@@ -91,7 +91,8 @@ class _DetailComplaintsPageState extends State<DetailComplaintsPage> {
           // --- TICKET ID BAR (STATUS) ---
           Center(
             child: Container(
-              width: 350,
+              width: size.width * 0.9,
+              //padding: const EdgeInsets.all(15),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(12),

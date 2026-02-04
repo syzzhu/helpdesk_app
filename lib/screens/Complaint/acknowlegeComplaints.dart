@@ -112,7 +112,7 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
           // STATUS BOX
           Center(
             child: Container(
-              width: 350,
+              width: size.width * 0.9,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(12),
