@@ -148,6 +148,7 @@ class _ComplaintsState extends State<ComplaintsPage> {
                     name: item['name'],
                     department: item['dept'],
                     description: item['desc'],
+                    data: item,
                   ),
                 );
               },
@@ -207,6 +208,7 @@ class _ComplaintsState extends State<ComplaintsPage> {
     required String name,
     required String department,
     required String description,
+    required Map<String, dynamic> data,
   }) {
     return GestureDetector(
       onTap: () {
@@ -214,9 +216,7 @@ class _ComplaintsState extends State<ComplaintsPage> {
           context,
           MaterialPageRoute(
             builder: (context) => DetailComplaintsPage(
-              status: status,
-              name: name,
-              department: department,
+              data: data,
             ),
           ),
         );

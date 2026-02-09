@@ -68,7 +68,7 @@ class _AcknowledgePMPageState extends State<AcknowledgePMPage> {
                 const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.article_rounded, color: Colors.white, size: 32),
+                    Icon(Icons.assignment_turned_in, color: Colors.white, size: 32),
                     SizedBox(width: 12),
                     Text(
                       'Acknowledge',

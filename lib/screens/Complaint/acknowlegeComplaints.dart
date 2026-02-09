@@ -92,7 +92,7 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: const [
-                    Icon(Icons.description, color: Colors.white, size: 40),
+                    Icon(Icons.assignment_turned_in, color: Colors.white, size: 40),
                     SizedBox(width: 10),
                     Text(
                       'Acknowledge',

@@ -55,7 +55,7 @@ class DetailOperationPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Icon(
-                      Icons.article_rounded,
+                      Icons.description,
                       color: Colors.white,
                       size: 32,
                     ),

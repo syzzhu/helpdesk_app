@@ -245,9 +245,7 @@ class _ListOptionsState extends State<ListOptionsPage> {
                               context,
                               MaterialPageRoute(
                                 builder: (_) => DetailComplaintsPage(
-                                  status: item['status'],
-                                  name: item['name'],
-                                  department: item['dept'],
+                                  data: item,
                                 ),
                               ),
                             );
