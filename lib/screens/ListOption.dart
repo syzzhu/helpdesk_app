@@ -6,6 +6,7 @@ import 'package:helpdesk_app/screens/PM/detailPM.dart';
 import 'package:helpdesk_app/screens/dashboard_page.dart';
 import 'package:helpdesk_app/screens/qr_scanner_page.dart';
 import 'package:helpdesk_app/screens/test.dart';
+import 'package:helpdesk_app/model/complaints_model.dart';
 
 class ListOptionsPage extends StatefulWidget {
   const ListOptionsPage({super.key});
@@ -241,14 +242,31 @@ class _ListOptionsState extends State<ListOptionsPage> {
                   onTap: enableCardTap
                       ? () {
                           if (title == "Complaints") {
+                            // Buat objek complaint di sini supaya senang debug ralat
+                            final complaintObj = Complaint(
+                              id: 0,
+                              taskId: "REQ-${item['status'] == 'NEW' ? '2026001' : '2026002'}",
+                              status: item['status'],
+                              name: item['name'].toString().split('\n')[0],
+                              department: item['dept'] ?? "",
+                              terminalId: "NB-0292",
+                              location: item['dept'] ?? "",
+                              category: item['type'] ?? "UNKNOWN",
+                              problemDetail: item['desc'] ?? "",
+                              units: "",  // ⚡ wajib letak walaupun kosong
+                              hp: "",     // ⚡ wajib letak walaupun kosong
+                            );
+
+
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (_) => DetailComplaintsPage(
-                                  data: item,
-                                ),
+                                  //data: item,
+                                  complaint: complaintObj,
                               ),
-                            );
+                            ),
+                          );  
                           } else if (destinationBuilder != null) {
                             Navigator.push(
                               context,
@@ -293,7 +311,7 @@ class _ListOptionsState extends State<ListOptionsPage> {
             ),
           ],
         ),
-        
+
         child: Column(
           children: [
             Padding(

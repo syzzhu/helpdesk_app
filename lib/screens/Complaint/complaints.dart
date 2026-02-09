@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:helpdesk_app/screens/ListOption.dart';
+import 'package:helpdesk_app/model/complaints_model.dart';
 import 'detailComplaintsPage.dart';
-import '../dashboard_page.dart'; // Pastikan import dashboard ada
+import '../dashboard_page.dart';
 import '../qr_scanner_page.dart';
+import 'package:helpdesk_app/screens/ListOption.dart';
 
 class ComplaintsPage extends StatefulWidget {
   const ComplaintsPage({super.key});
@@ -12,305 +13,200 @@ class ComplaintsPage extends StatefulWidget {
 }
 
 class _ComplaintsState extends State<ComplaintsPage> {
-  // Letak dalam class _ComplaintsState
   TextEditingController searchController = TextEditingController();
-  List<Map<String, dynamic>> allData = []; // Data asal
-  List<Map<String, dynamic>> filteredData = []; // Data yang akan dipaparkan
+  List<Complaint> allData = [];
+  List<Complaint> filteredData = [];
 
   @override
   void initState() {
     super.initState();
-    // Masukkan data anda di sini supaya boleh di-filter
-    allData = [
+    loadData();
+  }
+
+  void loadData() {
+    var rawJson = [
       {
-        'name': 'KAMAL AZUDIN BIN MD.YUSOF\nPENYIARAN (TV & RADIO)',
-        'dept': '15th Floor - BERNAMA RADIO',
-        'type': 'INTERNET / WIRELESS',
-        'status': 'NEW',
-        'desc': 'Can’t access internet',
-        'color': Colors.redAccent,
+        "id": 6982,
+        "task_id": "H202601300955310037",
+        "problem_detail": "printer prob\r\n\r\nintest: mubin",
+        "ticket_status": "NEW",
+        "name": "WAN NOR AZRIYANA BINTI WAN ALI",
+        "terminal_id": "2342",
+        "description":
+        "<b>PRINTER / SCANNER</b>", // Logik model akan ambil teks dalam <b>
+        "location": "11th Floor",
+        "department": "IT Department",
       },
       /*{
-        'name': 'KAMAL AZUDIN BIN MD.YUSOF\nPENYIARAN (TV & RADIO)',
-        'dept': '15th Floor - BERNAMA RADIO',
-        'type': 'NOTEBOOK/LAPTOP/IPAD/MACBOOK',
-        'status': 'PENDING',
-        'desc': 'PC Hang',
-        'color': Colors.orange,
+        "id": 6983,
+        "task_id": "H202601301020440099",
+        "problem_detail": "Internet slow\r\n\r\nurgent",
+        "ticket_status": "NEW",
+        "name": "KAMAL AZUDIN BIN MD.YUSOF",
+        "terminal_id": "1010",
+        "description": "<b>INTERNET / WIRELESS</b>",
+        "location": "15th Floor",
       },*/
     ];
-    filteredData = allData;
+
+    setState(() {
+      allData = rawJson.map((item) => Complaint.fromJson(item)).toList();
+      filteredData = allData;
+    });
+  }
+
+  Color _getStatusColor(String status) {
+    switch (status.toUpperCase()) {
+      case 'NEW':
+        return const Color(0xFFB73C3C);
+      case 'PENDING':
+        return Colors.orange;
+      case 'COMPLETED':
+        return Colors.green;
+      default:
+        return Colors.grey;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size; // dapatkan saiz skrin
     return Scaffold(
       backgroundColor: Colors.grey[100],
       body: Column(
         children: [
-          // --- HEADER SECTION ---
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.only(top: 60, bottom: 30),
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Color(0xFF00AEEF), Color(0xFF0089BB)],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(30),
-                bottomRight: Radius.circular(30),
-              ),
-            ),
-            child: Column(
-              children: [
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.report, size: 42, color: Colors.white),
-                    SizedBox(width: 12),
-                    Text(
-                      'Complaints',
-                      style: TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.w800,
-                        color: Colors.white,
-                        letterSpacing: 1.2,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 25),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(15),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
-                          blurRadius: 10,
-                          offset: const Offset(0, 5),
-                        ),
-                      ],
-                    ),
-                    child: TextField(
-                      controller: searchController,
-                      onChanged: (value) {
-                        setState(() {
-                          String query = value.toLowerCase();
-                          filteredData = allData.where((item) {
-                            // 1. Check nama
-                            bool matchesName = item['name']
-                                .toLowerCase()
-                                .contains(query);
-                            // 2. Check type
-                            bool matchesType = item['type']
-                                .toLowerCase()
-                                .contains(query);
-                            return matchesName || matchesType;
-                          }).toList();
-                        });
-                      },
-                      decoration: const InputDecoration(
-                        hintText: 'Search name / type',
-                        hintStyle: TextStyle(color: Colors.grey),
-                        prefixIcon: Icon(
-                          Icons.search,
-                          color: Color(0xFF00AEEF),
-                        ),
-                        border: InputBorder.none,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          // --- LIST OF CARDS ---
+          _buildHeader(),
           Expanded(
             child: ListView.builder(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
               itemCount: filteredData.length,
               itemBuilder: (context, index) {
                 final item = filteredData[index];
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 18),
-                  child: _buildOperationCard(
-                    context,
-                    type: item['type'],
-                    status: item['status'],
-                    statusColor: item['color'],
-                    name: item['name'],
-                    department: item['dept'],
-                    description: item['desc'],
-                    data: item,
-                  ),
-                );
+                return _buildOperationCard(context, item);
               },
             ),
           ),
-          // --- BOTTOM NAV BAR  ---
-          /*Container(
-            padding: const EdgeInsets.symmetric(vertical: 12),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
-                  blurRadius: 10,
-                  offset: const Offset(0, -2),
+        ],
+      ),
+      bottomNavigationBar: _buildBottomNavigationBar(context),
+    );
+  }
+  Widget _buildHeader() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.only(top: 60, bottom: 30),
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Color(0xFF00AEEF), Color(0xFF0089BB)],
+        ),
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(30),
+          bottomRight: Radius.circular(30),
+        ),
+      ),
+      child: Column(
+        children: [
+          const Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.report, size: 42, color: Colors.white),
+              SizedBox(width: 12),
+              Text(
+                'Complaints',
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.w800,
+                  color: Colors.white,
                 ),
-              ],
+              ),
+            ],
+          ),
+          const SizedBox(height: 25),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: TextField(
+                controller: searchController,
+                onChanged: (value) {
+                  setState(() {
+                    filteredData = allData
+                        .where(
+                          (item) =>
+                              item.name.toLowerCase().contains(
+                                value.toLowerCase(),
+                              ) ||
+                              item.category.toLowerCase().contains(
+                                value.toLowerCase(),
+                              ),
+                        )
+                        .toList();
+                  });
+                },
+                decoration: const InputDecoration(
+                  hintText: 'Search name / type',
+                  prefixIcon: Icon(Icons.search),
+                  border: InputBorder.none,
+                ),
+              ),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                // Home Page (Klik untuk ke Dashboard)
-                _buildNavItem(
-                  context,
-                  Icons.home_outlined,
-                  "Home",
-                  //false,
-                  //size,
-                  destination: const DashboardPage(),
-                ),
-
-                _buildQRItem(context),
-
-                _buildNavItem(
-                  context,
-                  Icons.list_alt_rounded,
-                  "Options",
-                  //false,
-                  //size,
-                  destination: const ListOptionsPage(),
-                ),
-              ],
-            ),
-          ),*/
-          _buildBottomNavigationBar(context),
+          ),
         ],
       ),
     );
   }
 
-  // --- HELPER CARD ---
-  Widget _buildOperationCard(
-    BuildContext context, {
-    required String type,
-    required String status,
-    required Color statusColor,
-    required String name,
-    required String department,
-    required String description,
-    required Map<String, dynamic> data,
-  }) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => DetailComplaintsPage(
-              data: data,
+  Widget _buildOperationCard(BuildContext context, Complaint item) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 18),
+      child: GestureDetector(
+        // Dalam ComplaintsPage
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => DetailComplaintsPage(
+                complaint: item, // pass object terus
+              ),
             ),
+          );
+        },
+
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 15)],
           ),
-        );
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              blurRadius: 15,
-              offset: const Offset(0, 8),
-            ),
-          ],
-        ),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(12),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _buildChip(type, Colors.blue.shade50, Colors.blue.shade700),
-                  _buildChip(status, statusColor.withOpacity(0.1), statusColor),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: Row(
-                children: [
-                  CircleAvatar(
-                    radius: 28,
-                    backgroundColor: Colors.grey[200],
-                    child: const Icon(
-                      Icons.person_rounded,
-                      color: Colors.grey,
-                      size: 35,
-                    ),
-                  ),
-                  const SizedBox(width: 15),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          name,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 13,
-                            color: Colors.black87,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          department,
-                          style: TextStyle(
-                            fontSize: 10,
-                            color: Colors.grey[600],
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            // --- DESCRIPTION (CENTER) ---
-            Container(
-              margin: const EdgeInsets.all(12),
-              padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Center(
-                child: Text(
-                  description,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: Colors.grey[700],
-                    height: 1.4,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(12),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _buildChip(item.category, Colors.blue.shade50, Colors.blue.shade700),
+                    _buildChip(item.status, _getStatusColor(item.status).withOpacity(0.1), _getStatusColor(item.status)),
+                  ],
                 ),
               ),
-            ),
-          ],
+              ListTile(
+                leading: CircleAvatar(backgroundColor: Colors.grey[200], child: const Icon(Icons.person, color: Colors.grey)),
+                title: Text(item.name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+                subtitle: Text(item.location, style: const TextStyle(fontSize: 10)),
+              ),
+              Container(
+                margin: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(14),
+                width: double.infinity,
+                decoration: BoxDecoration(color: Colors.grey[200], borderRadius: BorderRadius.circular(12)),
+                child: Text(item.problemDetail, textAlign: TextAlign.center, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -318,7 +214,7 @@ class _ComplaintsState extends State<ComplaintsPage> {
 
   Widget _buildChip(String label, Color bg, Color text) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 19, vertical: 13),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
         color: bg,
         borderRadius: BorderRadius.circular(10),
@@ -334,59 +230,47 @@ class _ComplaintsState extends State<ComplaintsPage> {
     );
   }
 
-  // --- HELPER NAV ITEM DENGAN NAVIGASI ---
-  /*Widget _buildBottomNavigationBar(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+  Widget _buildBottomNavigationBar(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: size.height * 0.015),
+      padding: const EdgeInsets.symmetric(vertical: 12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(top: BorderSide(color: Colors.grey.shade200)),
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _buildNavItem(context, Icons.home_outlined, "Home",
-              destination: const DashboardPage()),
+          _buildNavItem(
+            context,
+            Icons.home_outlined,
+            "Home",
+            destination: const DashboardPage(),
+          ),
           _buildQRItem(context),
-          _buildNavItem(context, Icons.list_alt_rounded, "Options",
-              destination: const ListOptionsPage()),
+          _buildNavItem(
+            context,
+            Icons.list_alt_rounded,
+            "Options",
+            destination: const ListOptionsPage(),
+          ),
         ],
       ),
     );
-  }*/
+  }
 
-  /*Widget _buildNavItem(
-  BuildContext context,
-  IconData icon,
-  String label, {
-  Widget? destination,
+  Widget _buildNavItem(
+    BuildContext context,
+    IconData icon,
+    String label, {
+    Widget? destination,
   }) {
     return InkWell(
       onTap: () {
-        debugPrint("$label tapped");
-        if (destination != null) {
+        if (destination != null)
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => destination),
           );
-        }
-      },
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 28, color: Colors.grey),
-          Text(label,
-              style: const TextStyle(fontSize: 11, color: Colors.grey)),
-        ],
-      ),
-    );
-  }*/
-
-   Widget _buildNavItem(BuildContext context, IconData icon, String label,
-      {Widget? destination}) {
-    return InkWell(
-      onTap: () {
-        if (destination != null) {
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => destination));
-        }
       },
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -398,37 +282,19 @@ class _ComplaintsState extends State<ComplaintsPage> {
     );
   }
 
- Widget _buildBottomNavigationBar(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(top: BorderSide(color: Colors.grey.shade200)),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _buildNavItem(context, Icons.home_outlined, "Home",
-              destination: const DashboardPage()),
-          _buildQRItem(context),
-          _buildNavItem(context, Icons.list_alt_rounded, "Options",
-              destination: const ListOptionsPage()),
-        ],
-      ),
-    );
-  }
-
-
   Widget _buildQRItem(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const QRScannerPage())),
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const QRScannerPage()),
+      ),
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: const BoxDecoration(
-            color: Colors.black, shape: BoxShape.circle),
-        child:
-            const Icon(Icons.qr_code_scanner, color: Colors.white, size: 30),
+          color: Colors.black,
+          shape: BoxShape.circle,
+        ),
+        child: const Icon(Icons.qr_code_scanner, color: Colors.white, size: 30),
       ),
     );
   }
