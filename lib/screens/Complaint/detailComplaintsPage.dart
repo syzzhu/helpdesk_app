@@ -49,25 +49,26 @@ class _DetailComplaintsPageState extends State<DetailComplaintsPage> {
     return Colors.grey;
   }
 
- bool _shouldShowAcknowledgeButton() {
-  if (widget.complaint.status.toUpperCase().trim() != 'NEW') {
-    return false;
+  bool _shouldShowAcknowledgeButton() {
+    if (widget.complaint.status.toUpperCase().trim() != 'NEW') {
+      return false;
+    }
+
+    // FIX: Check if assignTo is null OR empty safely
+    if (widget.complaint.assignTo == null ||
+        widget.complaint.assignTo.isEmpty) {
+      return true;
+    }
+
+    final hasUnacknowledged =
+        widget.complaint.assignTo?.any(
+          (assign) =>
+              assign.status?.toUpperCase().trim() == 'NEW' ||
+              assign.status?.toUpperCase().trim() == 'PENDING',
+        ) ??
+        false; // Jika assignTo null, dia akan return false
+    return hasUnacknowledged;
   }
-
-  // FIX: Check if assignTo is null OR empty safely
-  if (widget.complaint.assignTo == null || widget.complaint.assignTo.isEmpty) {
-    return true;
-  }
-
-  final hasUnacknowledged = widget.complaint.assignTo.any(
-    (assign) =>
-        assign.status.toUpperCase().trim() == 'NEW' ||
-        assign.status.toUpperCase().trim() == 'PENDING',
-  );
-
-  return hasUnacknowledged;
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -206,7 +207,7 @@ class _DetailComplaintsPageState extends State<DetailComplaintsPage> {
                                 ),
                                 const SizedBox(height: 4),
 
-                                // UNIT (Point No. 2)
+                                // UNIT
                                 Row(
                                   children: [
                                     const Icon(
@@ -228,7 +229,7 @@ class _DetailComplaintsPageState extends State<DetailComplaintsPage> {
                                 ),
                                 const SizedBox(height: 4),
 
-                                // NOMBOR TELEFON (Point No. 2)
+                                // NOMBOR TELEFON
                                 Row(
                                   children: [
                                     const Icon(
@@ -240,8 +241,7 @@ class _DetailComplaintsPageState extends State<DetailComplaintsPage> {
                                     Text(
                                       complaint.hp,
                                       style: const TextStyle(
-                                        color: Colors.green,
-                                        fontWeight: FontWeight.bold,
+                                        color: Colors.grey,
                                         fontSize: 12,
                                       ),
                                     ),
@@ -261,47 +261,70 @@ class _DetailComplaintsPageState extends State<DetailComplaintsPage> {
                 _buildCleanBox(
                   child: Column(
                     children: [
+                      // --- KOTAK INFO MASALAH ---
                       Container(
                         width: double.infinity,
-                        padding: const EdgeInsets.all(12),
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 20,
+                          horizontal: 16,
+                        ),
                         decoration: BoxDecoration(
-                          color: Colors.grey[200],
-                          borderRadius: BorderRadius.circular(14),
+                          color: const Color(0xFFF8FAFC),
+                          borderRadius: BorderRadius.circular(18),
+                          border: Border.all(
+                            color: Colors.blueGrey.withOpacity(0.05),
+                          ),
                         ),
                         child: Column(
                           children: [
+                            // 1. CATEGORY BADGE
                             Container(
-                              padding: const EdgeInsets.all(10),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 6,
+                              ),
                               decoration: BoxDecoration(
-                                color: Colors.grey[350],
-                                borderRadius: BorderRadius.circular(10),
+                                color: const Color(0xFF0EA5E9).withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(8),
                               ),
                               child: Text(
-                                complaint.category,
-                                textAlign: TextAlign.center,
+                                complaint.category.toUpperCase(),
                                 style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 12,
+                                  color: Color(0xFF0284C7),
+                                  fontWeight: FontWeight.w900,
+                                  fontSize: 10,
+                                  letterSpacing: 1.1,
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 8),
+
+                            // 2. GARIS PEMISAH HALUS (Antara Category & Description)
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 15),
+                              child: Divider(
+                                height: 1,
+                                thickness: 1.5,
+                                indent: 0,
+                                endIndent: 0,
+                                color: Colors.blueGrey.withOpacity(0.2),
+                              ),
+                            ),
+
+                            // 3. PROBLEM DETAIL (DESCRIPTION)
                             Text(
                               complaint.problemDetail,
                               textAlign: TextAlign.center,
                               style: const TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
+                                fontSize: 13,
+                                color: Color.fromARGB(255, 25, 25, 26),
                               ),
                             ),
                           ],
                         ),
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: 20),
 
                       // DROPBOWN UNTUK TERMINAL & LOKASI
-                      // --- DROPBOWN UNTUK TERMINAL ---
-                      // --- DROPBOWN UNTUK TERMINAL ---
                       _buildDropdownRow(
                         label: "TERMINAL :",
                         selectedValue:
@@ -365,7 +388,6 @@ class _DetailComplaintsPageState extends State<DetailComplaintsPage> {
   }
 
   // --- RE-USE WIDGETS AND HELPERS ---
-  // (Sila kekalkan fungsi _buildModernLabel, _buildCleanBox, _buildDropdownRow dsb anda)
 }
 
 Widget _buildModernLabel(String text) {
@@ -474,48 +496,63 @@ Widget _buildDropdownRow({
   required List<String> options,
   required Function(String?) onChanged,
 }) {
-  return Row(
-    children: [
-      Container(
-        width: 80,
-        padding: const EdgeInsets.all(5),
-        //decoration: BoxDecoration(color: Colors.grey[400], border: Border.all(color: Colors.grey)),
-        child: Text(
-          label,
-          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-        ),
-      ),
-      const SizedBox(width: 10),
-      Expanded(
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 0),
-          decoration: BoxDecoration(
-            color: Colors.grey[350],
-            border: Border.all(color: Colors.grey),
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 8.0),
+    child: Row(
+      children: [
+        // Label Section - Dibuat lebih kemas tanpa kotak kelabu tebal
+        SizedBox(
+          width: 90,
+          child: Text(
+            label,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w700,
+              color: Colors.blueGrey.shade700,
+            ),
           ),
-          child: DropdownButton<String>(
-            value: selectedValue,
-            isExpanded: true,
-            underline: const SizedBox(),
-            items: options
-                .map(
-                  (option) => DropdownMenuItem<String>(
+        ),
+        const SizedBox(width: 10),
+
+        // Dropdown Section - Menggunakan background putih & border halus
+        Expanded(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: Colors.grey.shade300, width: 1),
+            ),
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton<String>(
+                value: (options.contains(selectedValue)) ? selectedValue : null,
+                isExpanded: true,
+                hint: const Text(
+                  "Select Option",
+                  style: TextStyle(fontSize: 12, color: Colors.grey),
+                ),
+                icon: const Icon(Icons.arrow_drop_down, color: Colors.blue),
+                // Safety check: Pastikan options tidak null sebelum .map
+                items: options.map((String option) {
+                  return DropdownMenuItem<String>(
                     value: option,
                     child: Text(
                       option,
                       style: const TextStyle(
                         fontSize: 13,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xFF1E293B),
                       ),
                     ),
-                  ),
-                )
-                .toList(),
-            onChanged: onChanged,
+                  );
+                }).toList(),
+                onChanged: onChanged,
+              ),
+            ),
           ),
         ),
-      ),
-    ],
+      ],
+    ),
   );
 }
 
@@ -588,4 +625,3 @@ Widget _buildQRItem(BuildContext context) {
     ),
   );
 }
-

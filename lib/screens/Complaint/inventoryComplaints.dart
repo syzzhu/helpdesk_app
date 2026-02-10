@@ -7,10 +7,7 @@ import 'package:helpdesk_app/screens/ListOption.dart';
 class InventoryComplaintsPage extends StatelessWidget {
   final Complaint complaint;
 
-  const InventoryComplaintsPage({
-    super.key,
-    required this.complaint,
-  });
+  const InventoryComplaintsPage({super.key, required this.complaint});
 
   // Warna Tema Konsisten
   static const Color primaryBlue = Color(0xFF00AEEF);
@@ -137,7 +134,9 @@ class InventoryComplaintsPage extends StatelessWidget {
                                 ),
                                 const SizedBox(width: 5),
                                 Text(
-                                  complaint.hp.isNotEmpty ? complaint.hp : "019-777 7777",
+                                  complaint.hp.isNotEmpty
+                                      ? complaint.hp
+                                      : "019-777 7777",
                                   style: const TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w600,

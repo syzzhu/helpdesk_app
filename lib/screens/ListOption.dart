@@ -245,7 +245,8 @@ class _ListOptionsState extends State<ListOptionsPage> {
                             // Buat objek complaint di sini supaya senang debug ralat
                             final complaintObj = Complaint(
                               id: 0,
-                              taskId: "REQ-${item['status'] == 'NEW' ? '2026001' : '2026002'}",
+                              taskId:
+                                  "REQ-${item['status'] == 'NEW' ? '2026001' : '2026002'}",
                               status: item['status'],
                               name: item['name'].toString().split('\n')[0],
                               department: item['dept'] ?? "",
@@ -253,10 +254,10 @@ class _ListOptionsState extends State<ListOptionsPage> {
                               location: item['dept'] ?? "",
                               category: item['type'] ?? "UNKNOWN",
                               problemDetail: item['desc'] ?? "",
-                              units: "",  // ⚡ wajib letak walaupun kosong
-                              hp: "",     // ⚡ wajib letak walaupun kosong
+                              units: "",
+                              hp: "",
+                              assignTo: [],
                             );
-
 
                             Navigator.push(
                               context,
@@ -264,9 +265,9 @@ class _ListOptionsState extends State<ListOptionsPage> {
                                 builder: (_) => DetailComplaintsPage(
                                   //data: item,
                                   complaint: complaintObj,
+                                ),
                               ),
-                            ),
-                          );  
+                            );
                           } else if (destinationBuilder != null) {
                             Navigator.push(
                               context,

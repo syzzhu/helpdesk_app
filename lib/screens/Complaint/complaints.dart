@@ -4,6 +4,8 @@ import 'detailComplaintsPage.dart';
 import '../dashboard_page.dart';
 import '../qr_scanner_page.dart';
 import 'package:helpdesk_app/screens/ListOption.dart';
+import 'package:helpdesk_app/screens/Complaint/acknowlegeComplaints.dart';
+import 'package:helpdesk_app/model/assign_to_model.dart';
 
 class ComplaintsPage extends StatefulWidget {
   const ComplaintsPage({super.key});
@@ -28,16 +30,21 @@ class _ComplaintsState extends State<ComplaintsPage> {
       {
         "id": 6982,
         "task_id": "H202601300955310037",
-        "problem_detail": "printer prob\r\n\r\nintest: mubin",
-        "ticket_status": "NEW",
+        "task_type": "H",
+        "problem_detail": "Printer Problem\r\n\r\nintest: mubin",
+        "ticket_status": "PENDING",
         "name": "WAN NOR AZRIYANA BINTI WAN ALI",
-        "terminal_id": "2342",
-        "description":
-        "<b>PRINTER / SCANNER</b>", // Logik model akan ambil teks dalam <b>
+        "terminal_id": "2333",
+        "description": "<b>PRINTER / SCANNER</b>",
         "location": "11th Floor",
-        "department": "IT Department",
+        "units": "UNIT PENGURUSAN PENGETAHUAN",
+        "hp": "014 2615580",
+        "assign_to": [
+          {"name": "SHARIFFUDDIN BIN ALI BASHA", "status": "PENDING"},
+          {"name": "MOHD NAZRIN BIN ABU HASSAN", "status": "NEW"},
+        ],
       },
-      /*{
+      {
         "id": 6983,
         "task_id": "H202601301020440099",
         "problem_detail": "Internet slow\r\n\r\nurgent",
@@ -46,7 +53,13 @@ class _ComplaintsState extends State<ComplaintsPage> {
         "terminal_id": "1010",
         "description": "<b>INTERNET / WIRELESS</b>",
         "location": "15th Floor",
-      },*/
+        "units": "UNIT TEKNOLOGI MAKLUMAT",
+        "hp": "019 1234567",
+        "assign_to": [
+          {"name": "SHARIFFUDDIN BIN ALI BASHA", "status": "NEW"},
+          {"name": "MOHD NAZRIN BIN ABU HASSAN", "status": "NEW"},
+        ],
+      },
     ];
 
     setState(() {
@@ -80,8 +93,7 @@ class _ComplaintsState extends State<ComplaintsPage> {
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
               itemCount: filteredData.length,
               itemBuilder: (context, index) {
-                final item = filteredData[index];
-                return _buildOperationCard(context, item);
+                return _buildOperationCard(context, filteredData[index]);
               },
             ),
           ),
@@ -90,6 +102,7 @@ class _ComplaintsState extends State<ComplaintsPage> {
       bottomNavigationBar: _buildBottomNavigationBar(context),
     );
   }
+
   Widget _buildHeader() {
     return Container(
       width: double.infinity,
@@ -163,23 +176,49 @@ class _ComplaintsState extends State<ComplaintsPage> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 18),
       child: GestureDetector(
-        // Dalam ComplaintsPage
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => DetailComplaintsPage(
-                complaint: item, // pass object terus
-              ),
-            ),
-          );
-        },
+          String currentStatus = item.status.toUpperCase().trim();
+          // Cek jika ada sesiapa dalam senarai assignTo yang statusnya PENDING
+          bool isAnyPending =
+              item.assignTo?.any(
+                (a) => a.status.toUpperCase().trim() == 'PENDING',
+              ) ??
+              false;
 
+          if (isAnyPending || item.status.toUpperCase() == 'PENDING') {
+            // TERUS KE PAGE ACKNOWLEDGE
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Acknowlegecomplaints(
+                  complaint: item,
+                  terminal: item.terminalId,
+                  location: item.location,
+                ),
+              ),
+            );
+          } else {
+            // KE PAGE DETAIL (Untuk status NEW atau lain-lain)
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => DetailComplaintsPage(complaint: item),
+              ),
+            );
+          }
+        },
         child: Container(
+          // ... rest of your code
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(20),
-            boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 15)],
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 15,
+                offset: const Offset(0, 8),
+              ),
+            ],
           ),
           child: Column(
             children: [
@@ -188,22 +227,84 @@ class _ComplaintsState extends State<ComplaintsPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    _buildChip(item.category, Colors.blue.shade50, Colors.blue.shade700),
-                    _buildChip(item.status, _getStatusColor(item.status).withOpacity(0.1), _getStatusColor(item.status)),
+                    _buildChip(
+                      item.category,
+                      Colors.blue.shade50,
+                      Colors.blue.shade700,
+                    ),
+                    _buildChip(
+                      item.status,
+                      _getStatusColor(item.status).withOpacity(0.1),
+                      _getStatusColor(item.status),
+                    ),
                   ],
                 ),
               ),
-              ListTile(
-                leading: CircleAvatar(backgroundColor: Colors.grey[200], child: const Icon(Icons.person, color: Colors.grey)),
-                title: Text(item.name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
-                subtitle: Text(item.location, style: const TextStyle(fontSize: 10)),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 15,
+                  vertical: 5,
+                ),
+                child: Row(
+                  children: [
+                    // Avatar Pemohon
+                    CircleAvatar(
+                      radius: 28,
+                      backgroundColor: Colors.grey[200],
+                      child: const Icon(
+                        Icons.person_rounded,
+                        color: Colors.grey,
+                        size: 35,
+                      ),
+                    ),
+                    const SizedBox(width: 15),
+
+                    // Maklumat Teks Pemohon
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // NAMA
+                          Text(
+                            item.name.toUpperCase(),
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 13,
+                              color: Colors.black87,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+
+                          // LOKASI
+                          Text(
+                            item.location.toUpperCase(),
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: Colors.grey[500],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
               Container(
                 margin: const EdgeInsets.all(12),
                 padding: const EdgeInsets.all(14),
                 width: double.infinity,
-                decoration: BoxDecoration(color: Colors.grey[200], borderRadius: BorderRadius.circular(12)),
-                child: Text(item.problemDetail, textAlign: TextAlign.center, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Text(
+                  item.problemDetail,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13,
+                  ),
+                ),
               ),
             ],
           ),

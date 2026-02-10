@@ -5,57 +5,62 @@ class Complaint {
   final int id;
   final String taskId;
   final String name;
+  final String hp;
   final String problemDetail;
   final String category;
   final String status;
   final String location;
   final String terminalId;
   final String units;
-  final String hp;
+  final String department;
+  final List<AssignTo> assignTo;
 
   Complaint({
     required this.id,
     required this.taskId,
     required this.name,
+    required this.hp,
     required this.problemDetail,
     required this.category,
     required this.status,
     required this.location,
-    required this.terminalId, 
+    required this.terminalId,
     required this.units,
-    required this.hp, 
-    required department,
+    required this.department,
+    required this.assignTo,
   });
 
   factory Complaint.fromJson(Map<String, dynamic> json) {
-    // LOGIK 1: Ambil text sebelum \r\n\r\n (Ikut json detail.docx point no. 6)
+    // 1. Proses Problem Detail
     String rawProblem = json['problem_detail'] ?? "";
     String cleanProblem = rawProblem.split('\r\n\r\n').first;
 
-    // LOGIK 2: Ekstrak kategori dari tag <b> (Ikut json detail.docx point no. 2)
+    // 2. Proses Kategori
     String rawDesc = json['description'] ?? "";
     String cleanCategory = "GENERAL";
     if (rawDesc.contains('<b>')) {
       cleanCategory = rawDesc.split('<b>')[1].split('</b>')[0];
     }
 
+    // 3. Proses List AssignTo (PENTING: Gunakan map)
+    var list = json['assign_to'] as List?;
+    List<AssignTo> assignList = list != null
+        ? list.map((i) => AssignTo.fromJson(i)).toList()
+        : [];
+
     return Complaint(
-      id: json['id'],
+      id: json['id'] ?? 0,
       taskId: json['task_id'] ?? "",
-      name: json['name'] ?? "",
+      name: json['name'] ?? json['own_name'] ?? "UNKNOWN",
       problemDetail: cleanProblem,
       category: cleanCategory,
+      status: json['tstatus'] ?? json['ticket_status'] ?? "",
       units: json['units'] ?? "",
       hp: json['hp'] ?? "",
-      status: json['ticket_status'] ?? "",
       location: json['location'] ?? "",
-      terminalId: json['terminal_id'] ?? "", 
+      terminalId: json['terminal_id'] ?? "",
       department: json['department'] ?? '',
+      assignTo: assignList, // GUNAKAN assignList yang kita dah proses kat atas!
     );
   }
-
-  get department => null;
-
-  get assignTo => null;
-
 }

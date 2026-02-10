@@ -25,7 +25,7 @@ class Complaint {
     required this.terminalId,
     required this.location,
     required this.category,
-    required this.problemDetail, 
+    required this.problemDetail,
     required this.units,
     required this.hp,
     required this.assignTo,
@@ -45,31 +45,30 @@ class Complaint {
       );*/
 
   Complaint complaintFromJson(Map<String, dynamic> json) {
-  // pastikan assign_to sentiasa list
-  final assignData = (json['assign_to'] ?? []) as List<dynamic>;
+    // pastikan assign_to sentiasa list
+    final assignData = (json['assign_to'] ?? []) as List<dynamic>;
 
-  final List<Map<String, String>> assignList = assignData.map((item) {
-    return {
-      "name": (item["name"] ?? "-").toString(),
-      "status": (item["status"] ?? "-").toString(),
-    };
-  }).toList();
+    final List<Map<String, String>> assignList = assignData.map((item) {
+      return {
+        "name": (item["name"] ?? "-").toString(),
+        "status": (item["status"] ?? "-").toString(),
+      };
+    }).toList();
 
-  return Complaint(
-    name: (json["name"] ?? "-").toString(),
-    status: (json["status"] ?? "NEW").toString(),
-    department: (json["DEPT"] ?? "-").toString(),
-    taskId: (json["taskId"] ?? "-").toString(),
-    terminalId: (json["terminal_id"] ?? "-").toString(),
-    location: (json["location"] ?? "-").toString(),
-    category: (json["category"] ?? "-").toString(),
-    problemDetail: (json["problem_detail"] ?? "-").toString(),
-    assignTo: assignList, 
-    units: '', 
-    hp: '',
-  );
-}
-
+    return Complaint(
+      name: (json["name"] ?? "-").toString(),
+      status: (json["status"] ?? "NEW").toString(),
+      department: (json["DEPT"] ?? "-").toString(),
+      taskId: (json["taskId"] ?? "-").toString(),
+      terminalId: (json["terminal_id"] ?? "-").toString(),
+      location: (json["location"] ?? "-").toString(),
+      category: (json["category"] ?? "-").toString(),
+      problemDetail: (json["problem_detail"] ?? "-").toString(),
+      assignTo: assignList,
+      units: '',
+      hp: '',
+    );
+  }
 
   /*Map<String, dynamic> toJson() {
     return {
@@ -87,7 +86,6 @@ class Complaint {
           .map((e) => AssignTo.fromJson(e))
           .toList(),
     };*/
-  }
 }
 
 extension on JsonCodec {
