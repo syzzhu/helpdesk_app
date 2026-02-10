@@ -1,9 +1,46 @@
 import 'package:flutter/material.dart';
-import 'package:helpdesk_app/profile/changepass.dart';
 import 'package:helpdesk_app/screens/Login/login_page.dart';
 
-class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
+class ChangePasswordPage extends StatefulWidget {
+  const ChangePasswordPage({super.key});
+
+  @override
+  State<ChangePasswordPage> createState() => _ChangePasswordPageState();
+}
+
+class _ChangePasswordPageState extends State<ChangePasswordPage> {
+  final TextEditingController _idController = TextEditingController();
+  final TextEditingController _newPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
+
+  bool obscureNew = true;
+  bool obscureConfirm = true;
+
+  void _handleSubmit() {
+    if (_idController.text.isEmpty ||
+        _newPasswordController.text.isEmpty ||
+        _confirmPasswordController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please fill in all fields')),
+      );
+      return;
+    }
+
+    if (_newPasswordController.text !=
+        _confirmPasswordController.text) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Passwords do not match')),
+      );
+      return;
+    }
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Password updated successfully')),
+    );
+
+    Navigator.pop(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +48,6 @@ class ProfilePage extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-          // ===== CONTENT =====
           Column(
             children: [
               // ===== HEADER =====
@@ -32,16 +68,14 @@ class ProfilePage extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
-                    const SizedBox(height: 40), // control jarak atas manual
+                    const SizedBox(height: 40),
 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         IconButton(
-                          icon: const Icon(Icons.arrow_back),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
+                          icon: const Icon(Icons.arrow_back_ios_new),
+                          onPressed: () => Navigator.pop(context),
                           color: Colors.white,
                         ),
                         IconButton(
@@ -57,7 +91,7 @@ class ProfilePage extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white
+                        color: Colors.white,
                       ),
                     ),
 
@@ -78,61 +112,58 @@ class ProfilePage extends StatelessWidget {
 
               const SizedBox(height: 20),
 
-              // ===== PROFILE CARD =====
+              // ===== FORM CARD =====
               Expanded(
                 child: SingleChildScrollView(
                   child: Container(
                     margin: const EdgeInsets.symmetric(horizontal: 20),
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
                       color: const Color(0xFFE6E6E6),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Column(
                       children: [
-                        _buildField(
-                          label: 'NAME',
-                          value: 'Syana Binti Ali',
+                        _buildLineField(
+                          controller: _idController,
+                          hint: 'Your ID',
                         ),
-                        _buildField(
-                          label: 'DEPARTMENT',
-                          value: 'Teknologi Maklumat Komunikasi',
+                        _buildLineField(
+                          controller: _newPasswordController,
+                          hint: 'New Password',
+                          obscure: obscureNew,
+                          toggle: () {
+                            setState(() {
+                              obscureNew = !obscureNew;
+                            });
+                          },
                         ),
-                        _buildField(
-                          label: 'DIVISION',
-                          value: 'IT Division',
-                        ),
-                        _buildField(
-                          label: 'LOCATION',
-                          value: '4th Floor',
-                        ),
-                        _buildField(
-                          label: 'EMAIL',
-                          value: 'syana@gmail.com',
+                        _buildLineField(
+                          controller: _confirmPasswordController,
+                          hint: 'Confirm New Password',
+                          obscure: obscureConfirm,
+                          toggle: () {
+                            setState(() {
+                              obscureConfirm = !obscureConfirm;
+                            });
+                          },
                         ),
 
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 30),
 
                         SizedBox(
                           width: double.infinity,
                           height: 50,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF2BAAD9),
+                              backgroundColor: const Color(0xFF00AEEF),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(15),
                               ),
                             ),
-                            onPressed: () {
-                              Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const ChangePasswordPage(),
-                              ),
-                            );
-                            },
+                            onPressed: _handleSubmit,
                             child: const Text(
-                              'CHANGE PASSWORD',
+                              'SET NEW PASSWORD',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
@@ -152,34 +183,34 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  Widget _buildField({required String label, required String value}) {
+  Widget _buildLineField({
+    required TextEditingController controller,
+    required String hint,
+    bool obscure = false,
+    VoidCallback? toggle,
+  }) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            '$label:',
-            style: const TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.bold,
-            ),
+      padding: const EdgeInsets.only(bottom: 25),
+      child: TextField(
+        controller: controller,
+        obscureText: obscure,
+        decoration: InputDecoration(
+          hintText: hint,
+          enabledBorder: const UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.black54),
           ),
-          const SizedBox(height: 6),
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(
-              vertical: 12,
-              horizontal: 12,
-            ),
-            decoration: BoxDecoration(
-              color: const Color(0xFFDCDCDC),
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: Colors.black54),
-            ),
-            child: Text(value),
+          focusedBorder: const UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.black),
           ),
-        ],
+          suffixIcon: toggle != null
+              ? IconButton(
+                  icon: Icon(
+                    obscure ? Icons.visibility_off : Icons.visibility,
+                  ),
+                  onPressed: toggle,
+                )
+              : null,
+        ),
       ),
     );
   }

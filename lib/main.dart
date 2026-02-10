@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:helpdesk_app/profile/profile.dart';
-import 'package:helpdesk_app/screens/Complaint/acknowlegeComplaints.dart';
+import 'package:helpdesk_app/screens/profile/profile.dart';
+import 'package:helpdesk_app/screens/Complaint/detailComplaints.dart';
 import 'package:helpdesk_app/screens/ListOption.dart';
 import 'package:helpdesk_app/screens/Login/login_page.dart';
 import 'package:helpdesk_app/screens/PM/PMPage.dart';

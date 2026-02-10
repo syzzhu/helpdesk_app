@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:helpdesk_app/screens/Complaint/acknowlegeComplaints.dart';
+import 'package:helpdesk_app/screens/Complaint/detailComplaints.dart';
 import 'package:helpdesk_app/screens/ListOption.dart';
 import 'package:helpdesk_app/screens/Operation/detailOperation.dart';
 //import 'detail_operation.dart';
@@ -50,7 +50,21 @@ class _OperationPageState extends State<OperationPage> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size; // dapatkan saiz skrin
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
+    // Tentukan scale ikut device
+    bool isMobile = screenWidth < 600;
+    bool isTablet = screenWidth >= 600 && screenWidth < 1024;
+
+    double headerPaddingTop = isMobile ? 60 : 80;
+    double headerPaddingBottom = isMobile ? 30 : 50;
+    double avatarRadius = isMobile ? 28 : 40;
+    double fontSizeName = isMobile ? 13 : 18;
+    double fontSizeLocation = isMobile ? 10 : 14;
+    double cardPadding = isMobile ? 12 : 20;
+    double cardMargin = isMobile ? 12 : 20;
+    
     return Scaffold(
       backgroundColor: Colors.grey[100],
       body: Column(

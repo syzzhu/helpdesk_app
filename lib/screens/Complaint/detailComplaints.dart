@@ -34,8 +34,21 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final item = widget.complaint;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
+    final isMobile = screenWidth < 600;
+    final isTablet = screenWidth >= 600 && screenWidth < 1024;
+
+    // Clamp font & sizes supaya phone tak gila besar
+    final paddingH = screenWidth * 0.03;
+    final paddingV = screenHeight * 0.015;
+    final fontTitle = (screenWidth * 0.035).clamp(14.0, 22.0); // max 22, min 14
+    final fontSmall = (screenWidth * 0.020).clamp(11.0, 16.0);
+    final avatarRadius = (screenWidth * 0.07).clamp(20.0, 40.0);
+    final buttonHeight = (screenHeight * 0.065).clamp(45.0, 70.0);
+
+    final complaint = widget.complaint;
 
     return Scaffold(
       backgroundColor: const Color(0xFFF1F5F9),
@@ -44,7 +57,7 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
           // --- HEADER SECTION ---
           Container(
             width: double.infinity,
-            padding: EdgeInsets.only(top: size.height * 0.05, bottom: 25),
+            padding: EdgeInsets.only(top: screenHeight * 0.05, bottom: paddingV),
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 colors: [Color(0xFF00AEEF), Color(0xFF0089BB)],
@@ -67,16 +80,16 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
                     onPressed: () => Navigator.pop(context),
                   ),
                 ),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.description, color: Colors.white, size: 35),
-                    SizedBox(width: 10),
+                    const Icon(Icons.description, color: Colors.white, size: 35),
+                    const SizedBox(width: 10),
                     Text(
                       'Details',
                       style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
+                        fontSize: isMobile ? 28 : 36,
+                        fontWeight: FontWeight.w800,
                         color: Colors.white,
                       ),
                     ),
@@ -90,7 +103,7 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
           // --- TICKET ID BAR ---
           Center(
             child: Container(
-              width: size.width * 0.9,
+              width: screenWidth * 0.9,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(12),
@@ -105,13 +118,13 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
                     Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 20,
-                        vertical: 15, // Adjusted for better look
+                        vertical: 15,
                       ),
                       decoration: BoxDecoration(
-                        color: _getStatusColor(item.status),
+                        color: _getStatusColor(complaint.status),
                       ),
                       child: Text(
-                        item.status.toUpperCase(),
+                        complaint.status.toUpperCase(),
                         style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -120,7 +133,7 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
                     ),
                     Expanded(
                       child: Text(
-                        "${item.taskId}",
+                        "${complaint.taskId}",
                         textAlign: TextAlign.center,
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
@@ -134,20 +147,20 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
           // --- SCROLLABLE CONTENT ---
           Expanded(
             child: ListView(
-              padding: const EdgeInsets.all(20),
+              padding: EdgeInsets.symmetric(horizontal: paddingH, vertical: paddingV),
               children: [
-                _buildModernLabel("CONTACT PERSON"),
+                _buildModernLabel("CONTACT PERSON", fontSmall),
                 _buildCleanBox(
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CircleAvatar(
-                        radius: 28,
+                        radius: avatarRadius,
                         backgroundColor: Colors.blue.shade50,
-                        child: const Icon(
+                        child: Icon(
                           Icons.person,
                           color: Colors.blue,
-                          size: 28,
+                          size: avatarRadius * 0.8,
                         ),
                       ),
                       const SizedBox(width: 15),
@@ -156,11 +169,11 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              item.name.toUpperCase(),
-                              style: const TextStyle(
+                              complaint.name.toUpperCase(),
+                              style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 14,
-                                color: Color(0xFF1E293B),
+                                fontSize: fontTitle,
+                                color: const Color(0xFF1E293B),
                               ),
                             ),
                             const SizedBox(height: 4),
@@ -174,10 +187,10 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
                                 const SizedBox(width: 5),
                                 Expanded(
                                   child: Text(
-                                    item.units.toUpperCase(),
+                                    complaint.units.toUpperCase(),
                                     style: TextStyle(
                                       color: Colors.grey[700],
-                                      fontSize: 11,
+                                      fontSize: fontSmall,
                                     ),
                                   ),
                                 ),
@@ -193,10 +206,10 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
                                 ),
                                 const SizedBox(width: 5),
                                 Text(
-                                  item.hp,
-                                  style: const TextStyle(
+                                  complaint.hp,
+                                  style: TextStyle(
                                     color: Colors.grey,
-                                    fontSize: 12,
+                                    fontSize: fontSmall,
                                   ),
                                 ),
                               ],
@@ -209,7 +222,7 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
                 ),
                 const SizedBox(height: 20),
 
-                _buildModernLabel("TICKET INFORMATION"),
+                _buildModernLabel("TICKET INFORMATION", fontSmall),
                 _buildCleanBox(
                   child: Stack(
                     children: [
@@ -233,13 +246,11 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
                                     vertical: 6,
                                   ),
                                   decoration: BoxDecoration(
-                                    color: const Color(
-                                      0xFF0EA5E9,
-                                    ).withOpacity(0.1),
+                                    color: const Color(0xFF0EA5E9).withOpacity(0.1),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: Text(
-                                    item.category.toUpperCase(),
+                                    complaint.category.toUpperCase(),
                                     style: const TextStyle(
                                       color: Color(0xFF0284C7),
                                       fontWeight: FontWeight.w900,
@@ -248,9 +259,7 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
                                   ),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 12,
-                                  ),
+                                  padding: const EdgeInsets.symmetric(vertical: 12),
                                   child: Divider(
                                     height: 1,
                                     thickness: 1,
@@ -258,7 +267,7 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
                                   ),
                                 ),
                                 Text(
-                                  item.problemDetail,
+                                  complaint.problemDetail,
                                   textAlign: TextAlign.center,
                                   style: const TextStyle(
                                     fontSize: 14,
@@ -293,7 +302,7 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  InventoryComplaintsPage(complaint: item),
+                                  InventoryComplaintsPage(complaint: complaint),
                             ),
                           ),
                         ),
@@ -303,7 +312,7 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
                 ),
                 const SizedBox(height: 20),
 
-                _buildModernLabel("TECHNICAL PERSON"),
+                _buildModernLabel("TECHNICAL PERSON", fontSmall),
                 _buildCleanBox(
                   child: Column(
                     children: [
@@ -321,25 +330,24 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  CommentPage(status: item.status),
+                                  CommentPage(status: complaint.status),
                             ),
                           ),
                         ),
                       ),
                       const SizedBox(height: 10),
-                      if (item.assignTo.isEmpty)
+                      if (complaint.assignTo == null || complaint.assignTo!.isEmpty)
                         const Text(
                           "No technician assigned",
                           style: TextStyle(fontSize: 12, color: Colors.grey),
                         )
                       else
-                        ...item.assignTo.map((assign) {
+                        ...complaint.assignTo!.map((assign) {
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 10),
                             child: _buildTechnicalRow(
-                              assign.status
-                                  .toUpperCase(), // Ambil status dari JSON (PENDING/NEW)
-                              assign.name.toUpperCase(), // Ambil nama dari JSON
+                              assign.status?.toUpperCase() ?? "UNKNOWN",
+                              assign.name.toUpperCase(),
                             ),
                           );
                         }).toList(),
@@ -372,17 +380,17 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF0EA5E9),
                       foregroundColor: Colors.white,
-                      minimumSize: const Size(double.infinity, 60),
-                      elevation: 0,
+                      minimumSize: Size(double.infinity, buttonHeight),
+                      elevation: 0, //shadow 
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15),
                       ),
                     ),
-                    child: const Text(
+                    child: Text(
                       "FINISH",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 16,
+                        fontSize: fontTitle,
                       ),
                     ),
                   ),
@@ -397,29 +405,19 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
   }
 
   // --- HELPERS ---
-  Widget _buildModernLabel(String text) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 5, bottom: 10),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-          decoration: BoxDecoration(
-            color: const Color(0xFF64748B),
-            borderRadius: BorderRadius.circular(4),
-          ),
-          child: Text(
-            text,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 10,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
+  Widget _buildModernLabel(String text, double fontSize) {
+  return Padding(
+    padding: const EdgeInsets.only(left: 5, bottom: 10),
+    child: Align(
+      alignment: Alignment.centerLeft,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        decoration: BoxDecoration(color: const Color(0xFF64748B), borderRadius: BorderRadius.circular(4)),
+        child: Text(text, style: TextStyle(color: Colors.white, fontSize: fontSize, fontWeight: FontWeight.bold)),
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget _buildCleanBox({required Widget child}) {
     return Container(
@@ -472,17 +470,11 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
   }
 
   Widget _buildTechnicalRow(String tag, String name) {
-    // Tentukan warna berdasarkan status
     Color statusColor;
     if (tag == "NEW") {
       statusColor = Colors.redAccent;
     } else if (tag == "PENDING") {
-      statusColor = const Color.fromARGB(
-        255,
-        243,
-        195,
-        72,
-      ); // Warna kuning PENDING
+      statusColor = const Color.fromARGB(255, 243, 195, 72);
     } else {
       statusColor = Colors.grey;
     }
@@ -490,7 +482,7 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
     return Row(
       children: [
         Container(
-          width: 75, // Besarkan sikit supaya muat teks PENDING
+          width: 75,
           padding: const EdgeInsets.symmetric(vertical: 6),
           decoration: BoxDecoration(
             color: statusColor,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:helpdesk_app/screens/Complaint/detailComplaintsPage.dart';
+import 'package:helpdesk_app/screens/Complaint/acknowledgeComplaintsPage.dart';
 import 'package:helpdesk_app/screens/Operation/detailOperation.dart';
 import 'package:helpdesk_app/screens/PM/PMPage.dart';
 import 'package:helpdesk_app/screens/PM/detailPM.dart';

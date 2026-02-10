@@ -1,263 +1,284 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:helpdesk_app/profile/profile.dart';
+import 'package:helpdesk_app/screens/profile/profile.dart';
 import 'package:helpdesk_app/screens/ListOption.dart';
 import 'package:helpdesk_app/screens/Login/login_page.dart';
 import 'package:helpdesk_app/screens/PM/PMPage.dart';
 import 'package:helpdesk_app/screens/Complaint/complaints.dart';
 import 'qr_scanner_page.dart';
 import 'Operation/operation.dart';
-import 'package:helpdesk_app/utils/shift_config.dart'; // Pastikan ShiftHelper ada dalam fail ini
+import 'package:helpdesk_app/utils/shift_config.dart'; // ShiftHelper
 import 'dart:async';
-import 'ListOption.dart';
 
 class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});
 
+  // ------------------- HELPER FUNCTIONS -------------------
+  double responsiveFont(BuildContext context, double multiplier) {
+    double baseWidth = MediaQuery.of(context).size.width;
+    return (baseWidth * multiplier).clamp(12.0, 32.0);
+  }
+
+  double responsiveRadius(BuildContext context, double multiplier) {
+    double baseWidth = MediaQuery.of(context).size.width;
+    return (baseWidth * multiplier).clamp(20.0, 50.0);
+  }
+
+  double responsiveSpacing(BuildContext context, double multiplier) {
+    double baseHeight = MediaQuery.of(context).size.height;
+    return (baseHeight * multiplier).clamp(8.0, 30.0);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final size = Size(constraints.maxWidth, constraints.maxHeight);
-        // SEMUA DATA & VARIABLE LETAK DI SINI (Sebelum return)
-        final spacing = size.height * 0.02;
-        final avatarRadius = (size.width * 0.08).clamp(24.0, 40.0);
-        final fontSizeBase = (size.width * 0.04).clamp(12.0, 18.0); // Boleh guna untuk font lain jika perlu
+    final size = MediaQuery.of(context).size;
 
-        final Map<String, String> timetables = {
-          "Friday 30 Jan": "MC",
-          "Saturday 31 Jan": "O",
-          "Sunday 01 Feb": "PH",
-          "Monday 02 Feb": "PH",
-          "Tuesday 03 Feb": "B,OA",
-        };
+    final spacing = responsiveSpacing(context, 0.02);
+    final avatarRadius = responsiveRadius(context, 0.08);
+    final fontBase = responsiveFont(context, 0.04);
 
-        return Scaffold(
-          backgroundColor: Colors.grey[100],
-          body: Column(
-            children: [
-              // ---------------- HEADER ----------------
-              Container(
-                constraints: BoxConstraints(minHeight: size.height * 0.2), // Kurangkan dari 0.25 untuk skrin tinggi
-                width: double.infinity,
-                padding: EdgeInsets.fromLTRB(
-                  size.width * 0.05,
-                  0,
-                  size.width * 0.05,
-                  size.width * 0.04,
-                ),
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [Color(0xFF00AEEF), Color(0xFF0089BB)],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
+    final Map<String, String> timetables = {
+      "Friday 30 Jan": "MC",
+      "Saturday 31 Jan": "O",
+      "Sunday 01 Feb": "PH",
+      "Monday 02 Feb": "PH",
+      "Tuesday 03 Feb": "B,OA",
+    };
+
+    return Scaffold(
+      backgroundColor: Colors.grey[100],
+      body: Column(
+        children: [
+          // ---------------- HEADER ----------------
+          Container(
+            constraints: BoxConstraints(minHeight: size.height * 0.2),
+            width: double.infinity,
+            padding: EdgeInsets.fromLTRB(
+              spacing,
+              spacing,
+              spacing,
+              spacing * 2,
+            ),
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Color(0xFF00AEEF), Color(0xFF0089BB)],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(30),
+                bottomRight: Radius.circular(30),
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Align(
+                  alignment: Alignment.topRight,
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.logout,
+                      color: Colors.white,
+                      size: responsiveFont(context, 0.07),
+                    ),
+                    onPressed: () => _logout(context),
                   ),
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(30),
-                    bottomRight: Radius.circular(30),
+                ),
+                Text(
+                  'HelpDesk',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: responsiveFont(context, 0.07),
+                    fontWeight: FontWeight.w800,
                   ),
                 ),
-                child: SafeArea(
-                  bottom: false,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Align(
-                        alignment: Alignment.topRight,
-                        child: IconButton(
-                          icon: Icon(
-                            Icons.logout,
-                            color: Colors.white,
-                            size: (size.width * 0.07).clamp(24.0, 32.0),
+                SizedBox(height: spacing),
+                Column(
+                  children: [
+                    InkWell(
+                      borderRadius: BorderRadius.circular(avatarRadius),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ProfilePage(),
                           ),
-                          onPressed: () => _logout(context),
-                        ),
+                        );
+                      },
+                      child: CircleAvatar(
+                        radius: avatarRadius,
+                        backgroundColor: Colors.white,
+                        child: Icon(Icons.person, color: Colors.black, size: avatarRadius * 1.1),
                       ),
-                      Text(
-                        'HelpDesk',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: (size.width * 0.07).clamp(20.0, 40.0),
-                          fontWeight: FontWeight.w800,
-                        ),
+                    ),
+                    SizedBox(height: spacing * 0.6),
+                    Text(
+                      'Hi Syana 👋',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: fontBase + 2,
+                        fontWeight: FontWeight.bold,
                       ),
-                      SizedBox(height: spacing),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          InkWell(
-                            borderRadius: BorderRadius.circular(avatarRadius),
-                            onTap: () {
+                    ),
+                    SizedBox(height: spacing * 0.2),
+                    Text(
+                      'Today you check in at 11:49:25 AM',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white70,
+                        fontSize: fontBase - 1,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: spacing),
+                Text(
+                  'Thursday, 15 Jan',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: responsiveFont(context, 0.05),
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          // ---------------- MAIN CONTENT ----------------
+          Expanded(
+            child: SingleChildScrollView(
+              padding: EdgeInsets.only(top: spacing),
+              child: Column(
+                children: [
+                  // Floating Job Card
+                  _buildSectionContainer(
+                    context,
+                    "",
+                    Text(
+                      'You finished 0 job today. \nWork Harder!!',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: responsiveFont(context, 0.05),
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+
+                  SizedBox(height: spacing),
+
+                  // TASK SECTION
+                  _buildSectionContainer(
+                    context,
+                    "TASK",
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Expanded(
+                          child: _taskItem(
+                            context,
+                            Icons.report,
+                            'Complaints',
+                            2,
+                            Colors.red,
+                            avatarRadius,
+                            () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const ProfilePage(),
+                                  builder: (context) => const ComplaintsPage(),
                                 ),
                               );
                             },
-                            child: CircleAvatar(
-                              radius: avatarRadius,
-                              backgroundColor: Colors.white,
-                              child: const Icon(Icons.person, color: Colors.black),
-                            ),
-                          ),
-                          SizedBox(width: size.width * 0.03),
-                          Flexible(
-                            child: Text(
-                              'Hi Syana, today you check in at 11:49:25 AM',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: fontSizeBase, // Guna fontSizeBase di sini
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: spacing),
-                      Text(
-                        'Thursday, 15 Jan',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: (size.width * 0.05).clamp(14.0, 24.0),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-
-              // ---------------- MAIN CONTENT ----------------
-              Expanded(
-                child: SingleChildScrollView(
-                  padding: EdgeInsets.only(top: spacing),
-                  child: Column(
-                    children: [
-                      // Floating Job Card
-                      _buildSectionContainer(
-                        size,
-                        "",
-                        Text(
-                          'You finished 0 job today. \nWork Harder!!',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: (size.width * 0.05).clamp(14.0, 20.0),
-                            color: Colors.black,
                           ),
                         ),
-                      ),
-
-                      SizedBox(height: spacing),
-
-                      // TASK SECTION
-                      _buildSectionContainer(
-                        size,
-                        "TASK",
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Expanded(
-                              child: _taskItem(
-                                Icons.report,
-                                'Complaints',
-                                2,
-                                Colors.red,
-                                avatarRadius,
-                                () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => const ComplaintsPage(),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                            Expanded(
-                              child: _taskItem(
-                                Icons.business_center,
-                                'Operation',
-                                0,
-                                Colors.blue,
-                                avatarRadius,
-                                () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => const OperationPage(),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                            Expanded(
-                              child: _taskItem(
-                                Icons.settings,
-                                'PM',
-                                6,
-                                Colors.green,
-                                avatarRadius,
-                                () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => const PMPage(),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      SizedBox(height: spacing),
-
-                      // SHIFT SCHEDULE SECTION
-                      _buildSectionContainer(
-                        size,
-                        "SHIFT SCHEDULE",
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          physics: const BouncingScrollPhysics(),
-                          child: Row(
-                            children: timetables.entries.map((entry) {
-                              return Padding(
-                                padding: const EdgeInsets.only(right: 12),
-                                child: _shiftCard(entry.key, entry.value, size),
+                        Expanded(
+                          child: _taskItem(
+                            context,
+                            Icons.business_center,
+                            'Operation',
+                            0,
+                            Colors.blue,
+                            avatarRadius,
+                            () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const OperationPage(),
+                                ),
                               );
-                            }).toList(),
+                            },
                           ),
                         ),
-                      ),
-                      SizedBox(height: spacing * 2),
-                    ],
+                        Expanded(
+                          child: _taskItem(
+                            context,
+                            Icons.settings,
+                            'PM',
+                            6,
+                            Colors.green,
+                            avatarRadius,
+                            () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const PMPage(),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ),
 
-              // ---------------- BOTTOM NAV ----------------
-              _buildBottomNavigationBar(context, size), // Pass size untuk responsiviti
-            ],
+                  SizedBox(height: spacing),
+
+                  // SHIFT SCHEDULE SECTION
+                  _buildSectionContainer(
+                    context,
+                    "SHIFT SCHEDULE",
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      physics: const BouncingScrollPhysics(),
+                      child: Row(
+                        children: timetables.entries.map((entry) {
+                          return Padding(
+                            padding: EdgeInsets.only(right: spacing * 0.6),
+                            child: _shiftCard(context, entry.key, entry.value),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ),
+
+                  SizedBox(height: spacing * 2),
+                ],
+              ),
+            ),
           ),
-        );
-      },
+
+          // ---------------- BOTTOM NAV ----------------
+          _buildBottomNavigationBar(context),
+        ],
+      ),
     );
   }
 
-  // --- REUSABLE WIDGETS ---
-
-  Widget _buildSectionContainer(Size size, String title, Widget content) {
+  // ----------------- REUSABLE WIDGETS -----------------
+  Widget _buildSectionContainer(BuildContext context, String title, Widget content) {
+    final size = MediaQuery.of(context).size;
+    final spacing = sqrt(size.width * size.height) * 0.02;
+    //final fontSize = (sqrt(size.width * size.height) * 0.03).clamp(16.0, 36.0);
+    final fontSize = max(size.width * 0.035, 12).toDouble();
+    
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+      padding: EdgeInsets.symmetric(horizontal: spacing),
       child: Container(
         width: double.infinity,
-        padding: EdgeInsets.all(size.width * 0.05),
+        padding: EdgeInsets.all(spacing),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(20),
@@ -275,11 +296,11 @@ class DashboardPage extends StatelessWidget {
               Text(
                 title,
                 style: TextStyle(
-                  fontSize: (size.width * 0.045).clamp(12.0, 20.0),
+                  fontSize: fontSize,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 15),
+              SizedBox(height: spacing * 0.3),
             ],
             content,
           ],
@@ -288,18 +309,18 @@ class DashboardPage extends StatelessWidget {
     );
   }
 
-  Widget _shiftCard(String fullDate, String shiftCodes, Size size) {
+  Widget _shiftCard(BuildContext context, String fullDate, String shiftCodes) {
+    final size = MediaQuery.of(context).size;
+    final width = (size.width * 0.38).clamp(120.0, 200.0);
     List<String> dateParts = fullDate.split(' ');
     String dayName = dateParts[0];
-    String dateNum = dateParts.length > 1
-        ? fullDate.substring(dayName.length).trim()
-        : "";
+    String dateNum = fullDate.substring(dayName.length).trim();
     List<String> codes = shiftCodes.split(',');
 
     return Container(
-      width: (size.width * 0.38).clamp(120.0, 200.0), // Tambah clamp untuk width
+      width: width,
       constraints: const BoxConstraints(minHeight: 180),
-      padding: const EdgeInsets.all(12),
+      padding: EdgeInsets.all(size.width * 0.03),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
@@ -329,13 +350,13 @@ class DashboardPage extends StatelessWidget {
               color: Colors.grey[800],
             ),
           ),
-          const Divider(height: 18),
+          Divider(height: size.height * 0.02),
           ...codes.map((code) {
             final info = ShiftHelper.getInfo(code.trim());
             return Container(
               width: double.infinity,
-              margin: const EdgeInsets.only(bottom: 6),
-              padding: const EdgeInsets.symmetric(vertical: 6),
+              margin: EdgeInsets.only(bottom: size.height * 0.006),
+              padding: EdgeInsets.symmetric(vertical: size.height * 0.008),
               decoration: ShapeDecoration(
                 color: info['color'],
                 shape: const StadiumBorder(),
@@ -346,7 +367,7 @@ class DashboardPage extends StatelessWidget {
                 style: TextStyle(
                   color: info['font'],
                   fontWeight: FontWeight.bold,
-                fontSize: 11.0.clamp(10.0, 12.0),// Clamp untuk font tetap
+                  fontSize: (size.width * 0.028).clamp(10.0, 12.0),
                 ),
               ),
             );
@@ -357,156 +378,175 @@ class DashboardPage extends StatelessWidget {
   }
 
   Widget _taskItem(
-    IconData icon,
-    String title,
-    int badge,
-    Color color,
-    double radius,
-    VoidCallback onTap,
-  ) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(20),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Stack(
-            clipBehavior: Clip.none,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                      color: color.withOpacity(0.4),
-                      blurRadius: 12,
-                      offset: const Offset(0, 6),
-                    ),
-                  ],
-                ),
-                child: CircleAvatar(
-                  radius: radius,
-                  backgroundColor: color,
-                  child: Icon(icon, color: Colors.white, size: radius * 1.1),
-                ),
+  BuildContext context,
+  IconData icon,
+  String title,
+  int badge,
+  Color color,
+  double radius, // avatar radius, boleh tetap
+  VoidCallback onTap,
+) {
+  final size = MediaQuery.of(context).size;
+
+  // Scaling factors
+  final iconSize = radius * 1.1; // avatar icon
+  final badgeSize = radius * 0.6;
+  final fontSize = max(size.width * 0.035, 12).toDouble(); // responsive font
+  final labelWidth = radius * 3.5;
+
+  return InkWell(
+    onTap: onTap,
+    borderRadius: BorderRadius.circular(radius * 0.5),
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Stack(
+          clipBehavior: Clip.none,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: color.withOpacity(0.4),
+                    blurRadius: 12,
+                    offset: const Offset(0, 6),
+                  ),
+                ],
               ),
-              if (badge > 0)
-                Positioned(
-                  top: -2,
-                  right: -2,
-                  child: Container(
-                    padding: const EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                      color: Colors.red,
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.white, width: 2),
-                    ),
-                    constraints: const BoxConstraints(
-                      minWidth: 20,
-                      minHeight: 20,
-                    ),
-                    child: Text(
-                      '$badge',
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold,
-                      ),
+              child: CircleAvatar(
+                radius: radius,
+                backgroundColor: color,
+                child: Icon(icon, color: Colors.white, size: iconSize),
+              ),
+            ),
+            if (badge > 0)
+              Positioned(
+                top: -badgeSize * 0.25,
+                right: -badgeSize * 0.25,
+                child: Container(
+                  padding: EdgeInsets.all(badgeSize * 0.25),
+                  decoration: BoxDecoration(
+                    color: Colors.red,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.white, width: 2),
+                  ),
+                  constraints: BoxConstraints(
+                    minWidth: badgeSize,
+                    minHeight: badgeSize,
+                  ),
+                  child: Text(
+                    '$badge',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: badgeSize * 0.6,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          SizedBox(
-            width: radius * 3,
-            child: FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Text(
-                title,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: (radius * 0.45).clamp(10.0, 16.0),
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
-                ),
+              ),
+          ],
+        ),
+        SizedBox(height: radius * 0.3),
+        SizedBox(
+          width: labelWidth,
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              title,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: fontSize,
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
               ),
             ),
           ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildBottomNavigationBar(BuildContext context, Size size) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: size.height * 0.015), // Berdasarkan skrin
-      decoration: const BoxDecoration(
-        color: Colors.white,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _buildNavItem(
-            context,
-            Icons.home_outlined,
-            "Home",
-            destination: const DashboardPage(),
-          ),
-          _buildQRItem(context),
-          _buildNavItem(
-            context,
-            Icons.list_alt_rounded,
-            "Options",
-            destination: const ListOptionsPage(),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildNavItem(
-    BuildContext context,
-    IconData icon,
-    String label, {
-    Widget? destination,
-  }) {
-    return InkWell(
-      onTap: () {
-        if (destination != null) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => destination),
-          );
-        }
-      },
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 28, color: Colors.grey),
-          Text(label, style: const TextStyle(fontSize: 11, color: Colors.grey)),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildQRItem(BuildContext context) {
-    return GestureDetector(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const QRScannerPage()),
-      ),
-      child: Container(
-        padding: const EdgeInsets.all(12),
-        decoration: const BoxDecoration(
-          color: Colors.black,
-          shape: BoxShape.circle,
         ),
-        child: const Icon(Icons.qr_code_scanner, color: Colors.white, size: 30),
+      ],
+    ),
+  );
+}
+
+
+  Widget _buildBottomNavigationBar(BuildContext context) {
+  final size = MediaQuery.of(context).size;
+  final spacing = size.height * 0.015;
+  final isTablet = size.width >= 600;
+
+  return Container(
+    padding: EdgeInsets.symmetric(vertical: spacing, horizontal: isTablet ? 40 : 0),
+    decoration: const BoxDecoration(
+      color: Colors.white,
+      boxShadow: [
+        BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, -2)),
+      ],
+    ),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        _buildNavItem(
+          context,
+          Icons.home_outlined,
+          "Home",
+          destination: const DashboardPage(),
+          iconSize: isTablet ? 36 : 28,
+          fontSize: isTablet ? 16 : 11,
+        ),
+        _buildQRItem(context, iconSize: isTablet ? 36 : 30),
+        _buildNavItem(
+          context,
+          Icons.list_alt_rounded,
+          "Options",
+          destination: const ListOptionsPage(),
+          iconSize: isTablet ? 36 : 28,
+          fontSize: isTablet ? 16 : 11,
+        ),
+      ],
+    ),
+  );
+}
+
+
+ Widget _buildNavItem(BuildContext context, IconData icon, String label,
+    {Widget? destination, double iconSize = 28, double fontSize = 11}) {
+  return InkWell(
+    onTap: () {
+      if (destination != null) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => destination),
+        );
+      }
+    },
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(icon, size: iconSize, color: Colors.grey),
+        Text(label, style: TextStyle(fontSize: fontSize, color: Colors.grey)),
+      ],
+    ),
+  );
+}
+
+Widget _buildQRItem(BuildContext context, {double iconSize = 30}) {
+  return GestureDetector(
+    onTap: () => Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const QRScannerPage()),
+    ),
+    child: Container(
+      padding: EdgeInsets.all(iconSize * 0.4),
+      decoration: const BoxDecoration(
+        color: Colors.black,
+        shape: BoxShape.circle,
       ),
-    );
-  }
+      child: Icon(Icons.qr_code_scanner, color: Colors.white, size: iconSize),
+    ),
+  );
+}
+
 
   void _logout(BuildContext context) {
     showDialog(
@@ -515,10 +555,7 @@ class DashboardPage extends StatelessWidget {
         title: const Text('Logout'),
         content: const Text('Are you sure?'),
         actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('No'),
-          ),
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text('No')),
           TextButton(
             onPressed: () => Navigator.pushAndRemoveUntil(
               context,

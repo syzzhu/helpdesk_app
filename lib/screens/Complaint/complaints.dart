@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:helpdesk_app/model/complaints_model.dart';
-import 'detailComplaintsPage.dart';
+import 'acknowledgeComplaintsPage.dart';
 import '../dashboard_page.dart';
 import '../qr_scanner_page.dart';
 import 'package:helpdesk_app/screens/ListOption.dart';
-import 'package:helpdesk_app/screens/Complaint/acknowlegeComplaints.dart';
-import 'package:helpdesk_app/model/assign_to_model.dart';
+import 'package:helpdesk_app/screens/Complaint/detailComplaints.dart';
 
 class ComplaintsPage extends StatefulWidget {
   const ComplaintsPage({super.key});
@@ -83,17 +82,42 @@ class _ComplaintsState extends State<ComplaintsPage> {
 
   @override
   Widget build(BuildContext context) {
+    // Ambil saiz screen
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
+    // Tentukan scale ikut device
+    bool isMobile = screenWidth < 600;
+    bool isTablet = screenWidth >= 600 && screenWidth < 1024;
+
+    double headerPaddingTop = isMobile ? 60 : 80;
+    double headerPaddingBottom = isMobile ? 30 : 50;
+    double avatarRadius = isMobile ? 28 : 40;
+    double fontSizeName = isMobile ? 13 : 18;
+    double fontSizeLocation = isMobile ? 10 : 14;
+    double cardPadding = isMobile ? 12 : 20;
+    double cardMargin = isMobile ? 12 : 20;
+
     return Scaffold(
       backgroundColor: Colors.grey[100],
       body: Column(
         children: [
-          _buildHeader(),
+          _buildHeader(headerPaddingTop, headerPaddingBottom, isMobile),
           Expanded(
             child: ListView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+              padding: EdgeInsets.symmetric(horizontal: cardMargin, vertical: 15),
               itemCount: filteredData.length,
               itemBuilder: (context, index) {
-                return _buildOperationCard(context, filteredData[index]);
+                return _buildOperationCard(
+                  context,
+                  filteredData[index],
+                  avatarRadius,
+                  fontSizeName,
+                  fontSizeLocation,
+                  cardPadding,
+                  cardMargin,
+                  isMobile,
+                );
               },
             ),
           ),
@@ -103,10 +127,10 @@ class _ComplaintsState extends State<ComplaintsPage> {
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(double paddingTop, double paddingBottom, bool isMobile) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.only(top: 60, bottom: 30),
+      padding: EdgeInsets.only(top: paddingTop, bottom: paddingBottom),
       decoration: const BoxDecoration(
         gradient: LinearGradient(
           colors: [Color(0xFF00AEEF), Color(0xFF0089BB)],
@@ -118,15 +142,15 @@ class _ComplaintsState extends State<ComplaintsPage> {
       ),
       child: Column(
         children: [
-          const Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.report, size: 42, color: Colors.white),
-              SizedBox(width: 12),
+              Icon(Icons.report, size: isMobile ? 42 : 56, color: Colors.white),
+              SizedBox(width: isMobile ? 12 : 20),
               Text(
                 'Complaints',
                 style: TextStyle(
-                  fontSize: 28,
+                  fontSize: isMobile ? 28 : 36,
                   fontWeight: FontWeight.w800,
                   color: Colors.white,
                 ),
@@ -135,7 +159,7 @@ class _ComplaintsState extends State<ComplaintsPage> {
           ),
           const SizedBox(height: 25),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25),
+            padding: EdgeInsets.symmetric(horizontal: isMobile ? 25 : 50),
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 15),
               decoration: BoxDecoration(
@@ -147,15 +171,9 @@ class _ComplaintsState extends State<ComplaintsPage> {
                 onChanged: (value) {
                   setState(() {
                     filteredData = allData
-                        .where(
-                          (item) =>
-                              item.name.toLowerCase().contains(
-                                value.toLowerCase(),
-                              ) ||
-                              item.category.toLowerCase().contains(
-                                value.toLowerCase(),
-                              ),
-                        )
+                        .where((item) =>
+                            item.name.toLowerCase().contains(value.toLowerCase()) ||
+                            item.category.toLowerCase().contains(value.toLowerCase()))
                         .toList();
                   });
                 },
@@ -172,21 +190,23 @@ class _ComplaintsState extends State<ComplaintsPage> {
     );
   }
 
-  Widget _buildOperationCard(BuildContext context, Complaint item) {
+  Widget _buildOperationCard(
+      BuildContext context,
+      Complaint item,
+      double avatarRadius,
+      double fontSizeName,
+      double fontSizeLocation,
+      double cardPadding,
+      double cardMargin,
+      bool isMobile) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 18),
+      padding: EdgeInsets.only(bottom: cardMargin),
       child: GestureDetector(
         onTap: () {
-          String currentStatus = item.status.toUpperCase().trim();
-          // Cek jika ada sesiapa dalam senarai assignTo yang statusnya PENDING
           bool isAnyPending =
-              item.assignTo?.any(
-                (a) => a.status.toUpperCase().trim() == 'PENDING',
-              ) ??
-              false;
+              item.assignTo?.any((a) => a.status.toUpperCase() == 'PENDING') ?? false;
 
           if (isAnyPending || item.status.toUpperCase() == 'PENDING') {
-            // TERUS KE PAGE ACKNOWLEDGE
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -198,7 +218,6 @@ class _ComplaintsState extends State<ComplaintsPage> {
               ),
             );
           } else {
-            // KE PAGE DETAIL (Untuk status NEW atau lain-lain)
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -208,7 +227,7 @@ class _ComplaintsState extends State<ComplaintsPage> {
           }
         },
         child: Container(
-          // ... rest of your code
+          padding: EdgeInsets.all(cardPadding),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(20),
@@ -223,65 +242,43 @@ class _ComplaintsState extends State<ComplaintsPage> {
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.all(12),
+                padding: EdgeInsets.all(cardPadding),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    _buildChip(
-                      item.category,
-                      Colors.blue.shade50,
-                      Colors.blue.shade700,
-                    ),
-                    _buildChip(
-                      item.status,
-                      _getStatusColor(item.status).withOpacity(0.1),
-                      _getStatusColor(item.status),
-                    ),
+                    _buildChip(item.category, Colors.blue.shade50, Colors.blue.shade700, isMobile ? 1 : 1.5),
+                    _buildChip(item.status,
+                        _getStatusColor(item.status).withOpacity(0.1),
+                        _getStatusColor(item.status), isMobile ? 1 : 1.5),
                   ],
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 15,
-                  vertical: 5,
-                ),
+                padding: EdgeInsets.symmetric(horizontal: cardPadding, vertical: 5),
                 child: Row(
                   children: [
-                    // Avatar Pemohon
                     CircleAvatar(
-                      radius: 28,
+                      radius: avatarRadius,
                       backgroundColor: Colors.grey[200],
-                      child: const Icon(
-                        Icons.person_rounded,
-                        color: Colors.grey,
-                        size: 35,
-                      ),
+                      child: const Icon(Icons.person_rounded, color: Colors.grey, size: 35),
                     ),
-                    const SizedBox(width: 15),
-
-                    // Maklumat Teks Pemohon
+                    SizedBox(width: cardPadding),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // NAMA
                           Text(
                             item.name.toUpperCase(),
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 13,
-                              color: Colors.black87,
-                            ),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: fontSizeName,
+                                color: Colors.black87),
                           ),
-                          const SizedBox(height: 4),
-
-                          // LOKASI
+                          SizedBox(height: 4),
                           Text(
                             item.location.toUpperCase(),
-                            style: TextStyle(
-                              fontSize: 10,
-                              color: Colors.grey[500],
-                            ),
+                            style:
+                                TextStyle(fontSize: fontSizeLocation, color: Colors.grey[500]),
                           ),
                         ],
                       ),
@@ -290,8 +287,8 @@ class _ComplaintsState extends State<ComplaintsPage> {
                 ),
               ),
               Container(
-                margin: const EdgeInsets.all(12),
-                padding: const EdgeInsets.all(14),
+                margin: EdgeInsets.all(cardMargin),
+                padding: EdgeInsets.all(cardPadding),
                 width: double.infinity,
                 decoration: BoxDecoration(
                   color: Colors.grey[200],
@@ -300,10 +297,7 @@ class _ComplaintsState extends State<ComplaintsPage> {
                 child: Text(
                   item.problemDetail,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 13,
-                  ),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: fontSizeName),
                 ),
               ),
             ],
@@ -313,90 +307,101 @@ class _ComplaintsState extends State<ComplaintsPage> {
     );
   }
 
-  Widget _buildChip(String label, Color bg, Color text) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      decoration: BoxDecoration(
-        color: bg,
-        borderRadius: BorderRadius.circular(10),
+  Widget _buildChip(String label, Color bg, Color text, double scale) {
+  return Container(
+    padding: EdgeInsets.symmetric(
+      horizontal: 12 * scale,
+      vertical: 6 * scale,
+    ),
+    decoration: BoxDecoration(
+      color: bg,
+      borderRadius: BorderRadius.circular(10 * scale),
+    ),
+    child: Text(
+      label,
+      style: TextStyle(
+        color: text,
+        fontWeight: FontWeight.bold,
+        fontSize: 10 * scale,
       ),
-      child: Text(
-        label,
-        style: TextStyle(
-          color: text,
-          fontWeight: FontWeight.bold,
-          fontSize: 10,
+    ),
+  );
+}
+
+ Widget _buildBottomNavigationBar(BuildContext context) {
+  final size = MediaQuery.of(context).size;
+  final spacing = size.height * 0.015;
+  final isTablet = size.width >= 600;
+
+  return Container(
+    padding: EdgeInsets.symmetric(vertical: spacing, horizontal: isTablet ? 40 : 0),
+    decoration: const BoxDecoration(
+      color: Colors.white,
+      boxShadow: [
+        BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, -2)),
+      ],
+    ),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        _buildNavItem(
+          context,
+          Icons.home_outlined,
+          "Home",
+          destination: const DashboardPage(),
+          iconSize: isTablet ? 36 : 28,
+          fontSize: isTablet ? 16 : 11,
         ),
-      ),
-    );
-  }
-
-  Widget _buildBottomNavigationBar(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(top: BorderSide(color: Colors.grey.shade200)),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _buildNavItem(
-            context,
-            Icons.home_outlined,
-            "Home",
-            destination: const DashboardPage(),
-          ),
-          _buildQRItem(context),
-          _buildNavItem(
-            context,
-            Icons.list_alt_rounded,
-            "Options",
-            destination: const ListOptionsPage(),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildNavItem(
-    BuildContext context,
-    IconData icon,
-    String label, {
-    Widget? destination,
-  }) {
-    return InkWell(
-      onTap: () {
-        if (destination != null)
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => destination),
-          );
-      },
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 28, color: Colors.grey),
-          Text(label, style: const TextStyle(fontSize: 11, color: Colors.grey)),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildQRItem(BuildContext context) {
-    return GestureDetector(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const QRScannerPage()),
-      ),
-      child: Container(
-        padding: const EdgeInsets.all(12),
-        decoration: const BoxDecoration(
-          color: Colors.black,
-          shape: BoxShape.circle,
+        _buildQRItem(context, iconSize: isTablet ? 36 : 30),
+        _buildNavItem(
+          context,
+          Icons.list_alt_rounded,
+          "Options",
+          destination: const ListOptionsPage(),
+          iconSize: isTablet ? 36 : 28,
+          fontSize: isTablet ? 16 : 11,
         ),
-        child: const Icon(Icons.qr_code_scanner, color: Colors.white, size: 30),
+      ],
+    ),
+  );
+}
+
+
+ Widget _buildNavItem(BuildContext context, IconData icon, String label,
+    {Widget? destination, double iconSize = 28, double fontSize = 11}) {
+  return InkWell(
+    onTap: () {
+      if (destination != null) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => destination),
+        );
+      }
+    },
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(icon, size: iconSize, color: Colors.grey),
+        Text(label, style: TextStyle(fontSize: fontSize, color: Colors.grey)),
+      ],
+    ),
+  );
+}
+
+Widget _buildQRItem(BuildContext context, {double iconSize = 30}) {
+  return GestureDetector(
+    onTap: () => Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const QRScannerPage()),
+    ),
+    child: Container(
+      padding: EdgeInsets.all(iconSize * 0.4),
+      decoration: const BoxDecoration(
+        color: Colors.black,
+        shape: BoxShape.circle,
       ),
-    );
-  }
+      child: Icon(Icons.qr_code_scanner, color: Colors.white, size: iconSize),
+    ),
+  );
+}
 }
