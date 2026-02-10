@@ -10,7 +10,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  bool rememberMe = false;
+  //bool rememberMe = false;
   bool obscurePassword = true;
 
   final TextEditingController _idController = TextEditingController();
@@ -139,9 +139,9 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(height: 15),
 
                     /// REMEMBER ME
-                    Row(
+                    /*Row(
                       children: [
-                        Checkbox(
+                        /*Checkbox(
                           value: rememberMe,
                           onChanged: (value) {
                             setState(() {
@@ -149,7 +149,7 @@ class _LoginPageState extends State<LoginPage> {
                             });
                           },
                         ),
-                        const Text('Remember me'),
+                        const Text('Remember me'),*/
                         const Spacer(),
 
                         //NAVIGATE TO FORGOT PAGE
@@ -166,7 +166,7 @@ class _LoginPageState extends State<LoginPage> {
                           child: const Text('Forgot Password?'),
                         ),
                       ],
-                    ),
+                    ),*/
 
                     const SizedBox(height: 20),
 

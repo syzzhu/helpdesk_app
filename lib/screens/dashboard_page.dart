@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:helpdesk_app/profile/profile.dart';
 import 'package:helpdesk_app/screens/ListOption.dart';
 import 'package:helpdesk_app/screens/Login/login_page.dart';
 import 'package:helpdesk_app/screens/PM/PMPage.dart';
@@ -86,10 +87,21 @@ class DashboardPage extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          CircleAvatar(
-                            radius: avatarRadius,
-                            backgroundColor: Colors.white,
-                            child: Icon(Icons.person, color: Colors.black),
+                          InkWell(
+                            borderRadius: BorderRadius.circular(avatarRadius),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const ProfilePage(),
+                                ),
+                              );
+                            },
+                            child: CircleAvatar(
+                              radius: avatarRadius,
+                              backgroundColor: Colors.white,
+                              child: const Icon(Icons.person, color: Colors.black),
+                            ),
                           ),
                           SizedBox(width: size.width * 0.03),
                           Flexible(
