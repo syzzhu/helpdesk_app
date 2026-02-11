@@ -32,6 +32,7 @@ class DashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    //final scale = (size.width / 375).clamp(0.8, 1.3); 
 
     final spacing = responsiveSpacing(context, 0.02);
     final avatarRadius = responsiveRadius(context, 0.08);

@@ -40,11 +40,15 @@ class _ListOptionsState extends State<ListOptionsPage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+
+    final scale = (size.width / 375).clamp(0.85, 1.3);
+    final isTablet = size.width >= 600;
+
     return Scaffold(
       backgroundColor: Colors.grey[100],
       body: Column(
         children: [
-          _buildHeader(),
+          _buildHeader(scale),
 
           Expanded(
             child: SingleChildScrollView(
@@ -129,9 +133,9 @@ class _ListOptionsState extends State<ListOptionsPage> {
   }
 
   // ================= HEADER =================
-  Widget _buildHeader() {
+  Widget _buildHeader(double scale) {
     return Container(
-      padding: const EdgeInsets.only(top: 60, bottom: 30),
+      padding: EdgeInsets.only(top: 60 * scale, bottom: 30 * scale),
       decoration: const BoxDecoration(
         gradient: LinearGradient(
           colors: [Color(0xFF00AEEF), Color(0xFF0089BB)],
@@ -140,15 +144,15 @@ class _ListOptionsState extends State<ListOptionsPage> {
       ),
       child: Column(
         children: [
-          const Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.list_alt_rounded, color: Colors.white, size: 40),
-              SizedBox(width: 10),
+              Icon(Icons.list_alt_rounded, color: Colors.white, size: 40 * scale),
+              SizedBox(width: 10 * scale),
               Text(
                 "List Options",
                 style: TextStyle(
-                  fontSize: 26,
+                  fontSize: 26 * scale,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),
@@ -223,7 +227,7 @@ class _ListOptionsState extends State<ListOptionsPage> {
             padding: const EdgeInsets.only(left: 8, bottom: 15),
             child: Text(
               title,
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 20 , fontWeight: FontWeight.bold),
             ),
           ),
 
@@ -298,6 +302,9 @@ class _ListOptionsState extends State<ListOptionsPage> {
     required String description,
     required VoidCallback? onTap,
   }) {
+      final size = MediaQuery.of(context).size;
+      final scale = (size.width / 375).clamp(0.85, 1.3);
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -333,22 +340,22 @@ class _ListOptionsState extends State<ListOptionsPage> {
                   CircleAvatar(
                     radius: 28,
                     backgroundColor: Colors.grey[200],
-                    child: const Icon(
+                    child: Icon(
                       Icons.person_rounded,
                       color: Colors.grey,
-                      size: 35,
+                      size: 35 * scale,
                     ),
                   ),
-                  const SizedBox(width: 15),
+                  SizedBox(width: 15 * scale),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           name,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 13,
+                            fontSize: 13 * scale,
                             color: Colors.black87,
                           ),
                         ),
