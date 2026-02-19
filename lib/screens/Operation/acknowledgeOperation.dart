@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:helpdesk_app/screens/ListOption.dart';
 import 'package:helpdesk_app/screens/inventory.dart';
@@ -5,7 +6,6 @@ import '../qr_scanner_page.dart';
 import '../dashboard_page.dart';
 import 'operation.dart';
 import '../comment_page.dart';
-import '../inventory.dart';
 
 class AcknowledgeoperationPage extends StatelessWidget {
   final String status;
@@ -22,6 +22,13 @@ class AcknowledgeoperationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final screenWidth = size.width;
+    final screenHeight = size.height;
+
+    // scaling factor
+    final scaleW = screenWidth / 375; // base iPhone 11 width
+    final scaleH = screenHeight / 812; // base iPhone 11 height
+    final scaleText = min(scaleW, scaleH);
 
     return Scaffold(
       backgroundColor: const Color(0xFFF8FAFC),
@@ -30,7 +37,7 @@ class AcknowledgeoperationPage extends StatelessWidget {
           // --- HEADER SECTION ---
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.only(top: 50, bottom: 25),
+            padding: EdgeInsets.only(top: 50 * scaleH, bottom: 25 * scaleH),
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 colors: [Color(0xFF00AEEF), Color(0xFF0089BB)],
@@ -47,23 +54,24 @@ class AcknowledgeoperationPage extends StatelessWidget {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: IconButton(
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.arrow_back_ios_new,
                       color: Colors.white,
-                      size: 30,
+                      size: 30 * scaleText,
                     ),
                     onPressed: () => Navigator.pop(context),
                   ),
                 ),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.assignment_turned_in, color: Colors.white, size: 32),
-                    SizedBox(width: 12),
+                    Icon(Icons.assignment_turned_in,
+                        color: Colors.white, size: 32 * scaleText),
+                    SizedBox(width: 12 * scaleW),
                     Text(
                       'Acknowledge',
                       style: TextStyle(
-                        fontSize: 26,
+                        fontSize: 26 * scaleText,
                         fontWeight: FontWeight.w800,
                         color: Colors.white,
                       ),
@@ -73,20 +81,20 @@ class AcknowledgeoperationPage extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 20),
+          SizedBox(height: 20 * scaleH),
 
           // --- TICKET ID BAR ---
           Center(
             child: Container(
-              width: size.width * 0.9,
+              width: screenWidth * 0.9,
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(12 * scaleW),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withOpacity(0.05),
                     blurRadius: 10,
-                    offset: const Offset(0, 4),
+                    offset: Offset(0, 4),
                   ),
                 ],
               ),
@@ -95,32 +103,32 @@ class AcknowledgeoperationPage extends StatelessWidget {
                 child: Row(
                   children: [
                     Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 18,
-                        vertical: 12,
-                      ),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 18 * scaleW, vertical: 12 * scaleH),
                       decoration: BoxDecoration(
                         color: status.toUpperCase() == 'NEW'
                             ? Colors.redAccent
                             : (status.toUpperCase() == 'PENDING'
-                                  ? const Color.fromARGB(255, 243, 195, 72)
-                                  : Colors.grey),
+                                ? const Color.fromARGB(255, 243, 195, 72)
+                                : Colors.grey),
                       ),
                       child: Text(
                         status.toUpperCase(),
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
+                          fontSize: 12 * scaleText,
                         ),
                       ),
                     ),
-                    const Expanded(
+                    Expanded(
                       child: Text(
                         'L202601141050510002',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontWeight: FontWeight.w700,
                           color: Colors.black87,
+                          fontSize: 13 * scaleText,
                         ),
                       ),
                     ),
@@ -132,55 +140,53 @@ class AcknowledgeoperationPage extends StatelessWidget {
 
           Expanded(
             child: ListView(
-              padding: const EdgeInsets.all(20),
+              padding: EdgeInsets.all(20 * scaleW),
               children: [
-                _buildModernLabel("CONTACT PERSON"),
+                _buildModernLabel("CONTACT PERSON", scaleText),
                 _buildCleanBox(
+                  scaleText: scaleText,
                   child: Row(
                     children: [
                       CircleAvatar(
-                        radius: 26,
+                        radius: 26 * scaleW,
                         backgroundColor: Colors.blue.shade50,
                         child: Icon(
                           Icons.person,
                           color: Colors.blue.shade700,
-                          size: 30,
+                          size: 30 * scaleText,
                         ),
                       ),
-                      const SizedBox(width: 15),
+                      SizedBox(width: 15 * scaleW),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               name,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 13,
+                                fontSize: 13 * scaleText,
                               ),
                             ),
-                            const SizedBox(height: 4),
+                            SizedBox(height: 4 * scaleH),
                             Text(
                               department,
                               style: TextStyle(
                                 color: Colors.grey[700],
-                                fontSize: 12,
+                                fontSize: 12 * scaleText,
                               ),
                             ),
-                            const SizedBox(height: 8),
-                            const Row(
+                            SizedBox(height: 8 * scaleH),
+                            Row(
                               children: [
-                                Icon(
-                                  Icons.phone_rounded,
-                                  size: 16,
-                                  color: Colors.green,
-                                ),
-                                SizedBox(width: 6),
+                                Icon(Icons.phone_rounded,
+                                    size: 16 * scaleText, color: Colors.green),
+                                SizedBox(width: 6 * scaleW),
                                 Text(
                                   "019-777 7777",
                                   style: TextStyle(
                                     fontWeight: FontWeight.w600,
-                                    fontSize: 13,
+                                    fontSize: 13 * scaleText,
                                   ),
                                 ),
                               ],
@@ -191,11 +197,11 @@ class AcknowledgeoperationPage extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: 20 * scaleH),
 
-                // --- TICKET INFORMATION SECTION ---
-                _buildModernLabel("TICKET INFORMATION"),
+                _buildModernLabel("TICKET INFORMATION", scaleText),
                 _buildCleanBox(
+                  scaleText: scaleText,
                   padding: EdgeInsets.zero,
                   child: Column(
                     children: [
@@ -203,7 +209,7 @@ class AcknowledgeoperationPage extends StatelessWidget {
                         children: [
                           Container(
                             width: double.infinity,
-                            padding: const EdgeInsets.all(15),
+                            padding: EdgeInsets.all(15 * scaleW),
                             color: Colors.grey[200],
                             child: Column(
                               children: [
@@ -211,26 +217,25 @@ class AcknowledgeoperationPage extends StatelessWidget {
                                   "WORK ORDER : DISMANTLE",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 13,
+                                    fontSize: 13 * scaleText,
                                     color: Colors.blueGrey.shade900,
                                   ),
                                 ),
-                                const SizedBox(height: 4),
-                                const Text(
+                                SizedBox(height: 4 * scaleH),
+                                Text(
                                   "START DATE : 15 JAN 2026",
-                                  style: TextStyle(fontSize: 12),
+                                  style: TextStyle(fontSize: 12 * scaleText),
                                 ),
-                                const Text(
+                                Text(
                                   "END DATE : 15 JAN 2026",
-                                  style: TextStyle(fontSize: 12),
+                                  style: TextStyle(fontSize: 12 * scaleText),
                                 ),
                               ],
                             ),
                           ),
-                          // --- ICON INVENTORY ---
                           Positioned(
-                            right: 10,
-                            top: 10,
+                            right: 10 * scaleW,
+                            top: 10 * scaleH,
                             child: GestureDetector(
                               onTap: () {
                                 Navigator.push(
@@ -244,7 +249,7 @@ class AcknowledgeoperationPage extends StatelessWidget {
                                 );
                               },
                               child: Container(
-                                padding: const EdgeInsets.all(8),
+                                padding: EdgeInsets.all(8 * scaleW),
                                 decoration: BoxDecoration(
                                   color: Colors.white.withOpacity(0.9),
                                   shape: BoxShape.circle,
@@ -252,27 +257,27 @@ class AcknowledgeoperationPage extends StatelessWidget {
                                     BoxShadow(
                                       color: Colors.black.withOpacity(0.1),
                                       blurRadius: 4,
-                                      offset: const Offset(0, 2),
+                                      offset: Offset(0, 2),
                                     ),
                                   ],
                                 ),
-                                child: const Icon(
+                                child: Icon(
                                   Icons.inventory_2_rounded,
-                                  color: Color(0xFF0089BB),
-                                  size: 22,
+                                  color: const Color(0xFF0089BB),
+                                  size: 22 * scaleText,
                                 ),
                               ),
                             ),
                           ),
                         ],
                       ),
-                      const Padding(
-                        padding: EdgeInsets.all(18),
+                      Padding(
+                        padding: EdgeInsets.all(18 * scaleW),
                         child: Text(
                           "Wakil Aset RADIO: Encik Shukhaiman/Puan Azlina Zakaria mohon mengemaskini No.Invois & DO set komputer baharu pada Modul Perolehan (SPB) seterusnya melengkapkan rekod pengguna dan penempatan dan membuat janaan no. aset di Model Aset(SPB).",
                           textAlign: TextAlign.justify,
                           style: TextStyle(
-                            fontSize: 13,
+                            fontSize: 13 * scaleText,
                             height: 1.5,
                             color: Colors.black87,
                           ),
@@ -281,36 +286,35 @@ class AcknowledgeoperationPage extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: 18),
+                SizedBox(height: 18 * scaleH),
 
                 _buildCleanBox(
+                  scaleText: scaleText,
                   child: Row(
                     children: [
                       Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 14,
-                          vertical: 8,
-                        ),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 14 * scaleW, vertical: 8 * scaleH),
                         decoration: BoxDecoration(
                           color: const Color(0xFF00AEEF),
-                          borderRadius: BorderRadius.circular(6),
+                          borderRadius: BorderRadius.circular(6 * scaleW),
                         ),
-                        child: const Text(
+                        child: Text(
                           "LAPTOP",
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
-                            fontSize: 11,
+                            fontSize: 11 * scaleText,
                           ),
                         ),
                       ),
-                      const SizedBox(width: 12),
-                      const Expanded(
+                      SizedBox(width: 12 * scaleW),
+                      Expanded(
                         child: Text(
                           "KKMM/BERNAMA/H/15/241",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 13,
+                            fontSize: 13 * scaleText,
                           ),
                         ),
                       ),
@@ -318,11 +322,12 @@ class AcknowledgeoperationPage extends StatelessWidget {
                   ),
                 ),
 
-                const SizedBox(height: 20),
-                _buildModernLabel("TECHNICAL PERSON"),
+                SizedBox(height: 20 * scaleH),
+                _buildModernLabel("TECHNICAL PERSON", scaleText),
                 _buildCleanBox(
+                  scaleText: scaleText,
                   color: Colors.white,
-                  padding: const EdgeInsets.all(12),
+                  padding: EdgeInsets.all(12 * scaleW),
                   child: Column(
                     children: [
                       Align(
@@ -332,51 +337,51 @@ class AcknowledgeoperationPage extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    CommentPage(status: status),
-                              ),
+                                  builder: (context) =>
+                                      CommentPage(status: status)),
                             );
                           },
-                          child: const Icon(
+                          child: Icon(
                             Icons.chat_bubble_outline_rounded,
                             color: Colors.black,
-                            size: 26,
+                            size: 26 * scaleText,
                           ),
                         ),
                       ),
-                      const SizedBox(height: 8),
-                      _buildTechnicalRow("NEW", "SHARIFFUDDIN BIN ALI BASHA"),
-                      const SizedBox(height: 10),
-                      _buildTechnicalRow("NEW", "MOHD NAZRIN BIN ABU HASSAN"),
+                      SizedBox(height: 8 * scaleH),
+                      _buildTechnicalRow("NEW", "SHARIFFUDDIN BIN ALI BASHA",
+                          scaleText),
+                      SizedBox(height: 10 * scaleH),
+                      _buildTechnicalRow("NEW", "MOHD NAZRIN BIN ABU HASSAN",
+                          scaleText),
                     ],
                   ),
                 ),
 
-                const SizedBox(height: 35),
+                SizedBox(height: 35 * scaleH),
 
                 ElevatedButton(
                   onPressed: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const OperationPage(),
-                      ),
+                          builder: (context) => const OperationPage()),
                     );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF00AEEF),
                     foregroundColor: Colors.white,
-                    minimumSize: const Size(double.infinity, 55),
+                    minimumSize: Size(double.infinity, 55 * scaleH),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
+                        borderRadius: BorderRadius.circular(15)),
                   ),
-                  child: const Text(
+                  child: Text(
                     "FINISH",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 16 * scaleText),
                   ),
                 ),
-                const SizedBox(height: 25),
+                SizedBox(height: 25 * scaleH),
               ],
             ),
           ),
@@ -387,41 +392,41 @@ class AcknowledgeoperationPage extends StatelessWidget {
   }
 
   // --- HELPER WIDGETS ---
-
-  Widget _buildTechnicalRow(String tag, String name) {
+  Widget _buildTechnicalRow(String tag, String name, double scaleText) {
     return Row(
       children: [
         Container(
-          width: 80,
-          padding: const EdgeInsets.symmetric(vertical: 10),
+          width: 80 * scaleText,
+          padding: EdgeInsets.symmetric(vertical: 10 * scaleText),
           decoration: BoxDecoration(
             color: Colors.redAccent,
-            borderRadius: BorderRadius.circular(4),
+            borderRadius: BorderRadius.circular(4 * scaleText),
           ),
           alignment: Alignment.center,
           child: Text(
             tag,
-            style: const TextStyle(
+            style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
-              fontSize: 12,
+              fontSize: 12 * scaleText,
             ),
           ),
         ),
-        const SizedBox(width: 10),
+        SizedBox(width: 10 * scaleText),
         Expanded(
           child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+            padding: EdgeInsets.symmetric(
+                vertical: 10 * scaleText, horizontal: 15 * scaleText),
             decoration: BoxDecoration(
               color: Colors.grey[200],
-              borderRadius: BorderRadius.circular(4),
+              borderRadius: BorderRadius.circular(4 * scaleText),
             ),
             child: Text(
               name,
-              style: const TextStyle(
+              style: TextStyle(
                 color: Colors.black87,
                 fontWeight: FontWeight.w600,
-                fontSize: 11,
+                fontSize: 11 * scaleText,
               ),
               overflow: TextOverflow.ellipsis,
             ),
@@ -431,22 +436,23 @@ class AcknowledgeoperationPage extends StatelessWidget {
     );
   }
 
-  Widget _buildModernLabel(String text) {
+  Widget _buildModernLabel(String text, double scaleText) {
     return Padding(
-      padding: const EdgeInsets.only(left: 5, bottom: 10),
+      padding: EdgeInsets.only(left: 5 * scaleText, bottom: 10 * scaleText),
       child: Align(
         alignment: Alignment.centerLeft,
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          padding: EdgeInsets.symmetric(
+              horizontal: 12 * scaleText, vertical: 6 * scaleText),
           decoration: BoxDecoration(
             color: const Color(0xFF64748B),
-            borderRadius: BorderRadius.circular(4),
+            borderRadius: BorderRadius.circular(4 * scaleText),
           ),
           child: Text(
             text,
-            style: const TextStyle(
+            style: TextStyle(
               color: Colors.white,
-              fontSize: 10,
+              fontSize: 10 * scaleText,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -459,17 +465,18 @@ class AcknowledgeoperationPage extends StatelessWidget {
     required Widget child,
     EdgeInsets? padding,
     Color? color,
+    double scaleText = 1,
   }) {
     return Container(
-      padding: padding ?? const EdgeInsets.all(15),
+      padding: padding ?? EdgeInsets.all(15 * scaleText),
       decoration: BoxDecoration(
         color: color ?? Colors.white,
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(15 * scaleText),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
             blurRadius: 12,
-            offset: const Offset(0, 4),
+            offset: Offset(0, 4),
           ),
         ],
       ),
@@ -478,73 +485,79 @@ class AcknowledgeoperationPage extends StatelessWidget {
     );
   }
 
-  Widget _buildBottomNavigationBar(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(top: BorderSide(color: Colors.grey.shade200)),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _buildNavItem(
-            context,
-            Icons.home_outlined,
-            "Home",
-            destination: const DashboardPage(),
-          ),
-          _buildQRItem(context),
-          _buildNavItem(
-            context,
-            Icons.list_alt_rounded,
-            "Options",
-            destination: const ListOptionsPage(),
-          ),
-        ],
-      ),
-    );
-  }
+Widget _buildBottomNavigationBar(BuildContext context) {
+  final size = MediaQuery.of(context).size;
+  final spacing = size.height * 0.015;
+  final isTablet = size.width >= 600;
 
-  Widget _buildNavItem(
-    BuildContext context,
-    IconData icon,
-    String label, {
-    Widget? destination,
-  }) {
-    return InkWell(
-      onTap: () {
-        if (destination != null) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => destination),
-          );
-        }
-      },
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 28, color: Colors.grey),
-          Text(label, style: const TextStyle(fontSize: 11, color: Colors.grey)),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildQRItem(BuildContext context) {
-    return GestureDetector(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const QRScannerPage()),
-      ),
-      child: Container(
-        padding: const EdgeInsets.all(12),
-        decoration: const BoxDecoration(
-          color: Colors.black,
-          shape: BoxShape.circle,
+  return Container(
+    padding: EdgeInsets.symmetric(vertical: spacing, horizontal: isTablet ? 40 : 0),
+    decoration: const BoxDecoration(
+      color: Colors.white,
+      boxShadow: [
+        BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, -2)),
+      ],
+    ),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        _buildNavItem(
+          context,
+          Icons.home_outlined,
+          "Home",
+          destination: const DashboardPage(),
+          iconSize: isTablet ? 36 : 28,
+          fontSize: isTablet ? 16 : 11,
         ),
-        child: const Icon(Icons.qr_code_scanner, color: Colors.white, size: 30),
+        _buildQRItem(context, iconSize: isTablet ? 36 : 30),
+        _buildNavItem(
+          context,
+          Icons.list_alt_rounded,
+          "Options",
+          destination: const ListOptionsPage(),
+          iconSize: isTablet ? 36 : 28,
+          fontSize: isTablet ? 16 : 11,
+        ),
+      ],
+    ),
+  );
+}
+
+ Widget _buildNavItem(BuildContext context, IconData icon, String label,
+    {Widget? destination, double iconSize = 28, double fontSize = 11}) {
+  return InkWell(
+    onTap: () {
+      if (destination != null) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => destination),
+        );
+      }
+    },
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(icon, size: iconSize, color: Colors.grey),
+        Text(label, style: TextStyle(fontSize: fontSize, color: Colors.grey)),
+      ],
+    ),
+  );
+}
+
+Widget _buildQRItem(BuildContext context, {double iconSize = 30}) {
+  return GestureDetector(
+    onTap: () => Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const QRScannerPage()),
+    ),
+    child: Container(
+      padding: EdgeInsets.all(iconSize * 0.4),
+      decoration: const BoxDecoration(
+        color: Colors.black,
+        shape: BoxShape.circle,
       ),
-    );
-  }
+      child: Icon(Icons.qr_code_scanner, color: Colors.white, size: iconSize),
+    ),
+  );
+}
 }

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:helpdesk_app/screens/ListOption.dart';
 import 'package:helpdesk_app/screens/inventory.dart';
@@ -32,6 +34,15 @@ class _AcknowledgePMPageState extends State<AcknowledgePMPage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final double scaleFactor = (screenWidth / 400).clamp(1.0, 1.5); 
+    final bool isTablet = screenWidth >= 600;
+    final screenHeight = size.height;
+
+     // Scale factors
+    final scaleW = screenWidth / 375; // base iPhone 11 width
+    final scaleH = screenHeight / 812; // base iPhone 11 height
+    final scaleText = min(scaleW, scaleH);
     
     return Scaffold(
       backgroundColor: const Color(0xFFF8FAFC),
@@ -40,7 +51,7 @@ class _AcknowledgePMPageState extends State<AcknowledgePMPage> {
           // --- HEADER SECTION ---
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.only(top: 50, bottom: 25),
+            padding: EdgeInsets.only(top: screenHeight * 0.05, bottom: 15 * scaleH),
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 colors: [Color(0xFF00AEEF), Color(0xFF0089BB)],
@@ -57,10 +68,10 @@ class _AcknowledgePMPageState extends State<AcknowledgePMPage> {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: IconButton(
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.arrow_back_ios_new,
                       color: Colors.white,
-                      size: 30,
+                      size: 24 * scaleFactor,
                     ),
                     onPressed: () => Navigator.pop(context),
                   ),
@@ -88,10 +99,10 @@ class _AcknowledgePMPageState extends State<AcknowledgePMPage> {
           // --- TICKET ID BAR ---
           Center(
             child: Container(
-              width: size.width * 0.9,
+              width: screenWidth * 0.9,
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(12 * scaleFactor),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withOpacity(0.05),
@@ -101,13 +112,13 @@ class _AcknowledgePMPageState extends State<AcknowledgePMPage> {
                 ],
               ),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(12 * scaleFactor),
                 child: Row(
                   children: [
                     Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 18,
-                        vertical: 12,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 18 * scaleFactor,
+                        vertical: 12 * scaleFactor,
                       ),
                       decoration: BoxDecoration(
                         color: widget.status.toUpperCase() == 'NEW'
@@ -426,6 +437,99 @@ class _AcknowledgePMPageState extends State<AcknowledgePMPage> {
 
   // --- UI HELPERS ---
 
+  Widget _buildTicketIdBar(double scale) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12 * scale),
+        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10)],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(12 * scale),
+        child: Row(
+          children: [
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 18 * scale, vertical: 12 * scale),
+              decoration: BoxDecoration(
+                color: widget.status.toUpperCase() == 'NEW'
+                    ? Colors.redAccent
+                    : (widget.status.toUpperCase() == 'PENDING' ? const Color(0xFFF3C348) : Colors.grey),
+              ),
+              child: Text(
+                widget.status.toUpperCase(),
+                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12 * scale),
+              ),
+            ),
+            Expanded(
+              child: Text(
+                'L202601141050510002',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontWeight: FontWeight.w700, color: Colors.black87, fontSize: 13 * scale),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTicketInfoCard(BuildContext context, double scale) {
+    return _buildWhiteCard(
+      padding: EdgeInsets.zero,
+      child: Column(
+        children: [
+          Stack(
+            children: [
+              Container(
+                width: double.infinity,
+                padding: EdgeInsets.all(15 * scale),
+                color: Colors.grey[200],
+                child: Column(
+                  children: [
+                    Text("PM TYPE : COMPUTER SET",
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13 * scale)),
+                    SizedBox(height: 5 * scale),
+                    Text("END DATE : 28 JAN 2026",
+                        style: TextStyle(fontSize: 11 * scale, fontWeight: FontWeight.w500)),
+                  ],
+                ),
+              ),
+              Positioned(
+                right: 10 * scale,
+                top: 10 * scale,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => InventoryPage(name: widget.name, department: widget.department)));
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(8 * scale),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.9),
+                      shape: BoxShape.circle,
+                      boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)],
+                    ),
+                    child: Icon(Icons.inventory_2_rounded, color: const Color(0xFF0089BB), size: 20 * scale),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Padding(
+            padding: EdgeInsets.all(20 * scale),
+            child: Text(
+              "Preventive Maintenance (COMPUTER SET) - MUHAMMAD MUJAHID BIN ISHAK (1255) computer yang rosak mengikut petugas berikut:",
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 11 * scale, height: 1.5, color: Colors.black87),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildTechnicalRow(String tag, String name) {
     return Row(
       children: [
@@ -513,70 +617,79 @@ class _AcknowledgePMPageState extends State<AcknowledgePMPage> {
     );
   }
 
-  Widget _buildBottomNavigationBar(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 12),
+Widget _buildBottomNavigationBar(BuildContext context) {
+  final size = MediaQuery.of(context).size;
+  final spacing = size.height * 0.015;
+  final isTablet = size.width >= 600;
+
+  return Container(
+    padding: EdgeInsets.symmetric(vertical: spacing, horizontal: isTablet ? 40 : 0),
+    decoration: const BoxDecoration(
       color: Colors.white,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _buildNavItem(
-            context,
-            Icons.home_outlined,
-            "Home",
-            destination: const DashboardPage(),
-          ),
-          _buildQRItem(context),
-          _buildNavItem(
-            context,
-            Icons.list_alt_rounded,
-            "Options",
-            destination: const ListOptionsPage(),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildNavItem(
-    BuildContext context,
-    IconData icon,
-    String label, {
-    Widget? destination,
-  }) {
-    return InkWell(
-      onTap: () {
-        if (destination != null) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => destination),
-          );
-        }
-      },
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 28, color: Colors.grey),
-          Text(label, style: const TextStyle(fontSize: 11, color: Colors.grey)),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildQRItem(BuildContext context) {
-    return GestureDetector(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const QRScannerPage()),
-      ),
-      child: Container(
-        padding: const EdgeInsets.all(12),
-        decoration: const BoxDecoration(
-          color: Colors.black,
-          shape: BoxShape.circle,
+      boxShadow: [
+        BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, -2)),
+      ],
+    ),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        _buildNavItem(
+          context,
+          Icons.home_outlined,
+          "Home",
+          destination: const DashboardPage(),
+          iconSize: isTablet ? 36 : 28,
+          fontSize: isTablet ? 16 : 11,
         ),
-        child: const Icon(Icons.qr_code_scanner, color: Colors.white, size: 30),
+        _buildQRItem(context, iconSize: isTablet ? 36 : 30),
+        _buildNavItem(
+          context,
+          Icons.list_alt_rounded,
+          "Options",
+          destination: const ListOptionsPage(),
+          iconSize: isTablet ? 36 : 28,
+          fontSize: isTablet ? 16 : 11,
+        ),
+      ],
+    ),
+  );
+}
+
+ Widget _buildNavItem(BuildContext context, IconData icon, String label,
+    {Widget? destination, double iconSize = 28, double fontSize = 11}) {
+  return InkWell(
+    onTap: () {
+      if (destination != null) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => destination),
+        );
+      }
+    },
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(icon, size: iconSize, color: Colors.grey),
+        Text(label, style: TextStyle(fontSize: fontSize, color: Colors.grey)),
+      ],
+    ),
+  );
+}
+
+Widget _buildQRItem(BuildContext context, {double iconSize = 30}) {
+  return GestureDetector(
+    onTap: () => Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const QRScannerPage()),
+    ),
+    child: Container(
+      padding: EdgeInsets.all(iconSize * 0.4),
+      decoration: const BoxDecoration(
+        color: Colors.black,
+        shape: BoxShape.circle,
       ),
-    );
-  }
+      child: Icon(Icons.qr_code_scanner, color: Colors.white, size: iconSize),
+    ),
+  );
+}
 }

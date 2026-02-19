@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:helpdesk_app/screens/profile/profile.dart';
 import 'package:helpdesk_app/screens/ListOption.dart';
@@ -31,8 +32,17 @@ class DashboardPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    //final scale = (size.width / 375).clamp(0.8, 1.3); 
+    final size = MediaQuery.of(context).size;  
+
+    double baseWidth = size.width;
+    if (baseWidth > 500) baseWidth = 390;
+    
+    final orientation = MediaQuery.of(context).orientation;
+    final isTablet = size.width >= 600;
+
+    final shiftHeight = isTablet
+      ? 260.0
+      : (size.height * 0.22).clamp(150.0, 200.0);
 
     final spacing = responsiveSpacing(context, 0.02);
     final avatarRadius = responsiveRadius(context, 0.08);
@@ -43,7 +53,7 @@ class DashboardPage extends StatelessWidget {
       "Saturday 31 Jan": "O",
       "Sunday 01 Feb": "PH",
       "Monday 02 Feb": "PH",
-      "Tuesday 03 Feb": "B,OA",
+      "Tuesday 03 Feb": "B,OA,O",
     };
 
     return Scaffold(
@@ -150,114 +160,141 @@ class DashboardPage extends StatelessWidget {
 
           // ---------------- MAIN CONTENT ----------------
           Expanded(
-            child: SingleChildScrollView(
-              padding: EdgeInsets.only(top: spacing),
-              child: Column(
-                children: [
-                  // Floating Job Card
-                  _buildSectionContainer(
-                    context,
-                    "",
-                    Text(
-                      'You finished 0 job today. \nWork Harder!!',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: responsiveFont(context, 0.05),
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
+            child: CustomScrollView(
+              physics: const BouncingScrollPhysics(
+                parent: AlwaysScrollableScrollPhysics(),
+              ),
+              slivers: [
+                CupertinoSliverRefreshControl(
+                  onRefresh: () async {
+                    await Future.delayed(const Duration(seconds: 2));
+                  },
+                  // --- TUKAR WARNA ---
+                  builder: (context, refreshState, pulledExtent, refreshTriggerPullDistance, refreshIndicatorExtent) {
+                    return Center(
+                      child: pulledExtent > 0 
+                          ? CircularProgressIndicator(
+                              value: refreshState == RefreshIndicatorMode.armed || refreshState == RefreshIndicatorMode.refresh
+                                  ? null 
+                                  : (pulledExtent / refreshTriggerPullDistance).clamp(0.0, 1.0),
+                              valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF00AEEF)),
+                              strokeWidth: 3.0,
+                            )
+                          : const SizedBox.shrink(),
+                    );
+                  },
+                ),
 
-                  SizedBox(height: spacing),
-
-                  // TASK SECTION
-                  _buildSectionContainer(
-                    context,
-                    "TASK",
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: spacing),
+                    child: Column(
                       children: [
-                        Expanded(
-                          child: _taskItem(
-                            context,
-                            Icons.report,
-                            'Complaints',
-                            2,
-                            Colors.red,
-                            avatarRadius,
-                            () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const ComplaintsPage(),
-                                ),
-                              );
-                            },
+                        const SizedBox(height: 10),
+                        // --- Floating Job Card ---
+                        _buildSectionContainer(
+                          context,
+                          "",
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 30.0),
+                            child: Text(
+                              'You finished 0 job today. \nWork Harder!!',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: responsiveFont(context, 0.05),
+                                color: Colors.black,
+                                height: 1.5,
+                              ),
+                            ),
                           ),
                         ),
-                        Expanded(
-                          child: _taskItem(
-                            context,
-                            Icons.business_center,
-                            'Operation',
-                            0,
-                            Colors.blue,
-                            avatarRadius,
-                            () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const OperationPage(),
+
+                        SizedBox(height: spacing),
+
+                        // --- TASK SECTION ---
+                        _buildSectionContainer(
+                          context,
+                          "TASK",
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Expanded(
+                                child: _taskItem(
+                                  context,
+                                  Icons.report,
+                                  'Complaints',
+                                  2,
+                                  Colors.red,
+                                  avatarRadius,
+                                  () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => const ComplaintsPage()),
+                                    );
+                                  },
                                 ),
-                              );
-                            },
+                              ),
+                              Expanded(
+                                child: _taskItem(
+                                  context,
+                                  Icons.business_center,
+                                  'Operation',
+                                  0,
+                                  Colors.blue,
+                                  avatarRadius,
+                                  () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => const OperationPage()),
+                                    );
+                                  },
+                                ),
+                              ),
+                              Expanded(
+                                child: _taskItem(
+                                  context,
+                                  Icons.settings,
+                                  'PM',
+                                  6,
+                                  Colors.green,
+                                  avatarRadius,
+                                  () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => const PMPage()),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        Expanded(
-                          child: _taskItem(
-                            context,
-                            Icons.settings,
-                            'PM',
-                            6,
-                            Colors.green,
-                            avatarRadius,
-                            () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const PMPage(),
-                                ),
-                              );
-                            },
+
+                        SizedBox(height: spacing),
+
+                        // --- SHIFT SCHEDULE SECTION ---
+                        _buildSectionContainer(
+                          context,
+                          "SHIFT SCHEDULE",
+                          SizedBox(
+                            height: shiftHeight,
+                            child: ListView.separated(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: timetables.length,
+                              separatorBuilder: (_, __) => SizedBox(width: spacing * 0.6),
+                              itemBuilder: (context, index) {
+                                final entry = timetables.entries.elementAt(index);
+                                return _shiftCard(context, entry.key, entry.value);
+                              },
+                            ),
                           ),
                         ),
+                        SizedBox(height: spacing * 2),
                       ],
                     ),
                   ),
-
-                  SizedBox(height: spacing),
-
-                  // SHIFT SCHEDULE SECTION
-                  _buildSectionContainer(
-                    context,
-                    "SHIFT SCHEDULE",
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      physics: const BouncingScrollPhysics(),
-                      child: Row(
-                        children: timetables.entries.map((entry) {
-                          return Padding(
-                            padding: EdgeInsets.only(right: spacing * 0.6),
-                            child: _shiftCard(context, entry.key, entry.value),
-                          );
-                        }).toList(),
-                      ),
-                    ),
-                  ),
-
-                  SizedBox(height: spacing * 2),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
 
@@ -270,58 +307,83 @@ class DashboardPage extends StatelessWidget {
 
   // ----------------- REUSABLE WIDGETS -----------------
   Widget _buildSectionContainer(BuildContext context, String title, Widget content) {
-    final size = MediaQuery.of(context).size;
-    final spacing = sqrt(size.width * size.height) * 0.02;
-    //final fontSize = (sqrt(size.width * size.height) * 0.03).clamp(16.0, 36.0);
-    final fontSize = max(size.width * 0.035, 12).toDouble();
-    
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: spacing),
-      child: Container(
-        width: double.infinity,
-        padding: EdgeInsets.all(spacing),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.08),
-              blurRadius: 10,
-              offset: const Offset(0, 5),
-            ),
-          ],
-        ),
-        child: Column(
-          children: [
-            if (title.isNotEmpty) ...[
-              Text(
+  final size = MediaQuery.of(context).size;
+  
+  final bool isTablet = size.width >= 600;
+  // Gunakan pengiraan spacing yang lebih stabil untuk semua device
+  final double spacing = (size.width * 0.04).clamp(12.0, 20.0);
+
+  final double titleFontSize = isTablet 
+      ? (size.width * 0.035).clamp(20.0, 26.0) 
+      : (size.width * 0.045).clamp(15.0, 18.0);
+  
+  return Padding(
+    padding: EdgeInsets.symmetric(horizontal: spacing, vertical: spacing * 0.5),
+    child: Container(
+      width: double.infinity,
+      // Kita buang padding tetap pada Container supaya kandungan (seperti ListView) 
+      // boleh rapat ke tepi jika perlu, atau kita kawal padding di dalam Column.
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.06),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min, // Penting: Biar container ikut saiz kandungan
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          if (title.isNotEmpty) ...[
+            Padding(
+              padding: EdgeInsets.only(top: spacing, bottom: spacing * 0.5),
+              child: Text(
                 title,
                 style: TextStyle(
-                  fontSize: fontSize,
+                  fontSize: titleFontSize,
                   fontWeight: FontWeight.bold,
+                  color: Colors.blueGrey[800],
+                  letterSpacing: 0.5,
                 ),
               ),
-              SizedBox(height: spacing * 0.3),
-            ],
-            content,
+            ),
           ],
-        ),
+          // Kandungan (Content) diletakkan di sini
+          Padding(
+            padding: EdgeInsets.fromLTRB(spacing, 0, spacing, spacing),
+            child: content,
+          ),
+        ],
       ),
-    );
-  }
+    ),
+  );
+}
 
-  Widget _shiftCard(BuildContext context, String fullDate, String shiftCodes) {
+ Widget _shiftCard(
+      BuildContext context, String fullDate, String shiftCodes) {
     final size = MediaQuery.of(context).size;
-    final width = (size.width * 0.38).clamp(120.0, 200.0);
+
+    final isTablet = size.width >= 600;
+    final isSmallPhone = size.width < 350;
+
+    final cardWidth = isTablet
+    ? 220.0
+    : (size.width < 350 ? size.width * 0.45 : size.width * 0.42); // responsive width for phone
+
+
     List<String> dateParts = fullDate.split(' ');
     String dayName = dateParts[0];
     String dateNum = fullDate.substring(dayName.length).trim();
     List<String> codes = shiftCodes.split(',');
 
     return Container(
-      width: width,
-      constraints: const BoxConstraints(minHeight: 180),
-      padding: EdgeInsets.all(size.width * 0.03),
+      width: cardWidth.toDouble(),
+      //constraints: const BoxConstraints(minHeight: 10),
+      padding: EdgeInsets.all(cardWidth * 0.08),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
@@ -339,40 +401,57 @@ class DashboardPage extends StatelessWidget {
         children: [
           Text(
             dayName,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              fontSize: (size.width * 0.035).clamp(10.0, 16.0),
+              fontSize: (cardWidth * 0.12).clamp(12, 24),
             ),
           ),
           Text(
             dateNum,
+            maxLines: 1,
             style: TextStyle(
-              fontSize: (size.width * 0.032).clamp(10.0, 14.0),
+              fontSize: (cardWidth * 0.10).clamp(10, 20),
               color: Colors.grey[800],
             ),
           ),
-          Divider(height: size.height * 0.02),
-          ...codes.map((code) {
-            final info = ShiftHelper.getInfo(code.trim());
-            return Container(
-              width: double.infinity,
-              margin: EdgeInsets.only(bottom: size.height * 0.006),
-              padding: EdgeInsets.symmetric(vertical: size.height * 0.008),
-              decoration: ShapeDecoration(
-                color: info['color'],
-                shape: const StadiumBorder(),
-              ),
-              child: Text(
-                info['name'],
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: info['font'],
-                  fontWeight: FontWeight.bold,
-                  fontSize: (size.width * 0.028).clamp(10.0, 12.0),
-                ),
-              ),
-            );
-          }).toList(),
+          SizedBox(height: cardWidth * 0.08),
+
+            Expanded( // Gunakan Expanded supaya ListView di dalam tidak overflow
+              child: ListView(
+                padding: EdgeInsets.zero,
+                shrinkWrap: true, // Penting supaya tidak ambil ruang berlebihan
+                children: codes.map((code) {
+                  final info = ShiftHelper.getInfo(code.trim());
+                  return Container(
+                    width: double.infinity,
+                    margin: EdgeInsets.only(bottom: 6),
+                    padding: EdgeInsets.symmetric(
+                      vertical: isTablet ? 12 : 8,
+                      horizontal: 4,
+                    ),
+                    decoration: ShapeDecoration(
+                      color: info['color'],
+                      shape: const StadiumBorder(),
+                    ),
+                    child: FittedBox( // Supaya teks panjang (e.g. "OFF DAY") tidak overflow
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        info['name'],
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: info['font'],
+                          fontWeight: FontWeight.bold,
+                          fontSize: (cardWidth * 0.09).clamp(9, 16),
+                        ),
+                      ),
+                    ),
+                  );
+                }
+              ).toList(),
+            ),
+          ),
         ],
       ),
     );

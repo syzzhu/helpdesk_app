@@ -40,15 +40,19 @@ class _ListOptionsState extends State<ListOptionsPage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final width = size.width;
+    final height = size.height;
 
-    final scale = (size.width / 375).clamp(0.85, 1.3);
-    final isTablet = size.width >= 600;
+    final isSmallPhone = width < 360;
+    final isTablet = width >= 600;
+
 
     return Scaffold(
       backgroundColor: Colors.grey[100],
+      //bottomNavigationBar: _buildBottomNavigationBar(context),
       body: Column(
         children: [
-          _buildHeader(scale),
+          _buildHeader(isSmallPhone ? 0.85 : 1.0),
 
           Expanded(
             child: SingleChildScrollView(
@@ -92,7 +96,7 @@ class _ListOptionsState extends State<ListOptionsPage> {
           ),
 
           // ---------------- BOTTOM NAV ----------------
-          Container(
+          /*Container(
             padding: EdgeInsets.symmetric(vertical: size.height * 0.015),
             decoration: BoxDecoration(
               color: Colors.white,
@@ -126,9 +130,10 @@ class _ListOptionsState extends State<ListOptionsPage> {
                 ),
               ],
             ),
-          ),
+          ),*/
         ],
       ),
+      bottomNavigationBar: _buildBottomNavigationBar(context),
     );
   }
 
@@ -417,45 +422,80 @@ class _ListOptionsState extends State<ListOptionsPage> {
   }
 
   // ================= BOTTOM BAR =================
-  Widget _buildNavItem(
-    BuildContext context,
-    IconData icon,
-    String label, {
-    Widget? destination,
-  }) {
-    return InkWell(
-      onTap: () {
-        if (destination != null) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => destination),
-          );
-        }
-      },
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 28, color: Colors.grey),
-          Text(label, style: const TextStyle(fontSize: 11, color: Colors.grey)),
-        ],
-      ),
-    );
-  }
 
-  Widget _buildQRItem(BuildContext context) {
-    return GestureDetector(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const QRScannerPage()),
-      ),
-      child: Container(
-        padding: const EdgeInsets.all(12),
-        decoration: const BoxDecoration(
-          color: Colors.black,
-          shape: BoxShape.circle,
+   Widget _buildBottomNavigationBar(BuildContext context) {
+  final size = MediaQuery.of(context).size;
+  final spacing = size.height * 0.015;
+  final isTablet = size.width >= 600;
+
+  return Container(
+    padding: EdgeInsets.symmetric(vertical: spacing, horizontal: isTablet ? 40 : 0),
+    decoration: const BoxDecoration(
+      color: Colors.white,
+      boxShadow: [
+        BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, -2)),
+      ],
+    ),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        _buildNavItem(
+          context,
+          Icons.home_outlined,
+          "Home",
+          destination: const DashboardPage(),
+          iconSize: isTablet ? 36 : 28,
+          fontSize: isTablet ? 16 : 11,
         ),
-        child: const Icon(Icons.qr_code_scanner, color: Colors.white, size: 30),
+        _buildQRItem(context, iconSize: isTablet ? 36 : 30),
+        _buildNavItem(
+          context,
+          Icons.list_alt_rounded,
+          "Options",
+          destination: const ListOptionsPage(),
+          iconSize: isTablet ? 36 : 28,
+          fontSize: isTablet ? 16 : 11,
+        ),
+      ],
+    ),
+  );
+}
+
+ Widget _buildNavItem(BuildContext context, IconData icon, String label,
+    {Widget? destination, double iconSize = 28, double fontSize = 11}) {
+  return InkWell(
+    onTap: () {
+      if (destination != null) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => destination),
+        );
+      }
+    },
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(icon, size: iconSize, color: Colors.grey),
+        Text(label, style: TextStyle(fontSize: fontSize, color: Colors.grey)),
+      ],
+    ),
+  );
+}
+
+Widget _buildQRItem(BuildContext context, {double iconSize = 30}) {
+  return GestureDetector(
+    onTap: () => Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const QRScannerPage()),
+    ),
+    child: Container(
+      padding: EdgeInsets.all(iconSize * 0.4),
+      decoration: const BoxDecoration(
+        color: Colors.black,
+        shape: BoxShape.circle,
       ),
-    );
-  }
+      child: Icon(Icons.qr_code_scanner, color: Colors.white, size: iconSize),
+    ),
+  );
+}
 }

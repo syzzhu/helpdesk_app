@@ -59,8 +59,8 @@ class _DetailComplaintsPageState extends State<DetailComplaintsPage> {
     final isTablet = screenWidth >= 600 && screenWidth < 1024;
 
     // Clamp font & sizes supaya phone tak gila besar
-    final paddingH = screenWidth * 0.03;
-    final paddingV = screenHeight * 0.015;
+    final scaleW = screenWidth / 375; // base iPhone 11 width
+    final scaleH = screenHeight / 812;
     final fontTitle = (screenWidth * 0.035).clamp(14.0, 22.0); // max 22, min 14
     final fontSmall = (screenWidth * 0.020).clamp(11.0, 16.0);
     final avatarRadius = (screenWidth * 0.07).clamp(20.0, 40.0);
@@ -75,7 +75,7 @@ class _DetailComplaintsPageState extends State<DetailComplaintsPage> {
           // HEADER
           Container(
             width: double.infinity,
-            padding: EdgeInsets.only(top: screenHeight * 0.05, bottom: paddingV),
+            padding: EdgeInsets.only(top: screenHeight * 0.05, bottom: 15 * scaleH),
             decoration: const BoxDecoration(
               gradient: LinearGradient(colors: [Color(0xFF00AEEF), Color(0xFF0089BB)]),
               borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30), bottomRight: Radius.circular(30)),
@@ -93,7 +93,7 @@ class _DetailComplaintsPageState extends State<DetailComplaintsPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(Icons.description, color: Colors.white, size: avatarRadius * 1.2),
-                    SizedBox(width: paddingH),
+                    SizedBox(width: 15 * scaleW),
                     Text(
                       'Acknowledge',
                       style: TextStyle(
@@ -107,7 +107,7 @@ class _DetailComplaintsPageState extends State<DetailComplaintsPage> {
               ],
             ),
           ),
-          SizedBox(height: paddingV * 2),
+          SizedBox(height: 15 * scaleH),
 
           // STATUS & TASK ID
           Center(
@@ -123,13 +123,17 @@ class _DetailComplaintsPageState extends State<DetailComplaintsPage> {
                 child: Row(
                   children: [
                     Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 15,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 18 * scaleW,
+                        vertical: 12 * scaleH,
                       ),
                       decoration: BoxDecoration(
-                        color: _getStatusColor(complaint.status),
-                      ),
+                        color: complaint.status.toUpperCase() == 'NEW'
+                            ? Colors.redAccent
+                            : (complaint.status.toUpperCase() == 'PENDING'
+                                ? const Color.fromARGB(255, 243, 195, 72)
+                                  : Colors.grey),
+                        ),
                       child: Text(
                         complaint.status.toUpperCase(),
                         style: TextStyle(
@@ -151,16 +155,16 @@ class _DetailComplaintsPageState extends State<DetailComplaintsPage> {
               ),
             ),
           ),
-          SizedBox(height: paddingV * 2),
+          SizedBox(height: 15 * scaleH),
 
           // CONTENT
           Expanded(
             child: ListView(
-              padding: EdgeInsets.symmetric(horizontal: paddingH),
+              padding: EdgeInsets.symmetric(horizontal: 20 * scaleW),
               children: [
                 _buildModernLabel("CONTACT PERSON", fontSmall),
                 _buildCleanBox(
-                  padding: EdgeInsets.all(paddingH),
+                  padding: EdgeInsets.all(15 * scaleH),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -169,7 +173,7 @@ class _DetailComplaintsPageState extends State<DetailComplaintsPage> {
                         backgroundColor: Colors.blue.shade50,
                         child: Icon(Icons.person, color: Colors.blue, size: avatarRadius * 0.8),
                       ),
-                      SizedBox(width: paddingH),
+                      SizedBox(width: 15 * scaleW),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -182,7 +186,7 @@ class _DetailComplaintsPageState extends State<DetailComplaintsPage> {
                                 color: const Color(0xFF1E293B),
                               ),
                             ),
-                            SizedBox(height: paddingV / 2),
+                            SizedBox(height: 15 * scaleH / 2),
                             Row(
                               children: [
                                 Icon(Icons.business, size: fontSmall, color: Colors.grey),
@@ -195,7 +199,7 @@ class _DetailComplaintsPageState extends State<DetailComplaintsPage> {
                                 ),
                               ],
                             ),
-                            SizedBox(height: paddingV / 2),
+                            SizedBox(height: 15 * scaleH / 2),
                             Row(
                               children: [
                                 Icon(Icons.phone, size: fontSmall, color: Colors.green),
@@ -212,15 +216,15 @@ class _DetailComplaintsPageState extends State<DetailComplaintsPage> {
                     ],
                   ),
                 ),
-                SizedBox(height: paddingV * 2),
+                SizedBox(height: 15 * scaleH),
                 _buildModernLabel("TICKET INFORMATION", fontSmall),
                 _buildCleanBox(
-                  padding: EdgeInsets.all(paddingH),
+                  padding: EdgeInsets.all(15 * scaleH),
                   child: Column(
                     children: [
                       Container(
                         width: double.infinity,
-                        padding: EdgeInsets.symmetric(vertical: paddingV, horizontal: paddingH),
+                        padding: EdgeInsets.symmetric(vertical: 15 * scaleH, horizontal: 20 * scaleW),
                         decoration: BoxDecoration(
                           color: const Color(0xFFF8FAFC),
                           borderRadius: BorderRadius.circular(18),
@@ -229,7 +233,7 @@ class _DetailComplaintsPageState extends State<DetailComplaintsPage> {
                         child: Column(
                           children: [
                             Container(
-                              padding: EdgeInsets.symmetric(horizontal: paddingH / 2, vertical: paddingV / 2),
+                              padding: EdgeInsets.symmetric(horizontal: 10 * scaleW, vertical: 5 * scaleH),
                               decoration: BoxDecoration(
                                 color: const Color(0xFF0EA5E9).withOpacity(0.1),
                                 borderRadius: BorderRadius.circular(8),
@@ -245,7 +249,7 @@ class _DetailComplaintsPageState extends State<DetailComplaintsPage> {
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsets.symmetric(vertical: paddingV),
+                              padding: EdgeInsets.symmetric(vertical: 15 * scaleH),
                               child: Divider(
                                 height: 1,
                                 thickness: 1.5,
@@ -260,7 +264,7 @@ class _DetailComplaintsPageState extends State<DetailComplaintsPage> {
                           ],
                         ),
                       ),
-                      SizedBox(height: paddingV * 2),
+                      SizedBox(height: 15 * scaleH),
 
                       // TERMINAL & LOCATION DROPDOWN
                       _buildDropdownRow(
@@ -270,7 +274,7 @@ class _DetailComplaintsPageState extends State<DetailComplaintsPage> {
                         fontSize: fontSmall,
                         onChanged: (val) => setState(() => selectedTerminal = val),
                       ),
-                      SizedBox(height: paddingV),
+                      SizedBox(height: 15 * scaleH),
                       _buildDropdownRow(
                         label: "LOCATION :",
                         selectedValue: selectedLocation,
@@ -281,10 +285,12 @@ class _DetailComplaintsPageState extends State<DetailComplaintsPage> {
                     ],
                   ),
                 ),
-                SizedBox(height: paddingV * 3),
+                SizedBox(height: 15 * scaleH * 3),
 
-                if (_shouldShowAcknowledgeButton())
-                  ElevatedButton(
+               if (_shouldShowAcknowledgeButton())
+                Padding(
+                  padding: EdgeInsets.fromLTRB(15 * scaleW, 10 * scaleH, 15 * scaleW, 20 * scaleH), // 20 untuk jarak bawah
+                  child: ElevatedButton(
                     onPressed: () {
                       Navigator.push(
                         context,
@@ -301,14 +307,19 @@ class _DetailComplaintsPageState extends State<DetailComplaintsPage> {
                       backgroundColor: const Color(0xFF00AEEF),
                       foregroundColor: Colors.white,
                       minimumSize: Size(double.infinity, buttonHeight),
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      elevation: 5, // Tambah sedikit bayang supaya nampak timbul
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                     ),
                     child: Text(
                       "DETAILS",
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: fontTitle),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold, 
+                        fontSize: fontTitle,
+                        letterSpacing: 1.5, // Biar teks DETAILS nampak luas sikit
+                      ),
                     ),
                   ),
+                ),
               ],
             ),
           ),

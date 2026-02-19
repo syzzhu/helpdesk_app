@@ -51,141 +51,204 @@ class _OperationPageState extends State<OperationPage> {
     final double screenWidth = MediaQuery.of(context).size.width;
     final double scaleFactor = screenWidth / 375; // Baseline 375 (iPhone 11/Standard)
 
-    return Scaffold(
+      return Scaffold(
       backgroundColor: Colors.grey[100],
-      body: Column(
-        children: [
-          // --- HEADER RESPONSIVE ---
-          Container(
-            width: double.infinity,
-            padding: EdgeInsets.only(
-              top: MediaQuery.of(context).padding.top + 20,
-              bottom: 30 * scaleFactor,
-            ),
-            decoration: const BoxDecoration(
-              color: Color(0xFF00AEEF),
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(30),
-                bottomRight: Radius.circular(30),
-              ),
-            ),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+      // 1. Guna LayoutBuilder untuk mengesan lebar skrin semasa
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          double screenWidth = constraints.maxWidth;
+          bool isTablet = screenWidth > 600;
+          
+          // Tetapkan had lebar maksimum untuk kandungan supaya tidak terlalu melarat pada tablet
+          double contentWidth = isTablet ? screenWidth * 0.95 : screenWidth;
+
+          return Column(
+            children: [
+              // --- HEADER RESPONSIVE ---
+              Container(
+                width: double.infinity,
+                padding: EdgeInsets.only(
+                  top: MediaQuery.of(context).padding.top + 20,
+                  bottom: isTablet ? 40 : 30,
+                ),
+                decoration: const BoxDecoration(
+                  color: Color(0xFF00AEEF),
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(30),
+                    bottomRight: Radius.circular(30),
+                  ),
+                ),
+                child: Column(
                   children: [
-                    Icon(Icons.business_center, size: 35 * scaleFactor, color: Colors.white),
-                    SizedBox(width: 10 * scaleFactor),
-                    Text(
-                      'Operation',
-                      style: TextStyle(
-                        fontSize: 28 * scaleFactor,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.business_center, 
+                            size: isTablet ? 40 : 30, 
+                            color: Colors.white),
+                        const SizedBox(width: 12),
+                        Text(
+                          'Operation',
+                          style: TextStyle(
+                            fontSize: isTablet ? 32 : 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    // Search Bar dipadatkan sedikit pada skrin besar
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: isTablet ? (screenWidth * 0.1) : 20
+                      ),
+                      child: Container(
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: TextField(
+                          controller: searchController,
+                          onChanged: (v) => setState(() {
+                            filteredData = allData
+                                .where((i) => i['name'].toLowerCase().contains(v.toLowerCase()))
+                                .toList();
+                          }),
+                          decoration: const InputDecoration(
+                            hintText: 'Search name / type',
+                            prefixIcon: Icon(Icons.search),
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.symmetric(vertical: 15),
+                          ),
+                        ),
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: 20 * scaleFactor),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20 * scaleFactor),
+              ),
+
+              // --- LIST CARDS RESPONSIVE ---
+              Expanded(
+                child: Center( // Center supaya pada tablet, list berada di tengah
                   child: Container(
-                    height: 50 * scaleFactor,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: TextField(
-                      controller: searchController,
-                      onChanged: (v) => setState(() {
-                        filteredData = allData.where((i) => i['name'].toLowerCase().contains(v.toLowerCase())).toList();
-                      }),
-                      decoration: InputDecoration(
-                        hintText: 'Search name / type',
-                        prefixIcon: Icon(Icons.search, size: 20 * scaleFactor),
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(vertical: 15 * scaleFactor),
-                      ),
+                    constraints: BoxConstraints(maxWidth: contentWidth),
+                    child: ListView.builder(
+                      padding: const EdgeInsets.all(16),
+                      itemCount: filteredData.length,
+                      itemBuilder: (context, index) {
+                        final item = filteredData[index];
+                        // Pastikan fungsi _buildResponsiveCard menerima parameter isTablet
+                        return _buildResponsiveCard(item, isTablet);
+                      },
                     ),
                   ),
                 ),
-              ],
-            ),
-          ),
-
-          // --- LIST CARDS RESPONSIVE ---
-          Expanded(
-            child: ListView.builder(
-              padding: EdgeInsets.all(16 * scaleFactor),
-              itemCount: filteredData.length,
-              itemBuilder: (context, index) {
-                final item = filteredData[index];
-                return _buildResponsiveCard(item, scaleFactor);
-              },
-            ),
-          ),
-        ],
+              ),
+            ],
+          );
+        },
       ),
       bottomNavigationBar: _buildBottomNavigationBar(context),
     );
   }
 
-  Widget _buildResponsiveCard(Map<String, dynamic> item, double scale) {
+  Widget _buildResponsiveCard(Map<String, dynamic> item, bool isTablet) {
+    double scale = isTablet ? 1.2 : 1.0;
+    
     return Container(
-      margin: EdgeInsets.only(bottom: 16 * scale),
-      padding: EdgeInsets.all(16 * scale),
+      margin: const EdgeInsets.only(bottom: 20),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20 * scale),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10)],
+        borderRadius: BorderRadius.circular(25),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 15,
+            offset: const Offset(0, 5),
+          )
+        ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      // --- TAMBAH INKWELL DI SINI ---
+      child: InkWell(
+        borderRadius: BorderRadius.circular(25), // Supaya kesan ripple ikut border card
+        onTap: () {
+          // Navigasi ke Detail Page
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => DetailOperationPage(status: item['status'], name: item['name'], department: item['dept']), // Pastikan class DetailOperation anda sedia menerima parameter
+            ),
+          );
+        },
+        child: Padding(
+          padding: EdgeInsets.all(isTablet ? 30 : 20), // Alihkan padding ke sini supaya seluruh kawasan boleh ditekan
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _chip(item['type'], const Color(0xFFE3F2FD), const Color(0xFF1976D2), scale),
-              _chip(item['status'], _getStatusBgColor(item['status']), _getStatusTextColor(item['status']), scale),
-            ],
-          ),
-          SizedBox(height: 15 * scale),
-          Row(
-            children: [
-              CircleAvatar(
-                radius: 25 * scale,
-                backgroundColor: Colors.grey[200],
-                child: Icon(Icons.person, size: 25 * scale, color: Colors.grey),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _chip(item['type'], const Color(0xFFE3F2FD), const Color(0xFF1976D2), scale),
+                  _chip(item['status'], _getStatusBgColor(item['status']), _getStatusTextColor(item['status']), scale),
+                ],
               ),
-              SizedBox(width: 12 * scale),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(item['name'],
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14 * scale)),
-                    Text(item['dept'],
-                        style: TextStyle(fontSize: 11 * scale, color: Colors.grey[500])),
-                  ],
+              const SizedBox(height: 25),
+              Row(
+                children: [
+                  CircleAvatar(
+                    radius: isTablet ? 35 : 25,
+                    backgroundColor: Colors.grey[200],
+                    child: Icon(Icons.person, size: isTablet ? 35 : 25, color: Colors.grey),
+                  ),
+                  const SizedBox(width: 15),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          item['name'],
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: isTablet ? 20 : 16,
+                            letterSpacing: 0.5,
+                          ),
+                        ),
+                        Text(
+                          item['dept'],
+                          style: TextStyle(
+                            fontSize: isTablet ? 15 : 13,
+                            color: Colors.grey[500],
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 25),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: isTablet ? 25 : 18, horizontal: 15),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.grey[100],
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Text(
+                  item['desc'],
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: isTablet ? 18 : 15,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black87,
+                  ),
                 ),
               ),
             ],
           ),
-          SizedBox(height: 15 * scale),
-          Container(
-            padding: EdgeInsets.all(12 * scale),
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: Colors.grey[100],
-              borderRadius: BorderRadius.circular(12 * scale),
-            ),
-            child: Text(
-              item['desc'],
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 12 * scale, fontWeight: FontWeight.w500),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

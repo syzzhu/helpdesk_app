@@ -18,7 +18,22 @@ class DetailPM extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size; // dapatkan saiz skrin
+    final size = MediaQuery.of(context).size;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    final scaleW = screenWidth / 375; // base iPhone 11 width
+    final scaleH = screenHeight / 812;
+    double scale(double val) {
+      double s = size.width / 375;
+
+      // Had maksimum supaya tablet tak jadi besar melampau
+      if (s > 1.2) s = 1.2;
+
+      return val * s;
+    }
+
+
     return Scaffold(
       backgroundColor: const Color(0xFFF8FAFC),
       body: Column(
@@ -26,7 +41,7 @@ class DetailPM extends StatelessWidget {
           // --- HEADER SECTION ---
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.only(top: 50, bottom: 25),
+            padding: EdgeInsets.only(top: screenHeight * 0.05, bottom: 15 * scaleH),
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 colors: [Color(0xFF00AEEF), Color(0xFF0089BB)],
@@ -43,10 +58,10 @@ class DetailPM extends StatelessWidget {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: IconButton(
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.arrow_back_ios_new,
                       color: Colors.white,
-                      size: 30,
+                      size: scale(30),
                     ),
                     onPressed: () => Navigator.pop(context),
                   ),
@@ -54,16 +69,12 @@ class DetailPM extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(
-                      Icons.description,
-                      color: Colors.white,
-                      size: 32,
-                    ),
-                    const SizedBox(width: 12),
-                    const Text(
-                      'Detail',
+                    Icon(Icons.description, color: Colors.white, size: scale(32)),
+                    SizedBox(width: scale(12)),
+                    Text(
+                      'Detail PM',
                       style: TextStyle(
-                        fontSize: 26,
+                        fontSize: scale(26),
                         fontWeight: FontWeight.w800,
                         color: Colors.white,
                       ),
@@ -73,9 +84,10 @@ class DetailPM extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 20),
 
-          // --- TICKET ID BAR (Logik Warna Ikut Status) ---
+          SizedBox(height: scale(20)),
+
+          // --- TICKET ID BAR ---
           Center(
             child: Container(
               width: size.width * 0.9,
@@ -95,33 +107,34 @@ class DetailPM extends StatelessWidget {
                 child: Row(
                   children: [
                     Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 18,
-                        vertical: 12,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: scale(18),
+                        vertical: scale(12),
                       ),
                       decoration: BoxDecoration(
-                        // Logik warna: NEW = Merah, PENDING = Kuning, Lain-lain = Kelabu
                         color: status.toUpperCase() == 'NEW'
                             ? Colors.redAccent
                             : (status.toUpperCase() == 'PENDING'
-                                  ? const Color.fromARGB(255, 243, 195, 72)
-                                  : Colors.grey),
+                                ? const Color.fromARGB(255, 243, 195, 72)
+                                : Colors.grey),
                       ),
                       child: Text(
                         status.toUpperCase(),
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
+                          fontSize: scale(12),
                         ),
                       ),
                     ),
                     Expanded(
                       child: Text(
-                        'L202601141050510002',
+                        'PM202601141050510002',
                         textAlign: TextAlign.center,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontWeight: FontWeight.w700,
                           color: Colors.black87,
+                          fontSize: scale(13),
                         ),
                       ),
                     ),
@@ -130,53 +143,50 @@ class DetailPM extends StatelessWidget {
               ),
             ),
           ),
+
           Expanded(
             child: ListView(
-              padding: const EdgeInsets.all(20),
+              padding: EdgeInsets.all(scale(20)),
               children: [
-                _buildModernLabel("CONTACT PERSON"),
-
+                // --- CONTACT PERSON SECTION ---
+                _buildModernLabel("CONTACT PERSON", scale),
                 _buildCleanBox(
                   child: Row(
                     children: [
                       CircleAvatar(
-                        radius: 26,
+                        radius: scale(26),
                         backgroundColor: Colors.blue.shade50,
                         child: Icon(
                           Icons.person,
                           color: Colors.blue.shade700,
-                          size: 30,
+                          size: scale(30),
                         ),
                       ),
-                      const SizedBox(width: 15),
+                      SizedBox(width: scale(15)),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               name,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 13,
+                                fontSize: scale(13),
                               ),
                             ),
-                            const SizedBox(height: 4),
+                            SizedBox(height: scale(4)),
                             Text(
                               department,
                               style: TextStyle(
                                 color: Colors.grey[700],
-                                fontSize: 12,
+                                fontSize: scale(12),
                               ),
                             ),
-                            const SizedBox(height: 8),
+                            SizedBox(height: scale(8)),
                             Row(
                               children: [
-                                const Icon(
-                                  Icons.phone_rounded,
-                                  size: 16,
-                                  color: Colors.green,
-                                ),
-                                const SizedBox(width: 6),
+                                Icon(Icons.phone_rounded, size: scale(16), color: Colors.green),
+                                SizedBox(width: scale(6)),
                                 const Text(
                                   "019-777 7777",
                                   style: TextStyle(
@@ -191,17 +201,20 @@ class DetailPM extends StatelessWidget {
                       ),
                     ],
                   ),
+                  padding: EdgeInsets.all(scale(15)),
                 ),
-                const SizedBox(height: 20),
-                _buildModernLabel("TICKET INFORMATION"),
 
+                SizedBox(height: scale(20)),
+
+                // --- TICKET INFORMATION ---
+                _buildModernLabel("TICKET INFORMATION", scale),
                 _buildCleanBox(
                   padding: EdgeInsets.zero,
                   child: Column(
                     children: [
                       Container(
                         width: double.infinity,
-                        padding: const EdgeInsets.all(15),
+                        padding: EdgeInsets.all(scale(15)),
                         color: Colors.grey[200],
                         child: Column(
                           children: [
@@ -209,26 +222,25 @@ class DetailPM extends StatelessWidget {
                               "PM TYPE : COMPUTER SET",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 13,
+                                fontSize: scale(13),
                                 color: Colors.blueGrey.shade900,
                               ),
                             ),
-                            const SizedBox(height: 4),
-
-                            const Text(
+                            SizedBox(height: scale(4)),
+                            Text(
                               "END DATE : 28 JAN 2026",
-                              style: TextStyle(fontSize: 12),
+                              style: TextStyle(fontSize: scale(12)),
                             ),
                           ],
                         ),
                       ),
-                      const Padding(
-                        padding: EdgeInsets.all(18),
+                      Padding(
+                        padding: EdgeInsets.all(scale(18)),
                         child: Text(
                           "Preventive Maintenance (COMPUTER SET) - MUHAMMAD MUJAHID BIN ISHAK (1255) computer yang rosak mengikut petugas berikut:",
                           textAlign: TextAlign.justify,
                           style: TextStyle(
-                            fontSize: 13,
+                            fontSize: scale(13),
                             height: 1.5,
                             color: Colors.black87,
                           ),
@@ -237,45 +249,46 @@ class DetailPM extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: 18),
 
-                // LAPTOP SECTION
+                SizedBox(height: scale(18)),
+
+                // --- ITEM / ASSET SECTION ---
                 _buildCleanBox(
                   child: Row(
                     children: [
                       Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 14,
-                          vertical: 8,
-                        ),
+                        padding: EdgeInsets.symmetric(horizontal: scale(14), vertical: scale(8)),
                         decoration: BoxDecoration(
                           color: const Color(0xFF00AEEF),
                           borderRadius: BorderRadius.circular(6),
                         ),
-                        child: const Text(
+                        child: Text(
                           "LAPTOP",
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
-                            fontSize: 11,
+                            fontSize: scale(11),
                           ),
                         ),
                       ),
-                      const SizedBox(width: 12),
-                      const Expanded(
+                      SizedBox(width: scale(12)),
+                      Expanded(
                         child: Text(
                           "KKMM/BERNAMA/H/15/241",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 13,
+                            fontSize: scale(13),
                           ),
                         ),
                       ),
                     ],
                   ),
+                  padding: EdgeInsets.all(scale(15)),
                 ),
-                const SizedBox(height: 35),
 
+                SizedBox(height: scale(35)),
+
+                // --- ACKNOWLEDGE BUTTON ---
                 ElevatedButton(
                   onPressed: () {
                     Navigator.push(
@@ -292,42 +305,46 @@ class DetailPM extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF00AEEF),
                     foregroundColor: Colors.white,
-                    minimumSize: const Size(double.infinity, 55),
+                    minimumSize: Size(double.infinity, scale(55)),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15),
                     ),
                   ),
-                  child: const Text(
+                  child: Text(
                     "ACKNOWLEDGE",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: scale(16)),
                   ),
                 ),
-                const SizedBox(height: 25),
+
+                SizedBox(height: scale(25)),
               ],
             ),
           ),
-          _buildBottomNavigationBar(context),
+
+          // --- BOTTOM NAVIGATION BAR ---
+          _buildBottomNavigationBar(context, scale),
         ],
       ),
     );
   }
 
-  Widget _buildModernLabel(String text) {
+  // --- HELPER WIDGETS ---
+  Widget _buildModernLabel(String text, double Function(double) scale) {
     return Padding(
-      padding: const EdgeInsets.only(left: 5, bottom: 10),
+      padding: EdgeInsets.only(left: scale(5), bottom: scale(10)),
       child: Align(
         alignment: Alignment.centerLeft,
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          padding: EdgeInsets.symmetric(horizontal: scale(12), vertical: scale(6)),
           decoration: BoxDecoration(
             color: const Color(0xFF64748B),
             borderRadius: BorderRadius.circular(4),
           ),
           child: Text(
             text,
-            style: const TextStyle(
+            style: TextStyle(
               color: Colors.white,
-              fontSize: 10,
+              fontSize: scale(10),
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -355,73 +372,53 @@ class DetailPM extends StatelessWidget {
     );
   }
 
-  Widget _buildBottomNavigationBar(BuildContext context) {
+  Widget _buildBottomNavigationBar(BuildContext context, double Function(double val) scale) {
+    final size = MediaQuery.of(context).size;
+    final spacing = size.height * 0.015;
+    final isTablet = size.width >= 600;
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      decoration: BoxDecoration(
-        border: Border(top: BorderSide(color: Colors.grey.shade200)),
+      padding: EdgeInsets.symmetric(vertical: spacing, horizontal: isTablet ? 40 : 0),
+      decoration: const BoxDecoration(
         color: Colors.white,
+        boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, -2))],
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          _buildNavItem(
-            context,
-            Icons.home_outlined,
-            "Home",
-            destination: const DashboardPage(),
-          ),
-          _buildQRItem(context),
-          _buildNavItem(
-            context,
-            Icons.list_alt_rounded,
-            "Options",
-            destination: const ListOptionsPage(),
-          ),
+          _buildNavItem(context, Icons.home_outlined, "Home", destination: const DashboardPage(), iconSize: isTablet ? 36 : 28, fontSize: isTablet ? 16 : 11),
+          _buildQRItem(context, iconSize: isTablet ? 36 : 30),
+          _buildNavItem(context, Icons.list_alt_rounded, "Options", destination: const ListOptionsPage(), iconSize: isTablet ? 36 : 28, fontSize: isTablet ? 16 : 11),
         ],
       ),
     );
   }
 
-  Widget _buildNavItem(
-    BuildContext context,
-    IconData icon,
-    String label, {
-    Widget? destination,
-  }) {
+  Widget _buildNavItem(BuildContext context, IconData icon, String label,
+      {Widget? destination, double iconSize = 28, double fontSize = 11}) {
     return InkWell(
       onTap: () {
         if (destination != null) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => destination),
-          );
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => destination));
         }
       },
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 28, color: Colors.grey),
-          Text(label, style: const TextStyle(fontSize: 11, color: Colors.grey)),
+          Icon(icon, size: iconSize, color: Colors.grey),
+          Text(label, style: TextStyle(fontSize: fontSize, color: Colors.grey)),
         ],
       ),
     );
   }
 
-  Widget _buildQRItem(BuildContext context) {
+  Widget _buildQRItem(BuildContext context, {double iconSize = 30}) {
     return GestureDetector(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const QRScannerPage()),
-      ),
+      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const QRScannerPage())),
       child: Container(
-        padding: const EdgeInsets.all(12),
-        decoration: const BoxDecoration(
-          color: Colors.black,
-          shape: BoxShape.circle,
-        ),
-        child: const Icon(Icons.qr_code_scanner, color: Colors.white, size: 30),
+        padding: EdgeInsets.all(iconSize * 0.4),
+        decoration: const BoxDecoration(color: Colors.black, shape: BoxShape.circle),
+        child: Icon(Icons.qr_code_scanner, color: Colors.white, size: iconSize),
       ),
     );
   }
-}
+  }

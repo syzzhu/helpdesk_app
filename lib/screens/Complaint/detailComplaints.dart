@@ -5,6 +5,7 @@ import 'package:helpdesk_app/screens/Complaint/inventoryComplaints.dart';
 import 'package:helpdesk_app/screens/ListOption.dart';
 import 'package:helpdesk_app/screens/comment_page.dart';
 import 'package:helpdesk_app/screens/dashboard_page.dart';
+import 'package:helpdesk_app/screens/inventory.dart';
 import 'package:helpdesk_app/screens/qr_scanner_page.dart';
 
 class Acknowlegecomplaints extends StatefulWidget {
@@ -41,8 +42,8 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
     final isTablet = screenWidth >= 600 && screenWidth < 1024;
 
     // Clamp font & sizes supaya phone tak gila besar
-    final paddingH = screenWidth * 0.03;
-    final paddingV = screenHeight * 0.015;
+    final scaleW = screenWidth / 375; // base iPhone 11 width
+    final scaleH = screenHeight / 812;
     final fontTitle = (screenWidth * 0.035).clamp(14.0, 22.0); // max 22, min 14
     final fontSmall = (screenWidth * 0.020).clamp(11.0, 16.0);
     final avatarRadius = (screenWidth * 0.07).clamp(20.0, 40.0);
@@ -57,7 +58,7 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
           // --- HEADER SECTION ---
           Container(
             width: double.infinity,
-            padding: EdgeInsets.only(top: screenHeight * 0.05, bottom: paddingV),
+            padding: EdgeInsets.only(top: screenHeight * 0.05, bottom: 15 * scaleH),
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 colors: [Color(0xFF00AEEF), Color(0xFF0089BB)],
@@ -116,13 +117,17 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
                 child: Row(
                   children: [
                     Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 15,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 18 * scaleW,
+                        vertical: 12 * scaleH,
                       ),
                       decoration: BoxDecoration(
-                        color: _getStatusColor(complaint.status),
-                      ),
+                        color: complaint.status.toUpperCase() == 'NEW'
+                            ? Colors.redAccent
+                            : (complaint.status.toUpperCase() == 'PENDING'
+                                ? const Color.fromARGB(255, 243, 195, 72)
+                                  : Colors.grey),
+                        ),
                       child: Text(
                         complaint.status.toUpperCase(),
                         style: const TextStyle(
@@ -147,7 +152,7 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
           // --- SCROLLABLE CONTENT ---
           Expanded(
             child: ListView(
-              padding: EdgeInsets.symmetric(horizontal: paddingH, vertical: paddingV),
+              padding: EdgeInsets.symmetric(horizontal: 20 * scaleW, vertical: 15 * scaleH),
               children: [
                 _buildModernLabel("CONTACT PERSON", fontSmall),
                 _buildCleanBox(
@@ -289,24 +294,43 @@ class _AcknowlegecomplaintsState extends State<Acknowlegecomplaints> {
                           ),
                         ],
                       ),
-                      Positioned(
-                        right: 0,
-                        top: 0,
-                        child: IconButton(
-                          icon: const Icon(
-                            Icons.inventory_2_outlined,
-                            color: Color(0xFF0284C7),
-                            size: 20,
-                          ),
-                          onPressed: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  InventoryComplaintsPage(complaint: complaint),
+                          Positioned(
+                            right: 10,
+                            top: 10,
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => InventoryPage(
+                                      name: complaint.name, // Tambah 'widget.'
+                                      department:
+                                          complaint.department, // Tambah 'widget.'
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withOpacity(0.9),
+                                  shape: BoxShape.circle,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.1),
+                                      blurRadius: 4,
+                                      offset: const Offset(0, 2),
+                                    ),
+                                  ],
+                                ),
+                                child: const Icon(
+                                  Icons.inventory_2_rounded,
+                                  color: Color(0xFF0089BB),
+                                  size: 22,
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
                     ],
                   ),
                 ),

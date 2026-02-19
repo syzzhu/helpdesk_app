@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:helpdesk_app/screens/ListOption.dart';
 import '../qr_scanner_page.dart';
@@ -18,15 +19,23 @@ class DetailOperationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size; // dapatkan saiz skrin
+    final size = MediaQuery.of(context).size;
+    final screenWidth = size.width;
+    final screenHeight = size.height;
+
+    // Scale factors
+    final scaleW = screenWidth / 375; // base iPhone 11 width
+    final scaleH = screenHeight / 812; // base iPhone 11 height
+    final scaleText = min(scaleW, scaleH);
+
     return Scaffold(
       backgroundColor: const Color(0xFFF8FAFC),
       body: Column(
         children: [
-          // --- HEADER SECTION ---
+          // HEADER
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.only(top: 50, bottom: 25),
+            padding: EdgeInsets.only(top: screenHeight * 0.05, bottom: 15 * scaleH),
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 colors: [Color(0xFF00AEEF), Color(0xFF0089BB)],
@@ -43,10 +52,10 @@ class DetailOperationPage extends StatelessWidget {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: IconButton(
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.arrow_back_ios_new,
                       color: Colors.white,
-                      size: 30,
+                      size: 30 * scaleText,
                     ),
                     onPressed: () => Navigator.pop(context),
                   ),
@@ -54,16 +63,16 @@ class DetailOperationPage extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.description,
                       color: Colors.white,
-                      size: 32,
+                      size: 32 * scaleText,
                     ),
-                    const SizedBox(width: 12),
-                    const Text(
+                    SizedBox(width: 12 * scaleW),
+                    Text(
                       'Detail',
                       style: TextStyle(
-                        fontSize: 26,
+                        fontSize: 26 * scaleText,
                         fontWeight: FontWeight.w800,
                         color: Colors.white,
                       ),
@@ -73,20 +82,20 @@ class DetailOperationPage extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 20),
+          SizedBox(height: 20 * scaleH),
 
-          // --- TICKET ID BAR (Logik Warna Ikut Status) ---
+          // TICKET ID BAR
           Center(
             child: Container(
-              width: size.width * 0.9,
+              width: screenWidth * 0.9,
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(12 * scaleW),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withOpacity(0.05),
                     blurRadius: 10,
-                    offset: const Offset(0, 4),
+                    offset: Offset(0, 4),
                   ),
                 ],
               ),
@@ -95,23 +104,23 @@ class DetailOperationPage extends StatelessWidget {
                 child: Row(
                   children: [
                     Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 18,
-                        vertical: 12,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 18 * scaleW,
+                        vertical: 12 * scaleH,
                       ),
                       decoration: BoxDecoration(
-                        // Logik warna: NEW = Merah, PENDING = Kuning, Lain-lain = Kelabu
                         color: status.toUpperCase() == 'NEW'
                             ? Colors.redAccent
                             : (status.toUpperCase() == 'PENDING'
-                                  ? const Color.fromARGB(255, 243, 195, 72)
-                                  : Colors.grey),
+                                ? Color.fromARGB(255, 243, 195, 72)
+                                : Colors.grey),
                       ),
                       child: Text(
                         status.toUpperCase(),
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
+                          fontSize: 12 * scaleText,
                         ),
                       ),
                     ),
@@ -119,9 +128,10 @@ class DetailOperationPage extends StatelessWidget {
                       child: Text(
                         'L202601141050510002',
                         textAlign: TextAlign.center,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontWeight: FontWeight.w700,
                           color: Colors.black87,
+                          fontSize: 13 * scaleText,
                         ),
                       ),
                     ),
@@ -130,61 +140,45 @@ class DetailOperationPage extends StatelessWidget {
               ),
             ),
           ),
+
+          // CONTENT
           Expanded(
             child: ListView(
-              padding: const EdgeInsets.all(20),
+              padding: EdgeInsets.all(20 * scaleW),
               children: [
-                _buildModernLabel("CONTACT PERSON"),
-
+                _buildModernLabel("CONTACT PERSON", scaleText),
                 _buildCleanBox(
+                  scaleText: scaleText,
                   child: Row(
                     children: [
                       CircleAvatar(
-                        radius: 26,
+                        radius: 26 * scaleW,
                         backgroundColor: Colors.blue.shade50,
                         child: Icon(
                           Icons.person,
                           color: Colors.blue.shade700,
-                          size: 30,
+                          size: 30 * scaleText,
                         ),
                       ),
-                      const SizedBox(width: 15),
+                      SizedBox(width: 15 * scaleW),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               name,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 13,
+                                fontSize: 13 * scaleText,
                               ),
                             ),
-                            const SizedBox(height: 4),
+                            SizedBox(height: 4 * scaleH),
                             Text(
                               department,
                               style: TextStyle(
                                 color: Colors.grey[700],
-                                fontSize: 12,
+                                fontSize: 12 * scaleText,
                               ),
-                            ),
-                            const SizedBox(height: 8),
-                            Row(
-                              children: [
-                                const Icon(
-                                  Icons.phone_rounded,
-                                  size: 16,
-                                  color: Colors.green,
-                                ),
-                                const SizedBox(width: 6),
-                                const Text(
-                                  "019-777 7777",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 13,
-                                  ),
-                                ),
-                              ],
                             ),
                           ],
                         ),
@@ -192,16 +186,17 @@ class DetailOperationPage extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: 20),
-                _buildModernLabel("TICKET INFORMATION"),
+                SizedBox(height: 20 * scaleH),
 
+                _buildModernLabel("TICKET INFORMATION", scaleText),
                 _buildCleanBox(
+                  scaleText: scaleText,
                   padding: EdgeInsets.zero,
                   child: Column(
                     children: [
                       Container(
                         width: double.infinity,
-                        padding: const EdgeInsets.all(15),
+                        padding: EdgeInsets.all(15 * scaleW),
                         color: Colors.grey[200],
                         child: Column(
                           children: [
@@ -209,29 +204,29 @@ class DetailOperationPage extends StatelessWidget {
                               "WORK ORDER : DISMANTLE",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 13,
+                                fontSize: 13 * scaleText,
                                 color: Colors.blueGrey.shade900,
                               ),
                             ),
-                            const SizedBox(height: 4),
-                            const Text(
+                            SizedBox(height: 4 * scaleH),
+                            Text(
                               "START DATE : 15 JAN 2026",
-                              style: TextStyle(fontSize: 12),
+                              style: TextStyle(fontSize: 12 * scaleText),
                             ),
-                            const Text(
+                            Text(
                               "END DATE : 15 JAN 2026",
-                              style: TextStyle(fontSize: 12),
+                              style: TextStyle(fontSize: 12 * scaleText),
                             ),
                           ],
                         ),
                       ),
-                      const Padding(
-                        padding: EdgeInsets.all(18),
+                      Padding(
+                        padding: EdgeInsets.all(18 * scaleW),
                         child: Text(
                           "Wakil Aset RADIO: Encik Shukhaiman/Puan Azlina Zakaria mohon mengemaskini No.Invois & DO set komputer baharu pada Modul Perolehan (SPB) seterusnya melengkapkan rekod pengguna dan penempatan dan membuat janaan no. aset di Model Aset(SPB).",
                           textAlign: TextAlign.justify,
                           style: TextStyle(
-                            fontSize: 13,
+                            fontSize: 13 * scaleText,
                             height: 1.5,
                             color: Colors.black87,
                           ),
@@ -240,45 +235,46 @@ class DetailOperationPage extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: 18),
 
-                // LAPTOP SECTION
+                SizedBox(height: 18 * scaleH),
+
                 _buildCleanBox(
+                  scaleText: scaleText,
                   child: Row(
                     children: [
                       Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 14,
-                          vertical: 8,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 14 * scaleW,
+                          vertical: 8 * scaleH,
                         ),
                         decoration: BoxDecoration(
-                          color: const Color(0xFF00AEEF),
-                          borderRadius: BorderRadius.circular(6),
+                          color: Color(0xFF00AEEF),
+                          borderRadius: BorderRadius.circular(6 * scaleW),
                         ),
-                        child: const Text(
+                        child: Text(
                           "LAPTOP",
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
-                            fontSize: 11,
+                            fontSize: 11 * scaleText,
                           ),
                         ),
                       ),
-                      const SizedBox(width: 12),
-                      const Expanded(
+                      SizedBox(width: 12 * scaleW),
+                      Expanded(
                         child: Text(
                           "KKMM/BERNAMA/H/15/241",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 13,
+                            fontSize: 13 * scaleText,
                           ),
                         ),
                       ),
                     ],
                   ),
                 ),
-                const SizedBox(height: 35),
 
+                SizedBox(height: 35 * scaleH),
                 ElevatedButton(
                   onPressed: () {
                     Navigator.push(
@@ -295,17 +291,18 @@ class DetailOperationPage extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF00AEEF),
                     foregroundColor: Colors.white,
-                    minimumSize: const Size(double.infinity, 55),
+                    minimumSize: Size(double.infinity, 55 * scaleH),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
+                      borderRadius: BorderRadius.circular(15 ),
                     ),
                   ),
-                  child: const Text(
+                  child: Text(
                     "ACKNOWLEDGE",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 16 * scaleText),
                   ),
                 ),
-                const SizedBox(height: 25),
+                SizedBox(height: 25 * scaleH),
               ],
             ),
           ),
@@ -315,22 +312,23 @@ class DetailOperationPage extends StatelessWidget {
     );
   }
 
-  Widget _buildModernLabel(String text) {
+  Widget _buildModernLabel(String text, double scaleText) {
     return Padding(
-      padding: const EdgeInsets.only(left: 5, bottom: 10),
+      padding: EdgeInsets.only(left: 5, bottom: 10 * scaleText),
       child: Align(
         alignment: Alignment.centerLeft,
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          padding: EdgeInsets.symmetric(
+              horizontal: 12 * scaleText, vertical: 6 * scaleText),
           decoration: BoxDecoration(
             color: const Color(0xFF64748B),
-            borderRadius: BorderRadius.circular(4),
+            borderRadius: BorderRadius.circular(4 * scaleText),
           ),
           child: Text(
             text,
-            style: const TextStyle(
+            style: TextStyle(
               color: Colors.white,
-              fontSize: 10,
+              fontSize: 10 * scaleText,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -339,17 +337,18 @@ class DetailOperationPage extends StatelessWidget {
     );
   }
 
-  Widget _buildCleanBox({required Widget child, EdgeInsets? padding}) {
+  Widget _buildCleanBox(
+      {required Widget child, EdgeInsets? padding, required double scaleText}) {
     return Container(
-      padding: padding ?? const EdgeInsets.all(15),
+      padding: padding ?? EdgeInsets.all(15 * scaleText),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(15 * scaleText),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
             blurRadius: 12,
-            offset: const Offset(0, 4),
+            offset: Offset(0, 4),
           ),
         ],
       ),
@@ -358,73 +357,79 @@ class DetailOperationPage extends StatelessWidget {
     );
   }
 
-  Widget _buildBottomNavigationBar(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      decoration: BoxDecoration(
-        border: Border(top: BorderSide(color: Colors.grey.shade200)),
-        color: Colors.white,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _buildNavItem(
-            context,
-            Icons.home_outlined,
-            "Home",
-            destination: const DashboardPage(),
-          ),
-          _buildQRItem(context),
-          _buildNavItem(
-            context,
-            Icons.list_alt_rounded,
-            "Options",
-            destination: const ListOptionsPage(),
-          ),
-        ],
-      ),
-    );
-  }
+Widget _buildBottomNavigationBar(BuildContext context) {
+  final size = MediaQuery.of(context).size;
+  final spacing = size.height * 0.015;
+  final isTablet = size.width >= 600;
 
-  Widget _buildNavItem(
-    BuildContext context,
-    IconData icon,
-    String label, {
-    Widget? destination,
-  }) {
-    return InkWell(
-      onTap: () {
-        if (destination != null) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => destination),
-          );
-        }
-      },
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 28, color: Colors.grey),
-          Text(label, style: const TextStyle(fontSize: 11, color: Colors.grey)),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildQRItem(BuildContext context) {
-    return GestureDetector(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const QRScannerPage()),
-      ),
-      child: Container(
-        padding: const EdgeInsets.all(12),
-        decoration: const BoxDecoration(
-          color: Colors.black,
-          shape: BoxShape.circle,
+  return Container(
+    padding: EdgeInsets.symmetric(vertical: spacing, horizontal: isTablet ? 40 : 0),
+    decoration: const BoxDecoration(
+      color: Colors.white,
+      boxShadow: [
+        BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, -2)),
+      ],
+    ),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        _buildNavItem(
+          context,
+          Icons.home_outlined,
+          "Home",
+          destination: const DashboardPage(),
+          iconSize: isTablet ? 36 : 28,
+          fontSize: isTablet ? 16 : 11,
         ),
-        child: const Icon(Icons.qr_code_scanner, color: Colors.white, size: 30),
+        _buildQRItem(context, iconSize: isTablet ? 36 : 30),
+        _buildNavItem(
+          context,
+          Icons.list_alt_rounded,
+          "Options",
+          destination: const ListOptionsPage(),
+          iconSize: isTablet ? 36 : 28,
+          fontSize: isTablet ? 16 : 11,
+        ),
+      ],
+    ),
+  );
+}
+
+ Widget _buildNavItem(BuildContext context, IconData icon, String label,
+    {Widget? destination, double iconSize = 28, double fontSize = 11}) {
+  return InkWell(
+    onTap: () {
+      if (destination != null) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => destination),
+        );
+      }
+    },
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(icon, size: iconSize, color: Colors.grey),
+        Text(label, style: TextStyle(fontSize: fontSize, color: Colors.grey)),
+      ],
+    ),
+  );
+}
+
+Widget _buildQRItem(BuildContext context, {double iconSize = 30}) {
+  return GestureDetector(
+    onTap: () => Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const QRScannerPage()),
+    ),
+    child: Container(
+      padding: EdgeInsets.all(iconSize * 0.4),
+      decoration: const BoxDecoration(
+        color: Colors.black,
+        shape: BoxShape.circle,
       ),
-    );
-  }
+      child: Icon(Icons.qr_code_scanner, color: Colors.white, size: iconSize),
+    ),
+  );
+}
 }
