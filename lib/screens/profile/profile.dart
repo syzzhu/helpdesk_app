@@ -134,15 +134,15 @@ class ProfilePage extends StatelessWidget {
                             fontSize: labelFontSize),
                         _buildField(
                             label: 'DEPARTMENT',
-                            value: 'Teknologi Maklumat Komunikasi',
+                            value: 'PEJ. KETUA PEGAWAI EKSEKUTIF',
                             fontSize: labelFontSize),
                         _buildField(
                             label: 'DIVISION',
-                            value: 'IT Division',
+                            value: 'BAHAGIAN TEKNOLOGI MAKLUMAT & KOMINKASI',
                             fontSize: labelFontSize),
                         _buildField(
                             label: 'LOCATION',
-                            value: '4th Floor',
+                            value: '4th Floor - UNIT TMK BERNAMA',
                             fontSize: labelFontSize),
                         _buildField(
                             label: 'EMAIL',
@@ -207,13 +207,15 @@ class ProfilePage extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
             decoration: BoxDecoration(
-              color: const Color(0xFFDCDCDC),
+              color: const Color.fromARGB(255, 255, 255, 255),
               borderRadius: BorderRadius.circular(8),
               border: Border.all(color: Colors.black54),
             ),
             child: Text(
               value,
-              style: TextStyle(fontSize: fontSize),
+              style: TextStyle(
+                fontSize: fontSize, 
+                fontWeight: FontWeight.bold),
             ),
           ),
         ],

@@ -37,6 +37,7 @@ class _AcknowledgePMPageState extends State<AcknowledgePMPage> {
     final double screenWidth = MediaQuery.of(context).size.width;
     final double scaleFactor = (screenWidth / 400).clamp(1.0, 1.5); 
     final bool isTablet = screenWidth >= 600;
+    final avatarRadius = (screenWidth * 0.07).clamp(20.0, 40.0);
     final screenHeight = size.height;
 
      // Scale factors
@@ -160,13 +161,13 @@ class _AcknowledgePMPageState extends State<AcknowledgePMPage> {
                 _buildWhiteCard(
                   child: Row(
                     children: [
-                      const CircleAvatar(
-                        radius: 30,
-                        backgroundColor: Color(0xFFE0F2FE),
+                      CircleAvatar(
+                        radius: avatarRadius,
+                        backgroundColor: Colors.blue.shade50,
                         child: Icon(
                           Icons.person,
-                          color: Color(0xFF00AEEF),
-                          size: 35,
+                          color: Colors.blue,
+                          size: avatarRadius * 0.8,
                         ),
                       ),
                       const SizedBox(width: 15),

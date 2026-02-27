@@ -190,7 +190,7 @@ class DashboardPage extends StatelessWidget {
                     padding: EdgeInsets.only(top: spacing),
                     child: Column(
                       children: [
-                        const SizedBox(height: 10),
+                        //const SizedBox(height: 5),
                         // --- Floating Job Card ---
                         _buildSectionContainer(
                           context,
@@ -209,7 +209,7 @@ class DashboardPage extends StatelessWidget {
                           ),
                         ),
 
-                        SizedBox(height: spacing),
+                        //SizedBox(height: spacing),
 
                         // --- TASK SECTION ---
                         _buildSectionContainer(
@@ -270,7 +270,7 @@ class DashboardPage extends StatelessWidget {
                           ),
                         ),
 
-                        SizedBox(height: spacing),
+                        //SizedBox(height: spacing),
 
                         // --- SHIFT SCHEDULE SECTION ---
                         _buildSectionContainer(
@@ -321,8 +321,6 @@ class DashboardPage extends StatelessWidget {
     padding: EdgeInsets.symmetric(horizontal: spacing, vertical: spacing * 0.5),
     child: Container(
       width: double.infinity,
-      // Kita buang padding tetap pada Container supaya kandungan (seperti ListView) 
-      // boleh rapat ke tepi jika perlu, atau kita kawal padding di dalam Column.
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
@@ -335,7 +333,7 @@ class DashboardPage extends StatelessWidget {
         ],
       ),
       child: Column(
-        mainAxisSize: MainAxisSize.min, // Penting: Biar container ikut saiz kandungan
+        mainAxisSize: MainAxisSize.min, 
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           if (title.isNotEmpty) ...[
@@ -352,7 +350,6 @@ class DashboardPage extends StatelessWidget {
               ),
             ),
           ],
-          // Kandungan (Content) diletakkan di sini
           Padding(
             padding: EdgeInsets.fromLTRB(spacing, 0, spacing, spacing),
             child: content,
@@ -418,10 +415,10 @@ class DashboardPage extends StatelessWidget {
           ),
           SizedBox(height: cardWidth * 0.08),
 
-            Expanded( // Gunakan Expanded supaya ListView di dalam tidak overflow
+            Expanded( 
               child: ListView(
                 padding: EdgeInsets.zero,
-                shrinkWrap: true, // Penting supaya tidak ambil ruang berlebihan
+                shrinkWrap: true, 
                 children: codes.map((code) {
                   final info = ShiftHelper.getInfo(code.trim());
                   return Container(

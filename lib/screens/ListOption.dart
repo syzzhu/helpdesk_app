@@ -94,43 +94,6 @@ class _ListOptionsState extends State<ListOptionsPage> {
               ),
             ),
           ),
-
-          // ---------------- BOTTOM NAV ----------------
-          /*Container(
-            padding: EdgeInsets.symmetric(vertical: size.height * 0.015),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
-                  blurRadius: 10,
-                  offset: const Offset(0, -2),
-                ),
-              ],
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                _buildNavItem(
-                  context,
-                  Icons.home_outlined,
-                  "Home",
-                  //false,
-                  //size,
-                  destination: const DashboardPage(),
-                ),
-                _buildQRItem(context),
-                _buildNavItem(
-                  context,
-                  Icons.list_alt_rounded,
-                  "Options",
-                  //false,
-                  //size,
-                  destination: const ListOptionsPage(),
-                ),
-              ],
-            ),
-          ),*/
         ],
       ),
       bottomNavigationBar: _buildBottomNavigationBar(context),
@@ -210,91 +173,97 @@ class _ListOptionsState extends State<ListOptionsPage> {
   }
 
   // ================= SECTION CONTAINER =================
-  Widget _buildSectionContainer({
-    required BuildContext context,
-    required String title,
-    required List<Map<String, dynamic>> dataList,
-    Widget? destination,
-    Widget Function(Map<String, dynamic> item)? destinationBuilder,
-    required bool enableCardTap,
-  }) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      padding: const EdgeInsets.all(15),
-      decoration: BoxDecoration(
-        color: Colors.grey[300],
-        borderRadius: BorderRadius.circular(25),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 8, bottom: 15),
-            child: Text(
-              title,
-              style: const TextStyle(fontSize: 20 , fontWeight: FontWeight.bold),
-            ),
-          ),
+Widget _buildSectionContainer({
+  required BuildContext context,
+  required String title,
+  required List<Map<String, dynamic>> dataList,
+  Widget? destination,
+  Widget Function(Map<String, dynamic> item)? destinationBuilder,
+  required bool enableCardTap,
+}) {
+  final width = MediaQuery.of(context).size.width;
+  final isTablet = width > 600;
 
-          Column(
-            children: dataList.take(2).map((item) {
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 18),
-                child: _buildOperationCard(
-                  context,
-                  type: item['type'],
-                  status: item['status'],
-                  statusColor: item['color'],
-                  name: item['name'],
-                  department: item['dept'],
-                  description: item['desc'],
-                  onTap: enableCardTap
-                      ? () {
-                          if (title == "Complaints") {
-                            // Buat objek complaint di sini supaya senang debug ralat
-                            final complaintObj = Complaint(
-                              id: 0,
-                              taskId:
-                                  "REQ-${item['status'] == 'NEW' ? '2026001' : '2026002'}",
-                              status: item['status'],
-                              name: item['name'].toString().split('\n')[0],
-                              department: item['dept'] ?? "",
-                              terminalId: "NB-0292",
-                              location: item['dept'] ?? "",
-                              category: item['type'] ?? "UNKNOWN",
-                              problemDetail: item['desc'] ?? "",
-                              units: "",
-                              hp: "",
-                              assignTo: [],
-                            );
-
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => DetailComplaintsPage(
-                                  //data: item,
-                                  complaint: complaintObj,
-                                ),
-                              ),
-                            );
-                          } else if (destinationBuilder != null) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => destinationBuilder(item),
-                              ),
-                            );
-                          }
-                        }
-                      : null,
-                ),
-              );
-            }).toList(),
+  return Container(
+    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+    padding: const EdgeInsets.all(15),
+    decoration: BoxDecoration(
+      color: Colors.grey[300],
+      borderRadius: BorderRadius.circular(25),
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 8, bottom: 5),
+          child: Text(
+            title,
+            style: TextStyle(
+                fontSize: isTablet ? 24 : 20, 
+                fontWeight: FontWeight.bold),
           ),
-        ],
-      ),
-    );
-  }
+        ),
+
+        // GridView tidak perlu .map atau .toList()
+        Wrap(
+          spacing: 15, // Jarak antara kad (horizontal)
+          runSpacing: 15, // Jarak antara baris (vertical)
+          children: dataList.take(2).map((item) {
+            return SizedBox(
+              // Jika tablet, lebar dibahagi 2. Jika phone, ambil lebar penuh.
+              width: isTablet ? (width - 80) / 2 : double.infinity, 
+              child: _buildOperationCard(
+                context,
+                type: item['type'],
+                status: item['status'],
+                statusColor: item['color'],
+                name: item['name'],
+                department: item['dept'],
+                description: item['desc'],
+                onTap: enableCardTap ? () {
+                      if (title == "Complaints") {
+                        final complaintObj = Complaint(
+                          id: 0,
+                          taskId: "REQ-${item['status'] == 'NEW' ? '2026001' : '2026002'}",
+                          status: item['status'],
+                          name: item['name'].toString().split('\n')[0],
+                          department: item['dept'] ?? "",
+                          terminalId: "NB-0292",
+                          location: item['dept'] ?? "",
+                          category: item['type'] ?? "UNKNOWN",
+                          problemDetail: item['desc'] ?? "",
+                          units: "",
+                          hp: "",
+                          assignTo: [],
+                        );
+
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => DetailComplaintsPage(
+                              complaint: complaintObj,
+                            ),
+                          ),
+                        );
+                      } else if (destinationBuilder != null) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => destinationBuilder(item),
+                          ),
+                        );
+                      }
+                    }
+                  : null,
+              ),
+            );
+          }).toList(),
+        ),
+      ],
+    ),
+  );
+}
 
   // ================= CARD =================
   Widget _buildOperationCard(

@@ -21,6 +21,7 @@ class DetailPM extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
+    final avatarRadius = (screenWidth * 0.07).clamp(20.0, 40.0);
 
     final scaleW = screenWidth / 375; // base iPhone 11 width
     final scaleH = screenHeight / 812;
@@ -154,12 +155,12 @@ class DetailPM extends StatelessWidget {
                   child: Row(
                     children: [
                       CircleAvatar(
-                        radius: scale(26),
+                        radius: avatarRadius,
                         backgroundColor: Colors.blue.shade50,
                         child: Icon(
                           Icons.person,
-                          color: Colors.blue.shade700,
-                          size: scale(30),
+                          color: Colors.blue,
+                          size: avatarRadius * 0.8,
                         ),
                       ),
                       SizedBox(width: scale(15)),

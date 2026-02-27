@@ -86,17 +86,6 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                       ],
                     ),
 
-                    const Text(
-                      'PROFILE',
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-
-                    const SizedBox(height: 15),
-
                     const CircleAvatar(
                       radius: 40,
                       backgroundColor: Colors.white,
@@ -104,6 +93,17 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                         Icons.person,
                         size: 45,
                         color: Colors.black,
+                      ),
+                    ),
+
+                    const SizedBox(height: 15),
+
+                    const Text(
+                      'PROFILE',
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
                       ),
                     ),
                   ],
